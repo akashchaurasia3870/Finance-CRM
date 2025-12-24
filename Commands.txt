@@ -1,0 +1,20 @@
+#1 Create new Laravel project
+composer create-project laravel/laravel finance_crm
+cd finance_crm
+
+#2 Run migrations
+php artisan migrate
+
+
+#3 Install Breeze
+composer require laravel/breeze --dev
+
+#4 Install Breeze with React
+php artisan breeze:install react
+
+#5 Install dependencies & build assets
+npm install
+npm run dev
+
+#6 Run migrations
+php artisan migrate
