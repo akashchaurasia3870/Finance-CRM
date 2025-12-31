@@ -10,12 +10,14 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('added_by');
+            $table->unsignedBigInteger('owned_by');
             $table->string('name');
             $table->string('file_path');
             $table->string('file_type');
             $table->integer('file_size');
             $table->text('description')->nullable();
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

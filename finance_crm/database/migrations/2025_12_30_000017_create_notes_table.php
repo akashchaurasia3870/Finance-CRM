@@ -10,12 +10,23 @@ return new class extends Migration
     {
         Schema::create('notes', function (Blueprint $table) {
             $table->id();
+
+            // Ownership
+            $table->unsignedBigInteger('created_by')->nullable(); 
+            $table->unsignedBigInteger('client_id')->nullable();
+
+            // Note content
             $table->string('title');
             $table->text('content');
-            $table->foreignId('user_id')->constrained()->onDelete('cascade');
-            $table->string('category')->nullable();
-            $table->boolean('is_private')->default(false);
+
+            // Classification
+            $table->string('category')->nullable(); // personal, lead, complain, system
+
             $table->timestamps();
+
+            // Indexes
+            $table->index('created_by');
+            $table->index('category');
         });
     }
 

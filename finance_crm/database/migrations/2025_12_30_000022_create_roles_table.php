@@ -16,10 +16,18 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
+
+        Schema::create('users_roles', function (Blueprint $table) {
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('role_id');
+            $table->boolean('is_active')->default(true);
+            $table->timestamps();
+        });
     }
 
     public function down(): void
     {
         Schema::dropIfExists('roles');
+        Schema::dropIfExists('users_roles');
     }
 };
