@@ -1,34 +1,44 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\AccountsController;
+use App\Http\Controllers\AddressWebController;
+use App\Http\Controllers\AddressController;
+use App\Http\Controllers\AttendanceWebController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BondController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CampaignsController;
+use App\Http\Controllers\ClientWebController;
 use App\Http\Controllers\ClientController;
 use App\Http\Controllers\ComplainController;
+use App\Http\Controllers\DocumentsWebController;
 use App\Http\Controllers\DocumentsController;
 use App\Http\Controllers\EmailController;
 use App\Http\Controllers\EmailTemplateController;
 use App\Http\Controllers\ForexController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\LeadsWebController;
 use App\Http\Controllers\LeadsController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\MarginController;
 use App\Http\Controllers\MeetingsController;
 use App\Http\Controllers\MutualFundsController;
+use App\Http\Controllers\NotesWebController;
 use App\Http\Controllers\NotesController;
 use App\Http\Controllers\PayrollController;
 use App\Http\Controllers\PortfolioController;
 use App\Http\Controllers\PositionController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportsController;
+use App\Http\Controllers\RoleWebController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StockController;
 use App\Http\Controllers\SurveyController;
+use App\Http\Controllers\TargetWebController;
 use App\Http\Controllers\TargetController;
+use App\Http\Controllers\TasksWebController;
 use App\Http\Controllers\TasksController;
+use App\Http\Controllers\UserWebController;
 use App\Http\Controllers\UserController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
@@ -52,10 +62,32 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
+    // Address Module Routes
+    Route::get('/address', [AddressWebController::class, 'index'])->name('address.view');
+    Route::get('/address/new', [AddressWebController::class, 'create'])->name('address.new');
+    Route::post('/address', [AddressWebController::class, 'store']);
+    Route::get('/address/{id}', [AddressWebController::class, 'show'])->name('address.detail');
+    Route::get('/address/{id}/edit', [AddressWebController::class, 'edit'])->name('address.edit');
+    Route::put('/address/{id}', [AddressWebController::class, 'update']);
+    Route::delete('/address/{id}', [AddressWebController::class, 'destroy']);
+    
+    Route::prefix('api/address')->group(function () {
+        Route::get('/', [AddressController::class, 'index']);
+        Route::get('/{id}', [AddressController::class, 'show']);
+        Route::post('/', [AddressController::class, 'store']);
+        Route::put('/{id}', [AddressController::class, 'update']);
+        Route::delete('/{id}', [AddressController::class, 'destroy']);
+    });
+    
     // User Module Routes
-    Route::get('/user', fn() => Inertia::render('Modules/User/View'))->name('user.view');
-    Route::get('/user/detail', fn() => Inertia::render('Modules/User/Detail'))->name('user.detail');
-    Route::get('/user/edit', fn() => Inertia::render('Modules/User/Edit'))->name('user.edit');
+    Route::get('/user', [UserWebController::class, 'index'])->name('user.view');
+    Route::get('/user/new', [UserWebController::class, 'create'])->name('user.new');
+    Route::post('/user', [UserWebController::class, 'store']);
+    Route::get('/user/{id}', [UserWebController::class, 'show'])->name('user.detail');
+    Route::get('/user/{id}/edit', [UserWebController::class, 'edit'])->name('user.edit');
+    Route::put('/user/{id}', [UserWebController::class, 'update']);
+    Route::delete('/user/{id}', [UserWebController::class, 'destroy']);
+    
     Route::prefix('api/user')->group(function () {
         Route::get('/', [UserController::class, 'index']);
         Route::get('/{id}', [UserController::class, 'show']);
@@ -77,9 +109,14 @@ Route::middleware('auth')->group(function () {
     });
     
     // Attendance Module Routes
-    Route::get('/attendance', fn() => Inertia::render('Modules/Attendance/View'))->name('attendance.view');
-    Route::get('/attendance/detail', fn() => Inertia::render('Modules/Attendance/Detail'))->name('attendance.detail');
-    Route::get('/attendance/edit', fn() => Inertia::render('Modules/Attendance/Edit'))->name('attendance.edit');
+    Route::get('/attendance', [AttendanceWebController::class, 'index'])->name('attendance.view');
+    Route::get('/attendance/new', [AttendanceWebController::class, 'create'])->name('attendance.new');
+    Route::post('/attendance', [AttendanceWebController::class, 'store']);
+    Route::get('/attendance/{id}', [AttendanceWebController::class, 'show'])->name('attendance.detail');
+    Route::get('/attendance/{id}/edit', [AttendanceWebController::class, 'edit'])->name('attendance.edit');
+    Route::put('/attendance/{id}', [AttendanceWebController::class, 'update']);
+    Route::delete('/attendance/{id}', [AttendanceWebController::class, 'destroy']);
+    
     Route::prefix('api/attendance')->group(function () {
         Route::get('/', [AttendanceController::class, 'index']);
         Route::get('/{id}', [AttendanceController::class, 'show']);
@@ -113,9 +150,14 @@ Route::middleware('auth')->group(function () {
     });
     
     // Client Module Routes
-    Route::get('/client', fn() => Inertia::render('Modules/Client/View'))->name('client.view');
-    Route::get('/client/detail', fn() => Inertia::render('Modules/Client/Detail'))->name('client.detail');
-    Route::get('/client/edit', fn() => Inertia::render('Modules/Client/Edit'))->name('client.edit');
+    Route::get('/client', [ClientWebController::class, 'index'])->name('client.view');
+    Route::get('/client/new', [ClientWebController::class, 'create'])->name('client.new');
+    Route::post('/client', [ClientWebController::class, 'store']);
+    Route::get('/client/{id}', [ClientWebController::class, 'show'])->name('client.detail');
+    Route::get('/client/{id}/edit', [ClientWebController::class, 'edit'])->name('client.edit');
+    Route::put('/client/{id}', [ClientWebController::class, 'update']);
+    Route::delete('/client/{id}', [ClientWebController::class, 'destroy']);
+    
     Route::prefix('api/client')->group(function () {
         Route::get('/', [ClientController::class, 'index']);
         Route::get('/{id}', [ClientController::class, 'show']);
@@ -137,9 +179,14 @@ Route::middleware('auth')->group(function () {
     });
     
     // Documents Module Routes
-    Route::get('/documents', fn() => Inertia::render('Modules/Documents/View'))->name('documents.view');
-    Route::get('/documents/detail', fn() => Inertia::render('Modules/Documents/Detail'))->name('documents.detail');
-    Route::get('/documents/edit', fn() => Inertia::render('Modules/Documents/Edit'))->name('documents.edit');
+    Route::get('/documents', [DocumentsWebController::class, 'index'])->name('documents.view');
+    Route::get('/documents/new', [DocumentsWebController::class, 'create'])->name('documents.new');
+    Route::post('/documents', [DocumentsWebController::class, 'store']);
+    Route::get('/documents/{id}', [DocumentsWebController::class, 'show'])->name('documents.detail');
+    Route::get('/documents/{id}/edit', [DocumentsWebController::class, 'edit'])->name('documents.edit');
+    Route::put('/documents/{id}', [DocumentsWebController::class, 'update']);
+    Route::delete('/documents/{id}', [DocumentsWebController::class, 'destroy']);
+    
     Route::prefix('api/documents')->group(function () {
         Route::get('/', [DocumentsController::class, 'index']);
         Route::get('/{id}', [DocumentsController::class, 'show']);
@@ -185,9 +232,14 @@ Route::middleware('auth')->group(function () {
     });
     
     // Leads Module Routes
-    Route::get('/leads', fn() => Inertia::render('Modules/Leads/View'))->name('leads.view');
-    Route::get('/leads/detail', fn() => Inertia::render('Modules/Leads/Detail'))->name('leads.detail');
-    Route::get('/leads/edit', fn() => Inertia::render('Modules/Leads/Edit'))->name('leads.edit');
+    Route::get('/leads', [LeadsWebController::class, 'index'])->name('leads.view');
+    Route::get('/leads/new', [LeadsWebController::class, 'create'])->name('leads.new');
+    Route::post('/leads', [LeadsWebController::class, 'store']);
+    Route::get('/leads/{id}', [LeadsWebController::class, 'show'])->name('leads.detail');
+    Route::get('/leads/{id}/edit', [LeadsWebController::class, 'edit'])->name('leads.edit');
+    Route::put('/leads/{id}', [LeadsWebController::class, 'update']);
+    Route::delete('/leads/{id}', [LeadsWebController::class, 'destroy']);
+    
     Route::prefix('api/leads')->group(function () {
         Route::get('/', [LeadsController::class, 'index']);
         Route::get('/{id}', [LeadsController::class, 'show']);
@@ -209,9 +261,14 @@ Route::middleware('auth')->group(function () {
     });
     
     // Notes Module Routes
-    Route::get('/notes', fn() => Inertia::render('Modules/Notes/View'))->name('notes.view');
-    Route::get('/notes/detail', fn() => Inertia::render('Modules/Notes/Detail'))->name('notes.detail');
-    Route::get('/notes/edit', fn() => Inertia::render('Modules/Notes/Edit'))->name('notes.edit');
+    Route::get('/notes', [NotesWebController::class, 'index'])->name('notes.view');
+    Route::get('/notes/new', [NotesWebController::class, 'create'])->name('notes.new');
+    Route::post('/notes', [NotesWebController::class, 'store']);
+    Route::get('/notes/{id}', [NotesWebController::class, 'show'])->name('notes.detail');
+    Route::get('/notes/{id}/edit', [NotesWebController::class, 'edit'])->name('notes.edit');
+    Route::put('/notes/{id}', [NotesWebController::class, 'update']);
+    Route::delete('/notes/{id}', [NotesWebController::class, 'destroy']);
+    
     Route::prefix('api/notes')->group(function () {
         Route::get('/', [NotesController::class, 'index']);
         Route::get('/{id}', [NotesController::class, 'show']);
@@ -281,9 +338,14 @@ Route::middleware('auth')->group(function () {
     });
     
     // Role Module Routes
-    Route::get('/role', fn() => Inertia::render('Modules/Role/View'))->name('role.view');
-    Route::get('/role/detail', fn() => Inertia::render('Modules/Role/Detail'))->name('role.detail');
-    Route::get('/role/edit', fn() => Inertia::render('Modules/Role/Edit'))->name('role.edit');
+    Route::get('/role', [RoleWebController::class, 'index'])->name('role.view');
+    Route::get('/role/new', [RoleWebController::class, 'create'])->name('role.new');
+    Route::post('/role', [RoleWebController::class, 'store']);
+    Route::get('/role/{id}', [RoleWebController::class, 'show'])->name('role.detail');
+    Route::get('/role/{id}/edit', [RoleWebController::class, 'edit'])->name('role.edit');
+    Route::put('/role/{id}', [RoleWebController::class, 'update']);
+    Route::delete('/role/{id}', [RoleWebController::class, 'destroy']);
+    
     Route::prefix('api/role')->group(function () {
         Route::get('/', [RoleController::class, 'index']);
         Route::get('/{id}', [RoleController::class, 'show']);
@@ -305,9 +367,14 @@ Route::middleware('auth')->group(function () {
     });
     
     // Target Module Routes
-    Route::get('/target', fn() => Inertia::render('Modules/Target/View'))->name('target.view');
-    Route::get('/target/detail', fn() => Inertia::render('Modules/Target/Detail'))->name('target.detail');
-    Route::get('/target/edit', fn() => Inertia::render('Modules/Target/Edit'))->name('target.edit');
+    Route::get('/target', [TargetWebController::class, 'index'])->name('target.view');
+    Route::get('/target/new', [TargetWebController::class, 'create'])->name('target.new');
+    Route::post('/target', [TargetWebController::class, 'store']);
+    Route::get('/target/{id}', [TargetWebController::class, 'show'])->name('target.detail');
+    Route::get('/target/{id}/edit', [TargetWebController::class, 'edit'])->name('target.edit');
+    Route::put('/target/{id}', [TargetWebController::class, 'update']);
+    Route::delete('/target/{id}', [TargetWebController::class, 'destroy']);
+    
     Route::prefix('api/target')->group(function () {
         Route::get('/', [TargetController::class, 'index']);
         Route::get('/{id}', [TargetController::class, 'show']);
@@ -317,9 +384,14 @@ Route::middleware('auth')->group(function () {
     });
     
     // Tasks Module Routes
-    Route::get('/tasks', fn() => Inertia::render('Modules/Tasks/View'))->name('tasks.view');
-    Route::get('/tasks/detail', fn() => Inertia::render('Modules/Tasks/Detail'))->name('tasks.detail');
-    Route::get('/tasks/edit', fn() => Inertia::render('Modules/Tasks/Edit'))->name('tasks.edit');
+    Route::get('/tasks', [TasksWebController::class, 'index'])->name('tasks.view');
+    Route::get('/tasks/new', [TasksWebController::class, 'create'])->name('tasks.new');
+    Route::post('/tasks', [TasksWebController::class, 'store']);
+    Route::get('/tasks/{id}', [TasksWebController::class, 'show'])->name('tasks.detail');
+    Route::get('/tasks/{id}/edit', [TasksWebController::class, 'edit'])->name('tasks.edit');
+    Route::put('/tasks/{id}', [TasksWebController::class, 'update']);
+    Route::delete('/tasks/{id}', [TasksWebController::class, 'destroy']);
+    
     Route::prefix('api/tasks')->group(function () {
         Route::get('/', [TasksController::class, 'index']);
         Route::get('/{id}', [TasksController::class, 'show']);

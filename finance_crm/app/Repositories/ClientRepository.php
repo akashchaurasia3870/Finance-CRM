@@ -11,9 +11,18 @@ class ClientRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    // You can add client-specific methods here that aren't in the interface
-    public function findActiveClient()
+    public function findActiveClients()
     {
-        return $this->model->where('active', true)->get();
+        return $this->model->where('status', 'active')->get();
+    }
+
+    public function findByStatus(string $status)
+    {
+        return $this->model->where('status', $status)->get();
+    }
+
+    public function findByCompany(string $company)
+    {
+        return $this->model->where('company', 'like', '%' . $company . '%')->get();
     }
 }

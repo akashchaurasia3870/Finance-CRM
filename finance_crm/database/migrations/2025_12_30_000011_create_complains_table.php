@@ -10,17 +10,12 @@ return new class extends Migration
     {
         Schema::create('complains', function (Blueprint $table) {
             $table->id();
-
-            // Complaint details
             $table->string('title');
             $table->text('description');
-
-            // Complainant info
             $table->unsignedBigInteger('client_id')->nullable();
             $table->string('complainant_name');
             $table->string('complainant_email')->nullable();
             $table->string('complainant_phone', 20)->nullable();
-
             $table->enum('priority', ['low', 'medium', 'high'])->default('medium');
             $table->enum('status', [
                 'open',
@@ -28,17 +23,13 @@ return new class extends Migration
                 'resolved',
                 'closed'
             ])->default('open');
-
             $table->unsignedBigInteger('assigned_to')->nullable(); 
             $table->timestamp('resolved_at')->nullable();
-
-            // Meta
             $table->text('resolution_notes')->nullable();
-            $table->string('source')->nullable(); // web, email, phone, system
-
+            $table->string('source')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
-
-            // Indexes
+            $table->softDeletes();
             $table->index('client_id');
             $table->index('assigned_to');
             $table->index('priority');

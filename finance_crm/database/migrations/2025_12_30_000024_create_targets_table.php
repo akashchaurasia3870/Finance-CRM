@@ -16,8 +16,10 @@ return new class extends Migration
             $table->decimal('achieved_value', 15, 2)->default(0);
             $table->date('start_date');
             $table->date('end_date');
-            $table->foreignId('assigned_to')->constrained('users')->onDelete('cascade');
+            $table->unsignedBigInteger('assigned_to')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

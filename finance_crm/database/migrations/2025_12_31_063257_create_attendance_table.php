@@ -11,21 +11,17 @@ return new class extends Migration
         
         Schema::create('attendance', function (Blueprint $table) {
             $table->id();
-
             $table->unsignedBigInteger('user_id');
             $table->date('attendance_date');
-
             $table->time('check_in_time')->nullable();
             $table->time('check_out_time')->nullable();
             $table->decimal('work_hours', 5, 2)->nullable();
-
             $table->enum('status', [
                 'present',
                 'absent',
                 'half_day',
                 'leave'
             ])->default('absent');
-
             $table->enum('source', [
                 'biometric',
                 'manual',
@@ -33,53 +29,49 @@ return new class extends Migration
                 'system'
             ])->default('system');
             $table->boolean('is_active')->default(true);
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
-
+            $table->softDeletes();
             $table->unique(['user_id', 'attendance_date']);
             $table->index(['user_id']);
             $table->index('attendance_date');
         });
 
         Schema::create('leaves', function (Blueprint $table) {
-            $table->id()->primary();
-
-            $table->id('user_id');
+            $table->id();
+            $table->unsignedBigInteger('user_id');
             $table->date('leave_date_from');
             $table->date('leave_date_to');
-
             $table->enum('leave_type', [
                 'sick',
                 'casual',
                 'paid',
                 'unpaid'
             ]);
-
             $table->enum('status', [
                 'pending',
                 'approved',
                 'rejected'
             ])->default('pending');
-
             $table->text('reason')->nullable();
-            $table->id('approved_by');
-            $table->id('rejected_by');
+            $table->unsignedBigInteger('approved_by')->nullable();
+            $table->unsignedBigInteger('rejected_by')->nullable();
             $table->text('rejection_reason')->nullable();
             $table->boolean('is_active')->default(true);
-
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
-
+            $table->softDeletes();
             $table->index(['user_id']);
-            $table->index('leave_date');
+            $table->index('leave_date_from');
         });
 
-        
         Schema::create('holidays', function (Blueprint $table) {
-            $table->id()->primary();
-
+            $table->id();
             $table->date('holiday_date');
             $table->string('name');
-
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
+            $table->softDeletes();
             $table->unique('holiday_date');
         });
     }

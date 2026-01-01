@@ -14,14 +14,18 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->json('permissions')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
 
         Schema::create('users_roles', function (Blueprint $table) {
             $table->unsignedBigInteger('user_id');
             $table->unsignedBigInteger('role_id');
             $table->boolean('is_active')->default(true);
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

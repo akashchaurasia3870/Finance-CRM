@@ -11,11 +11,17 @@ return new class extends Migration
         Schema::create('email_templates', function (Blueprint $table) {
             $table->id();
             $table->string('name');
+            $table->string('slug')->unique();
             $table->string('subject');
-            $table->text('body');
+            $table->longText('body');
             $table->string('category')->nullable();
             $table->boolean('is_active')->default(true);
+            $table->integer('version')->default(1);
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+            $table->index('category');
+            $table->index('is_active');
         });
     }
 

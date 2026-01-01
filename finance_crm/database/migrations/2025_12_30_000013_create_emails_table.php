@@ -11,12 +11,26 @@ return new class extends Migration
         Schema::create('emails', function (Blueprint $table) {
             $table->id();
             $table->string('to_email');
-            $table->string('from_email');
+            $table->string('from_email')->nullable();
+            $table->string('cc')->nullable();
+            $table->string('bcc')->nullable();
             $table->string('subject');
-            $table->text('body');
-            $table->enum('status', ['draft', 'sent', 'failed'])->default('draft');
+            $table->longText('body');
+            $table->unsignedBigInteger('email_template_id')->nullable();
+            $table->enum('status', [
+                'draft',
+                'queued',
+                'sent',
+                'failed'
+            ])->default('draft');
+            $table->integer('retry_count')->default(0);
+            $table->text('failure_reason')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamp('sent_at')->nullable();
             $table->timestamps();
+            $table->softDeletes();
+            $table->index('status');
+            $table->index('email_template_id');
         });
     }
 

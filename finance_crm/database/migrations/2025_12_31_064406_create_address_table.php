@@ -10,23 +10,17 @@ return new class extends Migration
     {
         Schema::create('address', function (Blueprint $table) {
             $table->id();
-
             $table->unsignedBigInteger('user_id')->nullable();
-
-            // Address details
             $table->string('type')->default('current'); 
-            // current | permanent | office | billing | shipping
-
             $table->string('address_line_1');
             $table->string('address_line_2')->nullable();
             $table->string('city');
             $table->string('state')->nullable();
             $table->string('country')->default('India');
             $table->string('postal_code', 20)->nullable();
-
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
-
-            // Indexes
+            $table->softDeletes();
             $table->index('user_id');
             $table->index('type');
         });

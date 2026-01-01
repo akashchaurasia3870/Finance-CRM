@@ -17,7 +17,7 @@ class BaseService implements ServiceInterface
 
     public function getAllRecords(): array
     {
-        return $this->repository->findAll();
+        return $this->repository->findAll()->toArray();
     }
 
     public function getRecordById(int $id): ?object

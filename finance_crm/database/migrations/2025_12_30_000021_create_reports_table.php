@@ -12,11 +12,11 @@ return new class extends Migration
             $table->id();
             $table->string('name');
             $table->string('type');
-            $table->json('parameters')->nullable();
             $table->text('description')->nullable();
-            $table->foreignId('created_by')->constrained('users')->onDelete('cascade');
-            $table->timestamp('generated_at')->nullable();
+            $table->unsignedBigInteger('user_id')->nullable();
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

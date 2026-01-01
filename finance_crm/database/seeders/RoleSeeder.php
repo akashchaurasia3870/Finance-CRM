@@ -10,29 +10,40 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         $roles = [
-            ['Admin', 'Full system access'],
-            ['Manager', 'Management level access'],
-            ['Employee', 'Basic employee access'],
-            ['Viewer', 'Read-only access'],
-            ['Accountant', 'Financial data access'],
+            [
+                'name' => 'Super Admin',
+                'description' => 'Full system access with all permissions',
+                'permissions' => ['users.create', 'users.read', 'users.update', 'users.delete', 'roles.create', 'roles.read', 'roles.update', 'roles.delete'],
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Admin',
+                'description' => 'Administrative access with most permissions',
+                'permissions' => ['users.read', 'users.update', 'roles.read', 'clients.create', 'clients.read', 'clients.update'],
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Manager',
+                'description' => 'Management level access',
+                'permissions' => ['clients.read', 'clients.update', 'leads.create', 'leads.read', 'leads.update'],
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Employee',
+                'description' => 'Basic employee access',
+                'permissions' => ['clients.read', 'leads.read', 'tasks.create', 'tasks.read', 'tasks.update'],
+                'is_active' => true,
+            ],
+            [
+                'name' => 'Viewer',
+                'description' => 'Read-only access',
+                'permissions' => ['clients.read', 'leads.read', 'tasks.read'],
+                'is_active' => true,
+            ],
         ];
         
-        foreach ($roles as $index => $role) {
-            Role::create([
-                'name' => $role[0] . ' ' . ($index + 1),
-                'description' => $role[1],
-                'permissions' => json_encode(['read', 'write', 'delete']),
-                'is_active' => rand(0, 1),
-            ]);
-        }
-        
-        for ($i = 6; $i <= 15; $i++) {
-            Role::create([
-                'name' => 'Role ' . $i,
-                'description' => 'Description for role ' . $i,
-                'permissions' => json_encode(['read']),
-                'is_active' => rand(0, 1),
-            ]);
+        foreach ($roles as $roleData) {
+            Role::create($roleData);
         }
     }
 }

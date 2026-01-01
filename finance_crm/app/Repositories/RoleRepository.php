@@ -11,9 +11,13 @@ class RoleRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    // You can add role-specific methods here that aren't in the interface
-    public function findActiveRole()
+    public function findActiveRoles()
     {
-        return $this->model->where('active', true)->get();
+        return $this->model->where('is_active', true)->get();
+    }
+
+    public function findByName(string $name)
+    {
+        return $this->model->where('name', $name)->first();
     }
 }

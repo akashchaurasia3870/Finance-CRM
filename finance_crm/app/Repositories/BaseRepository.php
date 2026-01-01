@@ -33,8 +33,7 @@ abstract class BaseRepository implements RepositoryInterface
     public function edit(int $id, array $data)
     {
         $record = $this->model->findOrFail($id);
-        $record->update($data);
-        return $record;
+        return $record->update($data);
     }
 
     public function remove(int $id)

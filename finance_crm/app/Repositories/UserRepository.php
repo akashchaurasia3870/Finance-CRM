@@ -11,9 +11,8 @@ class UserRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    // You can add user-specific methods here that aren't in the interface
     public function findActiveUsers()
     {
-        return $this->model->where('active', true)->get();
+        return $this->model->where('is_active', true)->get();
     }
 }

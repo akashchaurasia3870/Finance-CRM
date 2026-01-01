@@ -11,9 +11,25 @@ class TargetRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    // You can add target-specific methods here that aren't in the interface
-    public function findActiveTarget()
+    public function findByAssignedTo(int $userId)
     {
-        return $this->model->where('active', true)->get();
+        return $this->model->where('assigned_to', $userId)->get();
+    }
+
+    public function findActiveTargets()
+    {
+        return $this->model->where('end_date', '>=', now()->toDateString())->get();
+    }
+
+    public function findExpiredTargets()
+    {
+        return $this->model->where('end_date', '<', now()->toDateString())->get();
+    }
+
+    public function findByDateRange(string $startDate, string $endDate)
+    {
+        return $this->model->whereBetween('start_date', [$startDate, $endDate])
+                          ->orWhereBetween('end_date', [$startDate, $endDate])
+                          ->get();
     }
 }

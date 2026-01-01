@@ -11,9 +11,23 @@ class NotesRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    // You can add notes-specific methods here that aren't in the interface
-    public function findActiveNotes()
+    public function findByCreator(int $userId)
     {
-        return $this->model->where('active', true)->get();
+        return $this->model->where('created_by', $userId)->get();
+    }
+
+    public function findByClient(int $clientId)
+    {
+        return $this->model->where('client_id', $clientId)->get();
+    }
+
+    public function findByCategory(string $category)
+    {
+        return $this->model->where('category', $category)->get();
+    }
+
+    public function searchByTitle(string $search)
+    {
+        return $this->model->where('title', 'like', '%' . $search . '%')->get();
     }
 }

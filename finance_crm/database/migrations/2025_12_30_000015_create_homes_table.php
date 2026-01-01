@@ -15,7 +15,9 @@ return new class extends Migration
             $table->string('widget_type');
             $table->integer('sort_order')->default(0);
             $table->boolean('is_active')->default(true);
+            $table->unsignedBigInteger('created_by')->nullable();
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

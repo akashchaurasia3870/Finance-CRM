@@ -10,7 +10,7 @@ return new class extends Migration
     {
         Schema::create('documents', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('added_by');
+            $table->unsignedBigInteger('created_by');
             $table->unsignedBigInteger('owned_by');
             $table->string('name');
             $table->string('file_path');
@@ -19,6 +19,7 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestamps();
+            $table->softDeletes();
         });
     }
 

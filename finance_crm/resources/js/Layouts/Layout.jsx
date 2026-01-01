@@ -7,6 +7,8 @@ const Layout = ({ children }) => {
     const modules = [
         { name: 'Dashboard', path: '/dashboard' },
         { name: 'User', path: '/user' },
+        { name: 'Role', path: '/role' },
+        { name: 'Address', path: '/address' },
         { name: 'Accounts', path: '/accounts' },
         { name: 'Attendance', path: '/attendance' },
         { name: 'Calendar', path: '/calendar' },
@@ -25,7 +27,6 @@ const Layout = ({ children }) => {
         { name: 'Position', path: '/position' },
         { name: 'Product', path: '/product' },
         { name: 'Reports', path: '/reports' },
-        { name: 'Role', path: '/role' },
         { name: 'Survey', path: '/survey' },
         { name: 'Target', path: '/target' },
         { name: 'Tasks', path: '/tasks' },
