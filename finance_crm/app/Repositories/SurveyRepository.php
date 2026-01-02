@@ -11,9 +11,25 @@ class SurveyRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    // You can add survey-specific methods here that aren't in the interface
-    public function findActiveSurvey()
+    public function findActiveSurveys()
     {
-        return $this->model->where('active', true)->get();
+        return $this->model->where('status', 'active')
+                          ->where('start_date', '<=', now())
+                          ->where(function($query) {
+                              $query->whereNull('end_date')
+                                    ->orWhere('end_date', '>=', now());
+                          })
+                          ->with(['questions.options'])
+                          ->get();
+    }
+
+    public function findSurveyWithQuestions($id)
+    {
+        return $this->model->with(['questions.options', 'creator'])->find($id);
+    }
+
+    public function findSurveyWithResponses($id)
+    {
+        return $this->model->with(['questions.options', 'responses.answers', 'responses.user'])->find($id);
     }
 }

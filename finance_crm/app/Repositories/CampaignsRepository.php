@@ -11,9 +11,23 @@ class CampaignsRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    // You can add campaigns-specific methods here that aren't in the interface
+    public function findByStatus($status)
+    {
+        return $this->model->where('status', $status)->get();
+    }
+
+    public function findByType($type)
+    {
+        return $this->model->where('type', $type)->get();
+    }
+
     public function findActiveCampaigns()
     {
-        return $this->model->where('active', true)->get();
+        return $this->model->where('status', 'active')->get();
+    }
+
+    public function findByDateRange($startDate, $endDate)
+    {
+        return $this->model->whereBetween('start_date', [$startDate, $endDate])->get();
     }
 }

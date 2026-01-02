@@ -11,9 +11,23 @@ class ComplainRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    // You can add complain-specific methods here that aren't in the interface
-    public function findActiveComplain()
+    public function findByStatus($status)
     {
-        return $this->model->where('active', true)->get();
+        return $this->model->where('status', $status)->get();
+    }
+
+    public function findByPriority($priority)
+    {
+        return $this->model->where('priority', $priority)->get();
+    }
+
+    public function findByClient($clientId)
+    {
+        return $this->model->where('client_id', $clientId)->get();
+    }
+
+    public function findAssignedTo($userId)
+    {
+        return $this->model->where('assigned_to', $userId)->get();
     }
 }

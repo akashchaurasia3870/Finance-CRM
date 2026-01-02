@@ -11,9 +11,23 @@ class EmailRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    // You can add email-specific methods here that aren't in the interface
-    public function findActiveEmail()
+    public function findByStatus($status)
     {
-        return $this->model->where('active', true)->get();
+        return $this->model->where('status', $status)->get();
+    }
+
+    public function findByTemplate($templateId)
+    {
+        return $this->model->where('email_template_id', $templateId)->get();
+    }
+
+    public function findSentEmails()
+    {
+        return $this->model->where('status', 'sent')->get();
+    }
+
+    public function findFailedEmails()
+    {
+        return $this->model->where('status', 'failed')->get();
     }
 }

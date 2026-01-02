@@ -11,9 +11,18 @@ class EmailTemplateRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    // You can add emailtemplate-specific methods here that aren't in the interface
-    public function findActiveEmailTemplate()
+    public function findActiveTemplates()
     {
-        return $this->model->where('active', true)->get();
+        return $this->model->where('is_active', true)->get();
+    }
+
+    public function findByCategory($category)
+    {
+        return $this->model->where('category', $category)->get();
+    }
+
+    public function findBySlug($slug)
+    {
+        return $this->model->where('slug', $slug)->first();
     }
 }

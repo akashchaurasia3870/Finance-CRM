@@ -7,13 +7,17 @@ use App\Http\Controllers\AttendanceWebController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BondController;
 use App\Http\Controllers\CalendarController;
+use App\Http\Controllers\CampaignsWebController;
 use App\Http\Controllers\CampaignsController;
 use App\Http\Controllers\ClientWebController;
 use App\Http\Controllers\ClientController;
+use App\Http\Controllers\ComplainWebController;
 use App\Http\Controllers\ComplainController;
 use App\Http\Controllers\DocumentsWebController;
 use App\Http\Controllers\DocumentsController;
+use App\Http\Controllers\EmailWebController;
 use App\Http\Controllers\EmailController;
+use App\Http\Controllers\EmailTemplateWebController;
 use App\Http\Controllers\EmailTemplateController;
 use App\Http\Controllers\ForexController;
 use App\Http\Controllers\HomeController;
@@ -33,6 +37,7 @@ use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\RoleWebController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\StockController;
+use App\Http\Controllers\SurveyWebController;
 use App\Http\Controllers\SurveyController;
 use App\Http\Controllers\TargetWebController;
 use App\Http\Controllers\TargetController;
@@ -138,9 +143,14 @@ Route::middleware('auth')->group(function () {
     });
     
     // Campaigns Module Routes
-    Route::get('/campaigns', fn() => Inertia::render('Modules/Campaigns/View'))->name('campaigns.view');
-    Route::get('/campaigns/detail', fn() => Inertia::render('Modules/Campaigns/Detail'))->name('campaigns.detail');
-    Route::get('/campaigns/edit', fn() => Inertia::render('Modules/Campaigns/Edit'))->name('campaigns.edit');
+    Route::get('/campaigns', [CampaignsWebController::class, 'index'])->name('campaigns.view');
+    Route::get('/campaigns/new', [CampaignsWebController::class, 'create'])->name('campaigns.new');
+    Route::post('/campaigns', [CampaignsWebController::class, 'store']);
+    Route::get('/campaigns/{id}', [CampaignsWebController::class, 'show'])->name('campaigns.detail');
+    Route::get('/campaigns/{id}/edit', [CampaignsWebController::class, 'edit'])->name('campaigns.edit');
+    Route::put('/campaigns/{id}', [CampaignsWebController::class, 'update']);
+    Route::delete('/campaigns/{id}', [CampaignsWebController::class, 'destroy']);
+    
     Route::prefix('api/campaigns')->group(function () {
         Route::get('/', [CampaignsController::class, 'index']);
         Route::get('/{id}', [CampaignsController::class, 'show']);
@@ -167,9 +177,14 @@ Route::middleware('auth')->group(function () {
     });
     
     // Complain Module Routes
-    Route::get('/complain', fn() => Inertia::render('Modules/Complain/View'))->name('complain.view');
-    Route::get('/complain/detail', fn() => Inertia::render('Modules/Complain/Detail'))->name('complain.detail');
-    Route::get('/complain/edit', fn() => Inertia::render('Modules/Complain/Edit'))->name('complain.edit');
+    Route::get('/complain', [ComplainWebController::class, 'index'])->name('complain.view');
+    Route::get('/complain/new', [ComplainWebController::class, 'create'])->name('complain.new');
+    Route::post('/complain', [ComplainWebController::class, 'store']);
+    Route::get('/complain/{id}', [ComplainWebController::class, 'show'])->name('complain.detail');
+    Route::get('/complain/{id}/edit', [ComplainWebController::class, 'edit'])->name('complain.edit');
+    Route::put('/complain/{id}', [ComplainWebController::class, 'update']);
+    Route::delete('/complain/{id}', [ComplainWebController::class, 'destroy']);
+    
     Route::prefix('api/complain')->group(function () {
         Route::get('/', [ComplainController::class, 'index']);
         Route::get('/{id}', [ComplainController::class, 'show']);
@@ -196,9 +211,14 @@ Route::middleware('auth')->group(function () {
     });
     
     // Email Module Routes
-    Route::get('/email', fn() => Inertia::render('Modules/Email/View'))->name('email.view');
-    Route::get('/email/detail', fn() => Inertia::render('Modules/Email/Detail'))->name('email.detail');
-    Route::get('/email/edit', fn() => Inertia::render('Modules/Email/Edit'))->name('email.edit');
+    Route::get('/email', [EmailWebController::class, 'index'])->name('email.view');
+    Route::get('/email/new', [EmailWebController::class, 'create'])->name('email.new');
+    Route::post('/email', [EmailWebController::class, 'store']);
+    Route::get('/email/{id}', [EmailWebController::class, 'show'])->name('email.detail');
+    Route::get('/email/{id}/edit', [EmailWebController::class, 'edit'])->name('email.edit');
+    Route::put('/email/{id}', [EmailWebController::class, 'update']);
+    Route::delete('/email/{id}', [EmailWebController::class, 'destroy']);
+    
     Route::prefix('api/email')->group(function () {
         Route::get('/', [EmailController::class, 'index']);
         Route::get('/{id}', [EmailController::class, 'show']);
@@ -208,9 +228,14 @@ Route::middleware('auth')->group(function () {
     });
     
     // EmailTemplate Module Routes
-    Route::get('/emailtemplate', fn() => Inertia::render('Modules/EmailTemplate/View'))->name('emailtemplate.view');
-    Route::get('/emailtemplate/detail', fn() => Inertia::render('Modules/EmailTemplate/Detail'))->name('emailtemplate.detail');
-    Route::get('/emailtemplate/edit', fn() => Inertia::render('Modules/EmailTemplate/Edit'))->name('emailtemplate.edit');
+    Route::get('/emailtemplate', [EmailTemplateWebController::class, 'index'])->name('emailtemplate.view');
+    Route::get('/emailtemplate/new', [EmailTemplateWebController::class, 'create'])->name('emailtemplate.new');
+    Route::post('/emailtemplate', [EmailTemplateWebController::class, 'store']);
+    Route::get('/emailtemplate/{id}', [EmailTemplateWebController::class, 'show'])->name('emailtemplate.detail');
+    Route::get('/emailtemplate/{id}/edit', [EmailTemplateWebController::class, 'edit'])->name('emailtemplate.edit');
+    Route::put('/emailtemplate/{id}', [EmailTemplateWebController::class, 'update']);
+    Route::delete('/emailtemplate/{id}', [EmailTemplateWebController::class, 'destroy']);
+    
     Route::prefix('api/emailtemplate')->group(function () {
         Route::get('/', [EmailTemplateController::class, 'index']);
         Route::get('/{id}', [EmailTemplateController::class, 'show']);
@@ -355,15 +380,24 @@ Route::middleware('auth')->group(function () {
     });
     
     // Survey Module Routes
-    Route::get('/survey', fn() => Inertia::render('Modules/Survey/View'))->name('survey.view');
-    Route::get('/survey/detail', fn() => Inertia::render('Modules/Survey/Detail'))->name('survey.detail');
-    Route::get('/survey/edit', fn() => Inertia::render('Modules/Survey/Edit'))->name('survey.edit');
+    Route::get('/survey', [SurveyWebController::class, 'index'])->name('survey.view');
+    Route::get('/survey/new', [SurveyWebController::class, 'create'])->name('survey.new');
+    Route::post('/survey', [SurveyWebController::class, 'store']);
+    Route::get('/survey/{id}', [SurveyWebController::class, 'show'])->name('survey.detail');
+    Route::get('/survey/{id}/edit', [SurveyWebController::class, 'edit'])->name('survey.edit');
+    Route::put('/survey/{id}', [SurveyWebController::class, 'update']);
+    Route::delete('/survey/{id}', [SurveyWebController::class, 'destroy']);
+    Route::get('/survey/{id}/results', [SurveyWebController::class, 'results'])->name('survey.results');
+    
     Route::prefix('api/survey')->group(function () {
         Route::get('/', [SurveyController::class, 'index']);
+        Route::get('/active', [SurveyController::class, 'getActiveSurveys']);
         Route::get('/{id}', [SurveyController::class, 'show']);
         Route::post('/', [SurveyController::class, 'store']);
         Route::put('/{id}', [SurveyController::class, 'update']);
         Route::delete('/{id}', [SurveyController::class, 'destroy']);
+        Route::post('/{id}/response', [SurveyController::class, 'submitResponse']);
+        Route::get('/{id}/results', [SurveyController::class, 'getResults']);
     });
     
     // Target Module Routes
