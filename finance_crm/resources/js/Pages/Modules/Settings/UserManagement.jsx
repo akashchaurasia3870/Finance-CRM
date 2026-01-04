@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedTable, ThemedTableHeader, ThemedTableBody, ThemedTableRow, ThemedTableCell, ThemedBadge } from '@/Components/ThemedComponents';
 
 export default function UserManagement({ users = [], roles = [] }) {
     const [searchTerm, setSearchTerm] = useState('');
@@ -36,20 +37,23 @@ export default function UserManagement({ users = [], roles = [] }) {
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">User Management</h1>
-                        <p className="text-gray-600">Manage system users and access</p>
+                        <h1 className="text-2xl font-bold text-theme-primary">User Management</h1>
+                        <p className="text-theme-secondary">Manage system users and access</p>
                     </div>
-                    <button
+                    <ThemedButton
                         onClick={() => setShowCreateForm(true)}
-                        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                        variant="primary"
                     >
                         Create User
-                    </button>
+                    </ThemedButton>
                 </div>
 
                 {showCreateForm && (
-                    <div className="bg-white border rounded-lg p-6">
-                        <h3 className="text-lg font-medium mb-4">Create New User</h3>
+                    <ThemedCard>
+                        <div className="p-4 border-b border-theme">
+                            <h3 className="text-lg font-medium text-theme-primary">Create New User</h3>
+                        </div>
+                        <div className="p-6">
                         <form onSubmit={handleCreateUser} className="space-y-4">
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
@@ -83,71 +87,73 @@ export default function UserManagement({ users = [], roles = [] }) {
                                     required
                                 />
                             </div>
-                            <div className="flex justify-end space-x-2">
-                                <button
+                            <div className="flex justify-end space-x-3">
+                                <ThemedButton
                                     type="button"
                                     onClick={() => setShowCreateForm(false)}
-                                    className="px-4 py-2 border rounded-md hover:bg-gray-50"
+                                    variant="secondary"
                                 >
                                     Cancel
-                                </button>
-                                <button
+                                </ThemedButton>
+                                <ThemedButton
                                     type="submit"
-                                    className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                                    variant="primary"
                                 >
                                     Create User
-                                </button>
+                                </ThemedButton>
                             </div>
                         </form>
-                    </div>
+                        </div>
+                    </ThemedCard>
                 )}
 
-                <div className="bg-white border rounded-lg">
-                    <div className="p-4 border-b">
-                        <input
+                <ThemedCard>
+                    <div className="p-4 border-b border-theme">
+                        <ThemedInput
                             type="text"
                             placeholder="Search users..."
                             value={searchTerm}
                             onChange={(e) => setSearchTerm(e.target.value)}
-                            className="border rounded-md px-3 py-2 w-64"
+                            className="w-64"
                         />
                     </div>
-                    <div className="overflow-x-auto">
-                        <table className="w-full">
-                            <thead className="bg-gray-50">
-                                <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-200">
-                                {filteredUsers.map((user) => (
-                                    <tr key={user.id}>
-                                        <td className="px-6 py-4 whitespace-nowrap font-medium">{user.name}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-gray-500">{user.email}</td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className={`px-2 py-1 text-xs rounded-full ${
-                                                user.is_active ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-                                            }`}>
-                                                {user.is_active ? 'Active' : 'Inactive'}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap space-x-2">
-                                            <button
-                                                onClick={() => toggleUserStatus(user.id, user.is_active)}
-                                                className="text-blue-600 hover:text-blue-900"
-                                            >
-                                                {user.is_active ? 'Deactivate' : 'Activate'}
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
+                    <ThemedTable>
+                        <ThemedTableHeader>
+                            <ThemedTableRow>
+                                <ThemedTableCell header>Name</ThemedTableCell>
+                                <ThemedTableCell header>Email</ThemedTableCell>
+                                <ThemedTableCell header>Status</ThemedTableCell>
+                                <ThemedTableCell header>Actions</ThemedTableCell>
+                            </ThemedTableRow>
+                        </ThemedTableHeader>
+                        <ThemedTableBody>
+                            {filteredUsers.map((user) => (
+                                <ThemedTableRow key={user.id}>
+                                    <ThemedTableCell>
+                                        <div className="font-medium text-theme-primary">{user.name}</div>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell className="text-theme-secondary">
+                                        {user.email}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <ThemedBadge variant={user.is_active ? 'success' : 'error'}>
+                                            {user.is_active ? 'Active' : 'Inactive'}
+                                        </ThemedBadge>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <ThemedButton
+                                            onClick={() => toggleUserStatus(user.id, user.is_active)}
+                                            variant="ghost"
+                                            className="text-xs px-2 py-1"
+                                        >
+                                            {user.is_active ? 'Deactivate' : 'Activate'}
+                                        </ThemedButton>
+                                    </ThemedTableCell>
+                                </ThemedTableRow>
+                            ))}
+                        </ThemedTableBody>
+                    </ThemedTable>
+                </ThemedCard>
             </div>
         </Layout>
     );

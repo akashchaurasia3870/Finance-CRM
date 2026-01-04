@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedBadge } from '@/Components/ThemedComponents';
 
 export default function TransactionDetail({ transaction }) {
     const handleDelete = () => {
@@ -20,17 +21,17 @@ export default function TransactionDetail({ transaction }) {
         }).format(amount || 0);
     };
 
-    const getTransactionTypeColor = (type) => {
-        const colors = {
-            'buy': 'bg-green-100 text-green-800',
-            'sell': 'bg-red-100 text-red-800',
-            'deposit': 'bg-blue-100 text-blue-800',
-            'withdraw': 'bg-orange-100 text-orange-800',
-            'margin_use': 'bg-purple-100 text-purple-800',
-            'margin_repay': 'bg-indigo-100 text-indigo-800',
-            'dividend': 'bg-yellow-100 text-yellow-800'
+    const getTransactionTypeVariant = (type) => {
+        const variants = {
+            'buy': 'success',
+            'sell': 'error',
+            'deposit': 'info',
+            'withdraw': 'warning',
+            'margin_use': 'info',
+            'margin_repay': 'success',
+            'dividend': 'warning'
         };
-        return colors[type] || 'bg-gray-100 text-gray-800';
+        return variants[type] || 'info';
     };
 
     return (
@@ -38,164 +39,158 @@ export default function TransactionDetail({ transaction }) {
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Transaction Details</h1>
-                        <p className="text-gray-600">Reference: {transaction.reference || 'N/A'}</p>
+                        <h1 className="text-2xl font-bold text-theme-primary">Transaction Details</h1>
+                        <p className="text-theme-secondary">Reference: {transaction.reference || 'N/A'}</p>
                     </div>
                     <div className="flex space-x-3">
-                        <Link
-                            href="/transaction"
-                            className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
-                        >
-                            Back
+                        <Link href="/transaction">
+                            <ThemedButton variant="secondary">Back</ThemedButton>
                         </Link>
-                        <Link
-                            href={`/transaction/${transaction.id}/edit`}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                        >
-                            Edit
+                        <Link href={`/transaction/${transaction.id}/edit`}>
+                            <ThemedButton variant="primary">Edit</ThemedButton>
                         </Link>
-                        <button
-                            onClick={handleDelete}
-                            className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
-                        >
+                        <ThemedButton variant="danger" onClick={handleDelete}>
                             Delete
-                        </button>
+                        </ThemedButton>
                     </div>
                 </div>
 
                 {/* Transaction Summary */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div className="bg-white border rounded-lg p-6">
-                        <h3 className="text-lg font-medium text-gray-900">Transaction Type</h3>
-                        <span className={`inline-flex px-3 py-1 text-sm rounded-full ${getTransactionTypeColor(transaction.transaction_type)}`}>
-                            {transaction.transaction_type}
-                        </span>
-                    </div>
-                    <div className="bg-white border rounded-lg p-6">
-                        <h3 className="text-lg font-medium text-gray-900">Amount</h3>
+                    <ThemedCard className="p-6">
+                        <h3 className="text-lg font-medium text-theme-primary">Transaction Type</h3>
+                        <div className="mt-2">
+                            <ThemedBadge variant={getTransactionTypeVariant(transaction.transaction_type)}>
+                                {transaction.transaction_type}
+                            </ThemedBadge>
+                        </div>
+                    </ThemedCard>
+                    <ThemedCard className="p-6">
+                        <h3 className="text-lg font-medium text-theme-primary">Amount</h3>
                         <p className="text-2xl font-bold text-green-600">{formatCurrency(transaction.amount)}</p>
-                    </div>
-                    <div className="bg-white border rounded-lg p-6">
-                        <h3 className="text-lg font-medium text-gray-900">Net Amount</h3>
+                    </ThemedCard>
+                    <ThemedCard className="p-6">
+                        <h3 className="text-lg font-medium text-theme-primary">Net Amount</h3>
                         <p className="text-2xl font-bold text-blue-600">{formatCurrency(transaction.net_amount)}</p>
-                    </div>
-                    <div className="bg-white border rounded-lg p-6">
-                        <h3 className="text-lg font-medium text-gray-900">Status</h3>
-                        <span className={`inline-flex px-3 py-1 text-sm rounded-full ${
-                            transaction.status === 'completed' ? 'bg-green-100 text-green-800' :
-                            transaction.status === 'pending' ? 'bg-yellow-100 text-yellow-800' :
-                            'bg-red-100 text-red-800'
-                        }`}>
-                            {transaction.status}
-                        </span>
-                    </div>
+                    </ThemedCard>
+                    <ThemedCard className="p-6">
+                        <h3 className="text-lg font-medium text-theme-primary">Status</h3>
+                        <div className="mt-2">
+                            <ThemedBadge variant={
+                                transaction.status === 'completed' ? 'success' :
+                                transaction.status === 'pending' ? 'warning' : 'error'
+                            }>
+                                {transaction.status}
+                            </ThemedBadge>
+                        </div>
+                    </ThemedCard>
                 </div>
 
                 {/* Transaction Details */}
-                <div className="bg-white border rounded-lg">
-                    <div className="p-6 border-b">
-                        <h3 className="text-lg font-medium">Transaction Information</h3>
+                <ThemedCard>
+                    <div className="p-4 border-b border-theme">
+                        <h3 className="text-lg font-medium text-theme-primary">Transaction Information</h3>
                     </div>
                     <div className="p-6 space-y-4">
                         <div className="grid grid-cols-2 gap-6">
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Transaction Date</label>
-                                <p className="mt-1 text-sm text-gray-900">
+                                <label className="block text-sm font-medium text-theme-muted">Transaction Date</label>
+                                <p className="mt-1 text-sm text-theme-primary">
                                     {new Date(transaction.transaction_date).toLocaleString()}
                                 </p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Created At</label>
-                                <p className="mt-1 text-sm text-gray-900">
+                                <label className="block text-sm font-medium text-theme-muted">Created At</label>
+                                <p className="mt-1 text-sm text-theme-primary">
                                     {new Date(transaction.created_at).toLocaleString()}
                                 </p>
                             </div>
                             {transaction.quantity && (
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-500">Quantity</label>
-                                    <p className="mt-1 text-sm text-gray-900">{transaction.quantity}</p>
+                                    <label className="block text-sm font-medium text-theme-muted">Quantity</label>
+                                    <p className="mt-1 text-sm text-theme-primary">{transaction.quantity}</p>
                                 </div>
                             )}
                             {transaction.price && (
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-500">Price per Unit</label>
-                                    <p className="mt-1 text-sm text-gray-900">{formatCurrency(transaction.price)}</p>
+                                    <label className="block text-sm font-medium text-theme-muted">Price per Unit</label>
+                                    <p className="mt-1 text-sm text-theme-primary">{formatCurrency(transaction.price)}</p>
                                 </div>
                             )}
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Fees</label>
-                                <p className="mt-1 text-sm text-gray-900">{formatCurrency(transaction.fees)}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Fees</label>
+                                <p className="mt-1 text-sm text-theme-primary">{formatCurrency(transaction.fees)}</p>
                             </div>
                         </div>
                         {transaction.notes && (
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Notes</label>
-                                <p className="mt-1 text-sm text-gray-900">{transaction.notes}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Notes</label>
+                                <p className="mt-1 text-sm text-theme-primary">{transaction.notes}</p>
                             </div>
                         )}
                     </div>
-                </div>
+                </ThemedCard>
 
                 {/* Portfolio Information */}
                 {transaction.portfolio && (
-                    <div className="bg-white border rounded-lg">
-                        <div className="p-6 border-b">
-                            <h3 className="text-lg font-medium">Portfolio Information</h3>
+                    <ThemedCard>
+                        <div className="p-4 border-b border-theme">
+                            <h3 className="text-lg font-medium text-theme-primary">Portfolio Information</h3>
                         </div>
                         <div className="p-6">
                             <div className="grid grid-cols-2 gap-6">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-500">Portfolio Name</label>
-                                    <p className="mt-1 text-sm text-gray-900">{transaction.portfolio.portfolio_name}</p>
+                                    <label className="block text-sm font-medium text-theme-muted">Portfolio Name</label>
+                                    <p className="mt-1 text-sm text-theme-primary">{transaction.portfolio.portfolio_name}</p>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-500">Portfolio Number</label>
-                                    <p className="mt-1 text-sm text-gray-900">{transaction.portfolio.portfolio_no}</p>
+                                    <label className="block text-sm font-medium text-theme-muted">Portfolio Number</label>
+                                    <p className="mt-1 text-sm text-theme-primary">{transaction.portfolio.portfolio_no}</p>
                                 </div>
                                 {transaction.portfolio.client && (
                                     <>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-500">Client Name</label>
-                                            <p className="mt-1 text-sm text-gray-900">{transaction.portfolio.client.name}</p>
+                                            <label className="block text-sm font-medium text-theme-muted">Client Name</label>
+                                            <p className="mt-1 text-sm text-theme-primary">{transaction.portfolio.client.name}</p>
                                         </div>
                                         <div>
-                                            <label className="block text-sm font-medium text-gray-500">Client Email</label>
-                                            <p className="mt-1 text-sm text-gray-900">{transaction.portfolio.client.email}</p>
+                                            <label className="block text-sm font-medium text-theme-muted">Client Email</label>
+                                            <p className="mt-1 text-sm text-theme-primary">{transaction.portfolio.client.email}</p>
                                         </div>
                                     </>
                                 )}
                             </div>
                         </div>
-                    </div>
+                    </ThemedCard>
                 )}
 
                 {/* Product Information */}
                 {transaction.product && (
-                    <div className="bg-white border rounded-lg">
-                        <div className="p-6 border-b">
-                            <h3 className="text-lg font-medium">Product Information</h3>
+                    <ThemedCard>
+                        <div className="p-4 border-b border-theme">
+                            <h3 className="text-lg font-medium text-theme-primary">Product Information</h3>
                         </div>
                         <div className="p-6">
                             <div className="grid grid-cols-2 gap-6">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-500">Product Name</label>
-                                    <p className="mt-1 text-sm text-gray-900">{transaction.product.name}</p>
+                                    <label className="block text-sm font-medium text-theme-muted">Product Name</label>
+                                    <p className="mt-1 text-sm text-theme-primary">{transaction.product.name}</p>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-500">Symbol</label>
-                                    <p className="mt-1 text-sm text-gray-900">{transaction.product.symbol}</p>
+                                    <label className="block text-sm font-medium text-theme-muted">Symbol</label>
+                                    <p className="mt-1 text-sm text-theme-primary">{transaction.product.symbol}</p>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-500">Product Type</label>
-                                    <p className="mt-1 text-sm text-gray-900">{transaction.product.product_type}</p>
+                                    <label className="block text-sm font-medium text-theme-muted">Product Type</label>
+                                    <p className="mt-1 text-sm text-theme-primary">{transaction.product.product_type}</p>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-500">Sector</label>
-                                    <p className="mt-1 text-sm text-gray-900">{transaction.product.sector || 'N/A'}</p>
+                                    <label className="block text-sm font-medium text-theme-muted">Sector</label>
+                                    <p className="mt-1 text-sm text-theme-primary">{transaction.product.sector || 'N/A'}</p>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                    </ThemedCard>
                 )}
             </div>
         </Layout>

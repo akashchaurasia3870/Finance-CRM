@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedTable, ThemedTableHeader, ThemedTableBody, ThemedTableRow, ThemedTableCell, ThemedInput, ThemedBadge } from '@/Components/ThemedComponents';
 
 export default function ComplainView({ complains = [] }) {
     const [searchTerm, setSearchTerm] = useState('');
@@ -17,22 +18,22 @@ export default function ComplainView({ complains = [] }) {
         }
     };
 
-    const getStatusColor = (status) => {
+    const getStatusVariant = (status) => {
         switch (status) {
-            case 'open': return 'bg-red-100 text-red-800';
-            case 'in_progress': return 'bg-yellow-100 text-yellow-800';
-            case 'resolved': return 'bg-green-100 text-green-800';
-            case 'closed': return 'bg-gray-100 text-gray-800';
-            default: return 'bg-gray-100 text-gray-800';
+            case 'open': return 'error';
+            case 'in_progress': return 'warning';
+            case 'resolved': return 'success';
+            case 'closed': return 'info';
+            default: return 'info';
         }
     };
 
-    const getPriorityColor = (priority) => {
+    const getPriorityVariant = (priority) => {
         switch (priority) {
-            case 'high': return 'bg-red-100 text-red-800';
-            case 'medium': return 'bg-yellow-100 text-yellow-800';
-            case 'low': return 'bg-green-100 text-green-800';
-            default: return 'bg-gray-100 text-gray-800';
+            case 'high': return 'error';
+            case 'medium': return 'warning';
+            case 'low': return 'success';
+            default: return 'info';
         }
     };
 
@@ -41,106 +42,98 @@ export default function ComplainView({ complains = [] }) {
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Complains</h1>
-                        <p className="text-gray-600">Manage customer complains</p>
+                        <h1 className="text-2xl font-bold text-theme-primary">Complains</h1>
+                        <p className="text-theme-secondary">Manage customer complains</p>
                     </div>
-                    <Link
-                        href="/complain/new"
-                        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                    >
-                        Create
+                    <Link href="/complain/new">
+                        <ThemedButton variant="primary">Create</ThemedButton>
                     </Link>
                 </div>
                 
-                <div className="bg-white border rounded-lg">
-                    <div className="p-4 border-b">
+                <ThemedCard>
+                    <div className="p-4 border-b border-theme">
                         <div className="flex justify-between items-center">
-                            <h3 className="text-lg font-medium">Complain List</h3>
-                            <input
+                            <h3 className="text-lg font-medium text-theme-primary">Complain List</h3>
+                            <ThemedInput
                                 type="text"
                                 placeholder="Search complains..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="border rounded-md px-3 py-2 w-64"
+                                className="w-64"
                             />
                         </div>
                     </div>
-                    <div className="overflow-x-auto">
-                        <table className="w-full">
-                            <thead className="bg-gray-50">
-                                <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Complainant</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Client</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Priority</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Assigned To</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Created</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-200">
-                                {filteredComplains.map((complain) => (
-                                    <tr key={complain.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="font-medium text-gray-900">{complain.title}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-gray-900">{complain.complainant_name}</div>
-                                            {complain.complainant_email && (
-                                                <div className="text-sm text-gray-500">{complain.complainant_email}</div>
-                                            )}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                                            {complain.client ? complain.client.name : 'N/A'}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className={`px-2 py-1 text-xs rounded-full ${getPriorityColor(complain.priority)}`}>
-                                                {complain.priority}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className={`px-2 py-1 text-xs rounded-full ${getStatusColor(complain.status)}`}>
-                                                {complain.status.replace('_', ' ')}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                                            {complain.assigned_user ? complain.assigned_user.name : 'Unassigned'}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                                            {new Date(complain.created_at).toLocaleDateString()}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                            <Link
-                                                href={`/complain/${complain.id}`}
-                                                className="text-blue-600 hover:text-blue-900"
-                                            >
-                                                View
+                    <ThemedTable>
+                        <ThemedTableHeader>
+                            <ThemedTableRow>
+                                <ThemedTableCell header>Title</ThemedTableCell>
+                                <ThemedTableCell header>Complainant</ThemedTableCell>
+                                <ThemedTableCell header>Client</ThemedTableCell>
+                                <ThemedTableCell header>Priority</ThemedTableCell>
+                                <ThemedTableCell header>Status</ThemedTableCell>
+                                <ThemedTableCell header>Assigned To</ThemedTableCell>
+                                <ThemedTableCell header>Created</ThemedTableCell>
+                                <ThemedTableCell header>Actions</ThemedTableCell>
+                            </ThemedTableRow>
+                        </ThemedTableHeader>
+                        <ThemedTableBody>
+                            {filteredComplains.map((complain) => (
+                                <ThemedTableRow key={complain.id}>
+                                    <ThemedTableCell>
+                                        <div className="font-medium text-theme-primary">{complain.title}</div>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <div className="text-theme-primary">{complain.complainant_name}</div>
+                                        {complain.complainant_email && (
+                                            <div className="text-sm text-theme-secondary">{complain.complainant_email}</div>
+                                        )}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell className="text-theme-secondary">
+                                        {complain.client ? complain.client.name : 'N/A'}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <ThemedBadge variant={getPriorityVariant(complain.priority)}>
+                                            {complain.priority}
+                                        </ThemedBadge>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <ThemedBadge variant={getStatusVariant(complain.status)}>
+                                            {complain.status.replace('_', ' ')}
+                                        </ThemedBadge>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell className="text-theme-secondary">
+                                        {complain.assigned_user ? complain.assigned_user.name : 'Unassigned'}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell className="text-theme-secondary">
+                                        {new Date(complain.created_at).toLocaleDateString()}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <div className="space-x-2">
+                                            <Link href={`/complain/${complain.id}`}>
+                                                <ThemedButton variant="ghost" className="text-xs px-2 py-1">View</ThemedButton>
                                             </Link>
-                                            <Link
-                                                href={`/complain/${complain.id}/edit`}
-                                                className="text-indigo-600 hover:text-indigo-900"
-                                            >
-                                                Edit
+                                            <Link href={`/complain/${complain.id}/edit`}>
+                                                <ThemedButton variant="ghost" className="text-xs px-2 py-1">Edit</ThemedButton>
                                             </Link>
-                                            <button
+                                            <ThemedButton 
+                                                variant="ghost" 
+                                                className="text-xs px-2 py-1 text-red-600 hover:text-red-800"
                                                 onClick={() => handleDelete(complain.id)}
-                                                className="text-red-600 hover:text-red-900"
                                             >
                                                 Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        {filteredComplains.length === 0 && (
-                            <div className="p-8 text-center text-gray-500">
-                                No complains found.
-                            </div>
-                        )}
-                    </div>
-                </div>
+                                            </ThemedButton>
+                                        </div>
+                                    </ThemedTableCell>
+                                </ThemedTableRow>
+                            ))}
+                        </ThemedTableBody>
+                    </ThemedTable>
+                    {filteredComplains.length === 0 && (
+                        <div className="p-8 text-center text-theme-muted">
+                            No complains found.
+                        </div>
+                    )}
+                </ThemedCard>
             </div>
         </Layout>
     );

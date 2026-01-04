@@ -43,6 +43,6 @@ class Accounts extends Model
 
     public function transactions()
     {
-        return $this->hasMany(Transaction::class, 'account_id');
+        return $this->hasManyThrough(Transaction::class, Portfolio::class, 'account_id', 'portfolio_id');
     }
 }

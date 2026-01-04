@@ -125,7 +125,7 @@ export const ThemedBadge = ({
         accent: 'bg-accent text-white',
         success: 'bg-green-500 text-white',
         warning: 'bg-yellow-500 text-white',
-        error: 'bg-red-500 text-white',
+        error: 'bg-red-1000 text-white',
         info: 'bg-blue-500 text-white'
     };
 

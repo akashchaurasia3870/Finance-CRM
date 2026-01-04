@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
 
 export default function SurveyNew() {
     const [formData, setFormData] = useState({
@@ -13,6 +14,7 @@ export default function SurveyNew() {
     });
 
     const [errors, setErrors] = useState({});
+    const [processing, setProcessing] = useState(false);
 
     const questionTypes = [
         { value: 'text', label: 'Short Text' },
@@ -92,8 +94,16 @@ export default function SurveyNew() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
+        setProcessing(true);
+        
         router.post('/survey', formData, {
-            onError: (errors) => setErrors(errors)
+            onSuccess: () => {
+                router.visit('/survey');
+            },
+            onError: (errors) => {
+                setErrors(errors);
+                setProcessing(false);
+            },
         });
     };
 
@@ -104,216 +114,216 @@ export default function SurveyNew() {
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Create Survey</h1>
-                        <p className="text-gray-600">Create a new customer survey</p>
+                        <h1 className="text-2xl font-bold text-theme-primary">Create Survey</h1>
+                        <p className="text-theme-secondary">Create a new customer survey</p>
                     </div>
-                    <Link
-                        href="/survey"
-                        className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
-                    >
-                        Back to Surveys
+                    <Link href="/survey">
+                        <ThemedButton variant="secondary">Back</ThemedButton>
                     </Link>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
-                    <div className="bg-white border rounded-lg p-6">
-                        <h3 className="text-lg font-medium mb-4">Survey Details</h3>
-                        
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Title *
-                                </label>
-                                <input
-                                    type="text"
-                                    value={formData.title}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
-                                    className="w-full border rounded-md px-3 py-2"
-                                    required
-                                />
-                                {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Status
-                                </label>
-                                <select
-                                    value={formData.status}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value }))}
-                                    className="w-full border rounded-md px-3 py-2"
-                                >
-                                    <option value="draft">Draft</option>
-                                    <option value="active">Active</option>
-                                    <option value="paused">Paused</option>
-                                    <option value="closed">Closed</option>
-                                </select>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    Start Date
-                                </label>
-                                <input
-                                    type="date"
-                                    value={formData.start_date}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, start_date: e.target.value }))}
-                                    className="w-full border rounded-md px-3 py-2"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">
-                                    End Date
-                                </label>
-                                <input
-                                    type="date"
-                                    value={formData.end_date}
-                                    onChange={(e) => setFormData(prev => ({ ...prev, end_date: e.target.value }))}
-                                    className="w-full border rounded-md px-3 py-2"
-                                />
-                            </div>
+                    <ThemedCard>
+                        <div className="p-4 border-b border-theme">
+                            <h3 className="text-lg font-medium text-theme-primary">Survey Details</h3>
                         </div>
-
-                        <div className="mt-4">
-                            <label className="block text-sm font-medium text-gray-700 mb-1">
-                                Description
-                            </label>
-                            <textarea
-                                value={formData.description}
-                                onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
-                                rows={3}
-                                className="w-full border rounded-md px-3 py-2"
-                            />
-                        </div>
-                    </div>
-
-                    <div className="bg-white border rounded-lg p-6">
-                        <div className="flex justify-between items-center mb-4">
-                            <h3 className="text-lg font-medium">Questions</h3>
-                            <button
-                                type="button"
-                                onClick={addQuestion}
-                                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                            >
-                                Add Question
-                            </button>
-                        </div>
-
-                        {formData.questions.map((question, qIndex) => (
-                            <div key={qIndex} className="border rounded-lg p-4 mb-4">
-                                <div className="flex justify-between items-start mb-3">
-                                    <h4 className="font-medium">Question {qIndex + 1}</h4>
-                                    <button
-                                        type="button"
-                                        onClick={() => removeQuestion(qIndex)}
-                                        className="text-red-600 hover:text-red-800"
-                                    >
-                                        Remove
-                                    </button>
-                                </div>
-
-                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                                            Question Text *
-                                        </label>
-                                        <input
-                                            type="text"
-                                            value={question.question}
-                                            onChange={(e) => updateQuestion(qIndex, 'question', e.target.value)}
-                                            className="w-full border rounded-md px-3 py-2"
-                                            required
-                                        />
-                                    </div>
-
-                                    <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
-                                            Question Type
-                                        </label>
-                                        <select
-                                            value={question.type}
-                                            onChange={(e) => updateQuestion(qIndex, 'type', e.target.value)}
-                                            className="w-full border rounded-md px-3 py-2"
-                                        >
-                                            {questionTypes.map(type => (
-                                                <option key={type.value} value={type.value}>
-                                                    {type.label}
-                                                </option>
-                                            ))}
-                                        </select>
-                                    </div>
-                                </div>
-
-                                <div className="mb-3">
-                                    <label className="flex items-center">
-                                        <input
-                                            type="checkbox"
-                                            checked={question.is_required}
-                                            onChange={(e) => updateQuestion(qIndex, 'is_required', e.target.checked)}
-                                            className="mr-2"
-                                        />
-                                        Required question
+                        <div className="p-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                <div>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">
+                                        Title *
                                     </label>
+                                    <ThemedInput
+                                        type="text"
+                                        value={formData.title}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, title: e.target.value }))}
+                                        required
+                                    />
+                                    {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
                                 </div>
 
-                                {needsOptions(question.type) && (
-                                    <div>
-                                        <div className="flex justify-between items-center mb-2">
-                                            <label className="block text-sm font-medium text-gray-700">
-                                                Options
-                                            </label>
-                                            <button
-                                                type="button"
-                                                onClick={() => addOption(qIndex)}
-                                                className="text-blue-600 hover:text-blue-800 text-sm"
-                                            >
-                                                Add Option
-                                            </button>
-                                        </div>
-                                        {question.options.map((option, oIndex) => (
-                                            <div key={oIndex} className="flex items-center gap-2 mb-2">
-                                                <input
-                                                    type="text"
-                                                    value={option.option_text}
-                                                    onChange={(e) => updateOption(qIndex, oIndex, e.target.value)}
-                                                    placeholder={`Option ${oIndex + 1}`}
-                                                    className="flex-1 border rounded-md px-3 py-2"
-                                                />
-                                                <button
-                                                    type="button"
-                                                    onClick={() => removeOption(qIndex, oIndex)}
-                                                    className="text-red-600 hover:text-red-800"
-                                                >
-                                                    Remove
-                                                </button>
-                                            </div>
-                                        ))}
+                                <div>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">
+                                        Status
+                                    </label>
+                                    <select
+                                        value={formData.status}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value }))}
+                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary"
+                                    >
+                                        <option value="draft">Draft</option>
+                                        <option value="active">Active</option>
+                                        <option value="paused">Paused</option>
+                                        <option value="closed">Closed</option>
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">
+                                        Start Date
+                                    </label>
+                                    <ThemedInput
+                                        type="date"
+                                        value={formData.start_date}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, start_date: e.target.value }))}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">
+                                        End Date
+                                    </label>
+                                    <ThemedInput
+                                        type="date"
+                                        value={formData.end_date}
+                                        onChange={(e) => setFormData(prev => ({ ...prev, end_date: e.target.value }))}
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="mt-4">
+                                <label className="block text-sm font-medium text-theme-primary mb-2">
+                                    Description
+                                </label>
+                                <textarea
+                                    value={formData.description}
+                                    onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
+                                    rows={3}
+                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary"
+                                />
+                            </div>
+                        </div>
+                    </ThemedCard>
+
+                    <ThemedCard>
+                        <div className="p-4 border-b border-theme">
+                            <div className="flex justify-between items-center">
+                                <h3 className="text-lg font-medium text-theme-primary">Questions</h3>
+                                <ThemedButton
+                                    type="button"
+                                    onClick={addQuestion}
+                                    variant="primary"
+                                >
+                                    Add Question
+                                </ThemedButton>
+                            </div>
+                        </div>
+                        <div className="p-6">
+                            {formData.questions.map((question, qIndex) => (
+                                <div key={qIndex} className="border border-theme rounded-lg p-4 mb-4 bg-theme-surface">
+                                    <div className="flex justify-between items-start mb-3">
+                                        <h4 className="font-medium text-theme-primary">Question {qIndex + 1}</h4>
+                                        <ThemedButton
+                                            type="button"
+                                            onClick={() => removeQuestion(qIndex)}
+                                            variant="ghost"
+                                            className="text-red-600 hover:text-red-800"
+                                        >
+                                            Remove
+                                        </ThemedButton>
                                     </div>
-                                )}
-                            </div>
-                        ))}
 
-                        {formData.questions.length === 0 && (
-                            <div className="text-center py-8 text-gray-500">
-                                No questions added yet. Click "Add Question" to get started.
-                            </div>
-                        )}
-                    </div>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-3">
+                                        <div>
+                                            <label className="block text-sm font-medium text-theme-primary mb-2">
+                                                Question Text *
+                                            </label>
+                                            <ThemedInput
+                                                type="text"
+                                                value={question.question}
+                                                onChange={(e) => updateQuestion(qIndex, 'question', e.target.value)}
+                                                required
+                                            />
+                                        </div>
 
-                    <div className="flex justify-end space-x-4">
-                        <Link
-                            href="/survey"
-                            className="bg-gray-300 text-gray-700 px-6 py-2 rounded-md hover:bg-gray-400"
-                        >
-                            Cancel
+                                        <div>
+                                            <label className="block text-sm font-medium text-theme-primary mb-2">
+                                                Question Type
+                                            </label>
+                                            <select
+                                                value={question.type}
+                                                onChange={(e) => updateQuestion(qIndex, 'type', e.target.value)}
+                                                className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary"
+                                            >
+                                                {questionTypes.map(type => (
+                                                    <option key={type.value} value={type.value}>
+                                                        {type.label}
+                                                    </option>
+                                                ))}
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div className="mb-3">
+                                        <label className="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                checked={question.is_required}
+                                                onChange={(e) => updateQuestion(qIndex, 'is_required', e.target.checked)}
+                                                className="mr-2"
+                                            />
+                                            <span className="text-sm font-medium text-theme-primary">Required question</span>
+                                        </label>
+                                    </div>
+
+                                    {needsOptions(question.type) && (
+                                        <div>
+                                            <div className="flex justify-between items-center mb-2">
+                                                <label className="block text-sm font-medium text-theme-primary">
+                                                    Options
+                                                </label>
+                                                <ThemedButton
+                                                    type="button"
+                                                    onClick={() => addOption(qIndex)}
+                                                    variant="ghost"
+                                                    className="text-xs"
+                                                >
+                                                    Add Option
+                                                </ThemedButton>
+                                            </div>
+                                            {question.options.map((option, oIndex) => (
+                                                <div key={oIndex} className="flex items-center gap-2 mb-2">
+                                                    <ThemedInput
+                                                        type="text"
+                                                        value={option.option_text}
+                                                        onChange={(e) => updateOption(qIndex, oIndex, e.target.value)}
+                                                        placeholder={`Option ${oIndex + 1}`}
+                                                        className="flex-1"
+                                                    />
+                                                    <ThemedButton
+                                                        type="button"
+                                                        onClick={() => removeOption(qIndex, oIndex)}
+                                                        variant="ghost"
+                                                        className="text-red-600 hover:text-red-800 text-xs px-2 py-1"
+                                                    >
+                                                        Remove
+                                                    </ThemedButton>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+
+                            {formData.questions.length === 0 && (
+                                <div className="text-center py-8 text-theme-muted">
+                                    No questions added yet. Click "Add Question" to get started.
+                                </div>
+                            )}
+                        </div>
+                    </ThemedCard>
+
+                    <div className="flex justify-end space-x-3">
+                        <Link href="/survey">
+                            <ThemedButton variant="secondary">Cancel</ThemedButton>
                         </Link>
-                        <button
+                        <ThemedButton
                             type="submit"
-                            className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700"
+                            variant="primary"
+                            disabled={processing}
                         >
-                            Create Survey
-                        </button>
+                            {processing ? 'Creating...' : 'Create Survey'}
+                        </ThemedButton>
                     </div>
                 </form>
             </div>

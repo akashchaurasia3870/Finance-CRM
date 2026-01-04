@@ -37,10 +37,24 @@ class HandleInertiaRequests extends Middleware
             ],
         ];
 
-        // Add branding settings for authenticated users
+        // Always add branding settings for authenticated users
         if ($request->user()) {
             $settingsService = app(SettingsService::class);
             $sharedData['branding'] = $settingsService->getBrandingSettings($request->user()->id);
+        } else {
+            // Provide default branding for non-authenticated users
+            $sharedData['branding'] = (object) [
+                'theme' => 'light',
+                'primary_color' => '#3B82F6',
+                'secondary_color' => '#10B981',
+                'accent_color' => '#F59E0B',
+                'background_color' => '#FFFFFF',
+                'text_color' => '#111827',
+                'font_family' => 'Inter',
+                'font_size' => 'medium',
+                'font_weight' => 'normal',
+                'company_name' => 'Finance CRM'
+            ];
         }
 
         return $sharedData;

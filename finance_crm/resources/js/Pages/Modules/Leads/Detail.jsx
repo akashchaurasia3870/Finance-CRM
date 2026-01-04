@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedBadge } from '@/Components/ThemedComponents';
 
 export default function LeadDetail({ lead }) {
     const handleDelete = () => {
@@ -13,14 +14,14 @@ export default function LeadDetail({ lead }) {
         }
     };
 
-    const getStatusColor = (status) => {
+    const getStatusVariant = (status) => {
         switch(status) {
-            case 'new': return 'bg-blue-100 text-blue-800';
-            case 'contacted': return 'bg-yellow-100 text-yellow-800';
-            case 'qualified': return 'bg-purple-100 text-purple-800';
-            case 'converted': return 'bg-green-100 text-green-800';
-            case 'lost': return 'bg-red-100 text-red-800';
-            default: return 'bg-gray-100 text-gray-800';
+            case 'new': return 'info';
+            case 'contacted': return 'warning';
+            case 'qualified': return 'primary';
+            case 'converted': return 'success';
+            case 'lost': return 'error';
+            default: return 'info';
         }
     };
 
@@ -29,112 +30,105 @@ export default function LeadDetail({ lead }) {
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Lead Details</h1>
-                        <p className="text-gray-600">View lead information</p>
+                        <h1 className="text-2xl font-bold text-theme-primary">Lead Details</h1>
+                        <p className="text-theme-secondary">View lead information</p>
                     </div>
                     <div className="flex space-x-3">
-                        <Link
-                            href="/leads"
-                            className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
-                        >
-                            Back
+                        <Link href="/leads">
+                            <ThemedButton variant="secondary">Back</ThemedButton>
                         </Link>
-                        <Link
-                            href={`/leads/${lead.id}/edit`}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                        >
-                            Edit
+                        <Link href={`/leads/${lead.id}/edit`}>
+                            <ThemedButton variant="primary">Edit</ThemedButton>
                         </Link>
-                        <button
-                            onClick={handleDelete}
-                            className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
-                        >
+                        <ThemedButton variant="danger" onClick={handleDelete}>
                             Delete
-                        </button>
+                        </ThemedButton>
                     </div>
                 </div>
 
-                <div className="bg-white border rounded-lg">
-                    <div className="p-6 border-b">
-                        <h3 className="text-lg font-medium">Lead Information</h3>
+                <ThemedCard>
+                    <div className="p-4 border-b border-theme">
+                        <h3 className="text-lg font-medium text-theme-primary">Lead Information</h3>
                     </div>
                     <div className="p-6 space-y-4">
                         <div className="grid grid-cols-2 gap-6">
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Name</label>
-                                <p className="mt-1 text-sm text-gray-900">{lead.name}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Name</label>
+                                <p className="mt-1 text-sm text-theme-primary">{lead.name}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Email</label>
-                                <p className="mt-1 text-sm text-gray-900">{lead.email || 'Not provided'}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Email</label>
+                                <p className="mt-1 text-sm text-theme-primary">{lead.email || 'Not provided'}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Phone</label>
-                                <p className="mt-1 text-sm text-gray-900">{lead.phone || 'Not provided'}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Phone</label>
+                                <p className="mt-1 text-sm text-theme-primary">{lead.phone || 'Not provided'}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Status</label>
-                                <span className={`mt-1 inline-flex px-2 py-1 text-xs rounded-full ${getStatusColor(lead.status)}`}>
-                                    {lead.status}
-                                </span>
+                                <label className="block text-sm font-medium text-theme-muted">Status</label>
+                                <div className="mt-1">
+                                    <ThemedBadge variant={getStatusVariant(lead.status)}>
+                                        {lead.status}
+                                    </ThemedBadge>
+                                </div>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Value</label>
-                                <p className="mt-1 text-sm text-gray-900">{lead.value ? `$${lead.value}` : 'Not specified'}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Value</label>
+                                <p className="mt-1 text-sm text-theme-primary">{lead.value ? `$${lead.value}` : 'Not specified'}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Source</label>
-                                <p className="mt-1 text-sm text-gray-900">{lead.source || 'Not specified'}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Source</label>
+                                <p className="mt-1 text-sm text-theme-primary">{lead.source || 'Not specified'}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Campaign</label>
-                                <p className="mt-1 text-sm text-gray-900">{lead.campaign || 'Not specified'}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Campaign</label>
+                                <p className="mt-1 text-sm text-theme-primary">{lead.campaign || 'Not specified'}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Assigned To</label>
-                                <p className="mt-1 text-sm text-gray-900">
+                                <label className="block text-sm font-medium text-theme-muted">Assigned To</label>
+                                <p className="mt-1 text-sm text-theme-primary">
                                     {lead.assigned_to ? (lead.assigned_to.name || 'N/A') : 'Unassigned'}
                                 </p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Follow Up Date</label>
-                                <p className="mt-1 text-sm text-gray-900">
+                                <label className="block text-sm font-medium text-theme-muted">Follow Up Date</label>
+                                <p className="mt-1 text-sm text-theme-secondary">
                                     {lead.follow_up_date ? new Date(lead.follow_up_date).toLocaleDateString() : 'Not scheduled'}
                                 </p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Converted At</label>
-                                <p className="mt-1 text-sm text-gray-900">
+                                <label className="block text-sm font-medium text-theme-muted">Converted At</label>
+                                <p className="mt-1 text-sm text-theme-secondary">
                                     {lead.converted_at ? new Date(lead.converted_at).toLocaleDateString() : 'Not converted'}
                                 </p>
                             </div>
                             {lead.creator && (
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-500">Created By</label>
-                                    <p className="mt-1 text-sm text-gray-900">{lead.creator.name}</p>
+                                    <label className="block text-sm font-medium text-theme-muted">Created By</label>
+                                    <p className="mt-1 text-sm text-theme-primary">{lead.creator.name}</p>
                                 </div>
                             )}
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Created At</label>
-                                <p className="mt-1 text-sm text-gray-900">
+                                <label className="block text-sm font-medium text-theme-muted">Created At</label>
+                                <p className="mt-1 text-sm text-theme-secondary">
                                     {new Date(lead.created_at).toLocaleString()}
                                 </p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Updated At</label>
-                                <p className="mt-1 text-sm text-gray-900">
+                                <label className="block text-sm font-medium text-theme-muted">Updated At</label>
+                                <p className="mt-1 text-sm text-theme-secondary">
                                     {new Date(lead.updated_at).toLocaleString()}
                                 </p>
                             </div>
                             {lead.notes && (
                                 <div className="col-span-2">
-                                    <label className="block text-sm font-medium text-gray-500">Notes</label>
-                                    <p className="mt-1 text-sm text-gray-900 whitespace-pre-wrap">{lead.notes}</p>
+                                    <label className="block text-sm font-medium text-theme-muted">Notes</label>
+                                    <p className="mt-1 text-sm text-theme-primary whitespace-pre-wrap">{lead.notes}</p>
                                 </div>
                             )}
                         </div>
                     </div>
-                </div>
+                </ThemedCard>
             </div>
         </Layout>
     );

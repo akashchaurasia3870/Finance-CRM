@@ -10,8 +10,11 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('portfolios', function (Blueprint $table) {
+            if (!Schema::hasColumn('portfolios', 'account_id')) {
+                $table->unsignedBigInteger('account_id')->after('portfolio_no')->nullable();
+            }
             if (!Schema::hasColumn('portfolios', 'client_id')) {
-                $table->unsignedBigInteger('client_id')->after('portfolio_no')->nullable();
+                $table->unsignedBigInteger('client_id')->after('account_id')->nullable();
             }
             if (!Schema::hasColumn('portfolios', 'total_value')) {
                 $table->decimal('total_value', 15, 2)->after('client_id')->default(0);
@@ -29,8 +32,8 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('portfolios', function (Blueprint $table) {
-            if (Schema::hasColumn('portfolios', 'client_id')) {
-                $table->dropColumn(['client_id', 'total_value', 'cash_balance', 'margin_used']);
+            if (Schema::hasColumn('portfolios', 'account_id')) {
+                $table->dropColumn(['account_id', 'client_id', 'total_value', 'cash_balance', 'margin_used']);
             }
         });
     }

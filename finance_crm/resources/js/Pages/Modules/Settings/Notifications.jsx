@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
 
 export default function NotificationSettings({ settings = {} }) {
     const [formData, setFormData] = useState({
@@ -43,21 +44,22 @@ export default function NotificationSettings({ settings = {} }) {
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Notification Settings</h1>
-                        <p className="text-gray-600">Configure system-wide notification preferences</p>
+                        <h1 className="text-2xl font-bold text-theme-primary">Notification Settings</h1>
+                        <p className="text-theme-secondary">Configure system-wide notification preferences</p>
                     </div>
-                    <Link
-                        href="/settings"
-                        className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
-                    >
-                        Back
+                    <Link href="/settings">
+                        <ThemedButton variant="secondary">Back</ThemedButton>
                     </Link>
                 </div>
 
-                <div className="bg-white border rounded-lg p-6">
+                <ThemedCard>
+                    <div className="p-4 border-b border-theme">
+                        <h3 className="text-lg font-medium text-theme-primary">Notification Configuration</h3>
+                    </div>
+                    <div className="p-6">
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">Notification Channels</h3>
+                            <h3 className="text-lg font-medium text-theme-primary mb-4">Notification Channels</h3>
                             <div className="space-y-4">
                                 <label className="flex items-center">
                                     <input
@@ -68,7 +70,7 @@ export default function NotificationSettings({ settings = {} }) {
                                     />
                                     <div>
                                         <span className="text-sm font-medium text-gray-700">Email Notifications</span>
-                                        <p className="text-xs text-gray-500">Send notifications via email</p>
+                                        <p className="text-xs text-theme-muted">Send notifications via email</p>
                                     </div>
                                 </label>
 
@@ -81,7 +83,7 @@ export default function NotificationSettings({ settings = {} }) {
                                     />
                                     <div>
                                         <span className="text-sm font-medium text-gray-700">SMS Notifications</span>
-                                        <p className="text-xs text-gray-500">Send notifications via SMS</p>
+                                        <p className="text-xs text-theme-muted">Send notifications via SMS</p>
                                     </div>
                                 </label>
 
@@ -94,14 +96,14 @@ export default function NotificationSettings({ settings = {} }) {
                                     />
                                     <div>
                                         <span className="text-sm font-medium text-gray-700">Push Notifications</span>
-                                        <p className="text-xs text-gray-500">Send browser push notifications</p>
+                                        <p className="text-xs text-theme-muted">Send browser push notifications</p>
                                     </div>
                                 </label>
                             </div>
                         </div>
 
                         <div>
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">Notification Triggers</h3>
+                            <h3 className="text-lg font-medium text-theme-primary mb-4">Notification Triggers</h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 {Object.entries(formData.notification_triggers).map(([trigger, enabled]) => (
                                     <label key={trigger} className="flex items-center">
@@ -119,22 +121,20 @@ export default function NotificationSettings({ settings = {} }) {
                             </div>
                         </div>
 
-                        <div className="flex justify-end space-x-2">
-                            <Link
-                                href="/settings"
-                                className="px-4 py-2 border rounded-md hover:bg-gray-50"
-                            >
-                                Cancel
+                        <div className="flex justify-end space-x-3">
+                            <Link href="/settings">
+                                <ThemedButton variant="secondary">Cancel</ThemedButton>
                             </Link>
-                            <button
+                            <ThemedButton
                                 type="submit"
-                                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
+                                variant="primary"
                             >
                                 Save Notification Settings
-                            </button>
+                            </ThemedButton>
                         </div>
                     </form>
-                </div>
+                    </div>
+                </ThemedCard>
             </div>
         </Layout>
     );

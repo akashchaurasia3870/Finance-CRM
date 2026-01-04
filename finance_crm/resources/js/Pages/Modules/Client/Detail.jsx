@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedBadge } from '@/Components/ThemedComponents';
 
 export default function ClientDetail({ client }) {
     const handleDelete = () => {
@@ -18,90 +19,79 @@ export default function ClientDetail({ client }) {
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Client Details</h1>
-                        <p className="text-gray-600">View client information</p>
+                        <h1 className="text-2xl font-bold text-theme-primary">Client Details</h1>
+                        <p className="text-theme-secondary">View client information</p>
                     </div>
                     <div className="flex space-x-3">
-                        <Link
-                            href="/client"
-                            className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
-                        >
-                            Back
+                        <Link href="/client">
+                            <ThemedButton variant="secondary">Back</ThemedButton>
                         </Link>
-                        <Link
-                            href={`/client/${client.id}/edit`}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                        >
-                            Edit
+                        <Link href={`/client/${client.id}/edit`}>
+                            <ThemedButton variant="primary">Edit</ThemedButton>
                         </Link>
-                        <button
-                            onClick={handleDelete}
-                            className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
-                        >
+                        <ThemedButton variant="danger" onClick={handleDelete}>
                             Delete
-                        </button>
+                        </ThemedButton>
                     </div>
                 </div>
 
-                <div className="bg-white border rounded-lg">
-                    <div className="p-6 border-b">
-                        <h3 className="text-lg font-medium">Client Information</h3>
+                <ThemedCard>
+                    <div className="p-4 border-b border-theme">
+                        <h3 className="text-lg font-medium text-theme-primary">Client Information</h3>
                     </div>
                     <div className="p-6 space-y-4">
                         <div className="grid grid-cols-2 gap-6">
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Name</label>
-                                <p className="mt-1 text-sm text-gray-900">{client.name}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Name</label>
+                                <p className="mt-1 text-sm text-theme-primary">{client.name}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Email</label>
-                                <p className="mt-1 text-sm text-gray-900">{client.email}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Email</label>
+                                <p className="mt-1 text-sm text-theme-primary">{client.email}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Phone</label>
-                                <p className="mt-1 text-sm text-gray-900">{client.phone || 'Not provided'}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Phone</label>
+                                <p className="mt-1 text-sm text-theme-primary">{client.phone || 'Not provided'}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Company</label>
-                                <p className="mt-1 text-sm text-gray-900">{client.company || 'Not provided'}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Company</label>
+                                <p className="mt-1 text-sm text-theme-primary">{client.company || 'Not provided'}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Status</label>
-                                <span className={`mt-1 inline-flex px-2 py-1 text-xs rounded-full ${
-                                    client.status === 'active' 
-                                        ? 'bg-green-100 text-green-800' 
-                                        : 'bg-red-100 text-red-800'
-                                }`}>
-                                    {client.status}
-                                </span>
+                                <label className="block text-sm font-medium text-theme-muted">Status</label>
+                                <div className="mt-1">
+                                    <ThemedBadge variant={client.status === 'active' ? 'success' : 'error'}>
+                                        {client.status}
+                                    </ThemedBadge>
+                                </div>
                             </div>
                             {client.creator && (
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-500">Created By</label>
-                                    <p className="mt-1 text-sm text-gray-900">{client.creator.name}</p>
+                                    <label className="block text-sm font-medium text-theme-muted">Created By</label>
+                                    <p className="mt-1 text-sm text-theme-primary">{client.creator.name}</p>
                                 </div>
                             )}
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Created At</label>
-                                <p className="mt-1 text-sm text-gray-900">
+                                <label className="block text-sm font-medium text-theme-muted">Created At</label>
+                                <p className="mt-1 text-sm text-theme-secondary">
                                     {new Date(client.created_at).toLocaleString()}
                                 </p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Updated At</label>
-                                <p className="mt-1 text-sm text-gray-900">
+                                <label className="block text-sm font-medium text-theme-muted">Updated At</label>
+                                <p className="mt-1 text-sm text-theme-secondary">
                                     {new Date(client.updated_at).toLocaleString()}
                                 </p>
                             </div>
                             {client.address && (
                                 <div className="col-span-2">
-                                    <label className="block text-sm font-medium text-gray-500">Address</label>
-                                    <p className="mt-1 text-sm text-gray-900">{client.address}</p>
+                                    <label className="block text-sm font-medium text-theme-muted">Address</label>
+                                    <p className="mt-1 text-sm text-theme-primary">{client.address}</p>
                                 </div>
                             )}
                         </div>
                     </div>
-                </div>
+                </ThemedCard>
             </div>
         </Layout>
     );

@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedBadge } from '@/Components/ThemedComponents';
 
 export default function ProductDetail({ product }) {
     const handleDelete = () => {
@@ -18,97 +19,89 @@ export default function ProductDetail({ product }) {
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Product Details</h1>
-                        <p className="text-gray-600">View product information</p>
+                        <h1 className="text-2xl font-bold text-theme-primary">Product Details</h1>
+                        <p className="text-theme-secondary">View product information</p>
                     </div>
                     <div className="flex space-x-3">
-                        <Link
-                            href="/product"
-                            className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
-                        >
-                            Back
+                        <Link href="/product">
+                            <ThemedButton variant="secondary">Back</ThemedButton>
                         </Link>
-                        <Link
-                            href={`/product/${product.id}/edit`}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                        >
-                            Edit
+                        <Link href={`/product/${product.id}/edit`}>
+                            <ThemedButton variant="primary">Edit</ThemedButton>
                         </Link>
-                        <button
-                            onClick={handleDelete}
-                            className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
-                        >
+                        <ThemedButton variant="danger" onClick={handleDelete}>
                             Delete
-                        </button>
+                        </ThemedButton>
                     </div>
                 </div>
 
-                <div className="bg-white border rounded-lg">
-                    <div className="p-6 border-b">
-                        <h3 className="text-lg font-medium">Basic Information</h3>
+                <ThemedCard>
+                    <div className="p-4 border-b border-theme">
+                        <h3 className="text-lg font-medium text-theme-primary">Basic Information</h3>
                     </div>
                     <div className="p-6 space-y-4">
                         <div className="grid grid-cols-2 gap-6">
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Name</label>
-                                <p className="mt-1 text-sm text-gray-900">{product.name}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Name</label>
+                                <p className="mt-1 text-sm text-theme-primary">{product.name}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Symbol</label>
-                                <p className="mt-1 text-sm text-gray-900">{product.symbol || 'N/A'}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Symbol</label>
+                                <p className="mt-1 text-sm text-theme-primary">{product.symbol || 'N/A'}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Product Type</label>
-                                <span className="mt-1 inline-flex px-2 py-1 text-xs rounded-full bg-blue-100 text-blue-800">
-                                    {product.product_type}
-                                </span>
+                                <label className="block text-sm font-medium text-theme-muted">Product Type</label>
+                                <div className="mt-1">
+                                    <ThemedBadge variant="info">
+                                        {product.product_type}
+                                    </ThemedBadge>
+                                </div>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Sector</label>
-                                <p className="mt-1 text-sm text-gray-900">{product.sector || 'N/A'}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Sector</label>
+                                <p className="mt-1 text-sm text-theme-primary">{product.sector || 'N/A'}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Risk Level</label>
-                                <span className={`mt-1 inline-flex px-2 py-1 text-xs rounded-full ${
-                                    product.risk_level === 'low' ? 'bg-green-100 text-green-800' :
-                                    product.risk_level === 'medium' ? 'bg-yellow-100 text-yellow-800' :
-                                    product.risk_level === 'high' ? 'bg-orange-100 text-orange-800' :
-                                    'bg-red-100 text-red-800'
-                                }`}>
-                                    {product.risk_level}
-                                </span>
+                                <label className="block text-sm font-medium text-theme-muted">Risk Level</label>
+                                <div className="mt-1">
+                                    <ThemedBadge variant={
+                                        product.risk_level === 'low' ? 'success' :
+                                        product.risk_level === 'medium' ? 'warning' :
+                                        product.risk_level === 'high' ? 'error' : 'error'
+                                    }>
+                                        {product.risk_level}
+                                    </ThemedBadge>
+                                </div>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Status</label>
-                                <span className={`mt-1 inline-flex px-2 py-1 text-xs rounded-full ${
-                                    product.is_active 
-                                        ? 'bg-green-100 text-green-800' 
-                                        : 'bg-red-100 text-red-800'
-                                }`}>
-                                    {product.is_active ? 'Active' : 'Inactive'}
-                                </span>
+                                <label className="block text-sm font-medium text-theme-muted">Status</label>
+                                <div className="mt-1">
+                                    <ThemedBadge variant={product.is_active ? 'success' : 'error'}>
+                                        {product.is_active ? 'Active' : 'Inactive'}
+                                    </ThemedBadge>
+                                </div>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Created At</label>
-                                <p className="mt-1 text-sm text-gray-900">
+                                <label className="block text-sm font-medium text-theme-muted">Created At</label>
+                                <p className="mt-1 text-sm text-theme-secondary">
                                     {new Date(product.created_at).toLocaleString()}
                                 </p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Updated At</label>
-                                <p className="mt-1 text-sm text-gray-900">
+                                <label className="block text-sm font-medium text-theme-muted">Updated At</label>
+                                <p className="mt-1 text-sm text-theme-secondary">
                                     {new Date(product.updated_at).toLocaleString()}
                                 </p>
                             </div>
                         </div>
                         {product.description && (
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Description</label>
-                                <p className="mt-1 text-sm text-gray-900">{product.description}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Description</label>
+                                <p className="mt-1 text-sm text-theme-primary">{product.description}</p>
                             </div>
                         )}
                     </div>
-                </div>
+                </ThemedCard>
             </div>
         </Layout>
     );

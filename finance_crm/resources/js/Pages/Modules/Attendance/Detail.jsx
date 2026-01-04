@@ -1,6 +1,7 @@
 import React from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedBadge } from '@/Components/ThemedComponents';
 
 export default function AttendanceDetail({ attendance }) {
     const handleDelete = () => {
@@ -13,13 +14,13 @@ export default function AttendanceDetail({ attendance }) {
         }
     };
 
-    const getStatusColor = (status) => {
+    const getStatusVariant = (status) => {
         switch(status) {
-            case 'present': return 'bg-green-100 text-green-800';
-            case 'absent': return 'bg-red-100 text-red-800';
-            case 'half_day': return 'bg-yellow-100 text-yellow-800';
-            case 'leave': return 'bg-blue-100 text-blue-800';
-            default: return 'bg-gray-100 text-gray-800';
+            case 'present': return 'success';
+            case 'absent': return 'error';
+            case 'half_day': return 'warning';
+            case 'leave': return 'info';
+            default: return 'info';
         }
     };
 
@@ -28,102 +29,93 @@ export default function AttendanceDetail({ attendance }) {
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Attendance Details</h1>
-                        <p className="text-gray-600">View attendance record information</p>
+                        <h1 className="text-2xl font-bold text-theme-primary">Attendance Details</h1>
+                        <p className="text-theme-secondary">View attendance record information</p>
                     </div>
                     <div className="flex space-x-3">
-                        <Link
-                            href="/attendance"
-                            className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
-                        >
-                            Back
+                        <Link href="/attendance">
+                            <ThemedButton variant="secondary">Back</ThemedButton>
                         </Link>
-                        <Link
-                            href={`/attendance/${attendance.id}/edit`}
-                            className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                        >
-                            Edit
+                        <Link href={`/attendance/${attendance.id}/edit`}>
+                            <ThemedButton variant="primary">Edit</ThemedButton>
                         </Link>
-                        <button
-                            onClick={handleDelete}
-                            className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700"
-                        >
+                        <ThemedButton variant="danger" onClick={handleDelete}>
                             Delete
-                        </button>
+                        </ThemedButton>
                     </div>
                 </div>
 
-                <div className="bg-white border rounded-lg">
-                    <div className="p-6 border-b">
-                        <h3 className="text-lg font-medium">Attendance Information</h3>
+                <ThemedCard>
+                    <div className="p-4 border-b border-theme">
+                        <h3 className="text-lg font-medium text-theme-primary">Attendance Information</h3>
                     </div>
                     <div className="p-6 space-y-4">
                         <div className="grid grid-cols-2 gap-6">
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">User</label>
-                                <p className="mt-1 text-sm text-gray-900">
+                                <label className="block text-sm font-medium text-theme-muted">User</label>
+                                <p className="mt-1 text-sm text-theme-primary">
                                     {attendance.user ? attendance.user.name : 'N/A'}
                                 </p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Date</label>
-                                <p className="mt-1 text-sm text-gray-900">
+                                <label className="block text-sm font-medium text-theme-muted">Date</label>
+                                <p className="mt-1 text-sm text-theme-primary">
                                     {new Date(attendance.attendance_date).toLocaleDateString()}
                                 </p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Check In Time</label>
-                                <p className="mt-1 text-sm text-gray-900">{attendance.check_in_time || 'Not recorded'}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Check In Time</label>
+                                <p className="mt-1 text-sm text-theme-primary">{attendance.check_in_time || 'Not recorded'}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Check Out Time</label>
-                                <p className="mt-1 text-sm text-gray-900">{attendance.check_out_time || 'Not recorded'}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Check Out Time</label>
+                                <p className="mt-1 text-sm text-theme-primary">{attendance.check_out_time || 'Not recorded'}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Work Hours</label>
-                                <p className="mt-1 text-sm text-gray-900">{attendance.work_hours || 'Not calculated'}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Work Hours</label>
+                                <p className="mt-1 text-sm text-theme-primary">{attendance.work_hours || 'Not calculated'}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Status</label>
-                                <span className={`mt-1 inline-flex px-2 py-1 text-xs rounded-full ${getStatusColor(attendance.status)}`}>
-                                    {attendance.status.replace('_', ' ')}
-                                </span>
+                                <label className="block text-sm font-medium text-theme-muted">Status</label>
+                                <div className="mt-1">
+                                    <ThemedBadge variant={getStatusVariant(attendance.status)}>
+                                        {attendance.status.replace('_', ' ')}
+                                    </ThemedBadge>
+                                </div>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Source</label>
-                                <p className="mt-1 text-sm text-gray-900 capitalize">{attendance.source}</p>
+                                <label className="block text-sm font-medium text-theme-muted">Source</label>
+                                <p className="mt-1 text-sm text-theme-primary capitalize">{attendance.source}</p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Active Status</label>
-                                <span className={`mt-1 inline-flex px-2 py-1 text-xs rounded-full ${
-                                    attendance.is_active 
-                                        ? 'bg-green-100 text-green-800' 
-                                        : 'bg-red-100 text-red-800'
-                                }`}>
-                                    {attendance.is_active ? 'Active' : 'Inactive'}
-                                </span>
+                                <label className="block text-sm font-medium text-theme-muted">Active Status</label>
+                                <div className="mt-1">
+                                    <ThemedBadge variant={attendance.is_active ? 'success' : 'error'}>
+                                        {attendance.is_active ? 'Active' : 'Inactive'}
+                                    </ThemedBadge>
+                                </div>
                             </div>
                             {attendance.creator && (
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-500">Created By</label>
-                                    <p className="mt-1 text-sm text-gray-900">{attendance.creator.name}</p>
+                                    <label className="block text-sm font-medium text-theme-muted">Created By</label>
+                                    <p className="mt-1 text-sm text-theme-primary">{attendance.creator.name}</p>
                                 </div>
                             )}
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Created At</label>
-                                <p className="mt-1 text-sm text-gray-900">
+                                <label className="block text-sm font-medium text-theme-muted">Created At</label>
+                                <p className="mt-1 text-sm text-theme-secondary">
                                     {new Date(attendance.created_at).toLocaleString()}
                                 </p>
                             </div>
                             <div>
-                                <label className="block text-sm font-medium text-gray-500">Updated At</label>
-                                <p className="mt-1 text-sm text-gray-900">
+                                <label className="block text-sm font-medium text-theme-muted">Updated At</label>
+                                <p className="mt-1 text-sm text-theme-secondary">
                                     {new Date(attendance.updated_at).toLocaleString()}
                                 </p>
                             </div>
                         </div>
                     </div>
-                </div>
+                </ThemedCard>
             </div>
         </Layout>
     );

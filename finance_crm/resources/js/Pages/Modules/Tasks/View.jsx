@@ -82,7 +82,7 @@ export default function TasksView({ tasks = [] }) {
                         </ThemedTableHeader>
                         <ThemedTableBody>
                             {filteredTasks.map((task) => (
-                                <ThemedTableRow key={task.id} className={isOverdue(task) ? 'bg-red-50' : ''}>
+                                <ThemedTableRow key={task.id} >
                                     <ThemedTableCell>
                                         <div className="font-medium text-theme-primary">{task.title}</div>
                                         {task.description && (

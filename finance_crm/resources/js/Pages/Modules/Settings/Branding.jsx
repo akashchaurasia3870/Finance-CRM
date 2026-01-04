@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '@/Layouts/Layout';
 import { useForm, Link, usePage } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
 
 export default function Branding() {
     const [activeTab, setActiveTab] = useState('themes');
@@ -155,7 +156,11 @@ export default function Branding() {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        put('/settings/branding');
+        put('/settings/branding', {
+            onError: (errors) => {
+                console.error('Failed to save branding settings:', errors);
+            }
+        });
     };
 
     const applyTheme = (theme) => {
@@ -176,18 +181,18 @@ export default function Branding() {
     return (
         <Layout>
             <div className="space-y-6">
-                <div className="flex items-center space-x-4">
-                    <Link href="/settings" className="text-blue-600 hover:text-blue-800">
-                        ← Back to Settings
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-2xl font-bold text-theme-primary">Branding & UI Settings</h1>
+                        <p className="text-theme-secondary">Customize colors, fonts, and UI appearance</p>
+                    </div>
+                    <Link href="/settings">
+                        <ThemedButton variant="secondary">Back</ThemedButton>
                     </Link>
-                </div>
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Branding & UI Settings</h1>
-                    <p className="text-gray-600">Customize colors, fonts, and UI appearance</p>
                 </div>
 
                 {/* Tab Navigation */}
-                <div className="border-b border-gray-200">
+                <div className="border-b border-theme">
                     <nav className="-mb-px flex space-x-8">
                         {['themes', 'typography', 'logos', 'banners', 'layout'].map((tab) => (
                             <button
@@ -195,8 +200,8 @@ export default function Branding() {
                                 onClick={() => setActiveTab(tab)}
                                 className={`py-2 px-1 border-b-2 font-medium text-sm capitalize ${
                                     activeTab === tab
-                                        ? 'border-blue-500 text-blue-600'
-                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                        ? 'border-theme-accent text-theme-accent'
+                                        : 'border-transparent text-theme-muted hover:text-theme-secondary hover:border-theme-muted'
                                 }`}
                             >
                                 {tab}
@@ -208,8 +213,8 @@ export default function Branding() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Themes Tab */}
                     {activeTab === 'themes' && (
-                        <div className="bg-white border rounded-lg p-6">
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">Theme Selection</h3>
+                        <div className="bg-theme-primary border rounded-lg p-6" style={{ backgroundColor: data.background_color, color: data.text_color }}>
+                            <h3 className="text-lg font-medium text-theme-primary mb-4">Theme Selection</h3>
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
                                 {themes.map((theme) => (
                                     <div
@@ -289,8 +294,8 @@ export default function Branding() {
                                         
                                         {/* Theme Name */}
                                         <div className="text-center">
-                                            <h5 className="font-semibold text-gray-900">{theme.name}</h5>
-                                            <p className="text-xs text-gray-500 mt-1">
+                                            <h5 className="font-semibold text-theme-primary">{theme.name}</h5>
+                                            <p className="text-xs text-theme-muted mt-1">
                                                 {theme.name === 'Light' ? 'Clean & Professional' :
                                                  theme.name === 'Dark' ? 'Modern & Sleek' :
                                                  theme.name === 'Warm' ? 'Cozy & Inviting' :
@@ -345,7 +350,7 @@ export default function Branding() {
 
                     {/* Typography Tab */}
                     {activeTab === 'typography' && (
-                        <div className="bg-white border rounded-lg p-6" style={{ backgroundColor: data.background_color, color: data.text_color }}>
+                        <div className="bg-theme-primary border rounded-lg p-6" style={{ backgroundColor: data.background_color, color: data.text_color }}>
                             <h3 className="text-lg font-medium mb-4">Typography Settings</h3>
                             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                                 <div>
@@ -426,8 +431,8 @@ export default function Branding() {
                     {/* Logos Tab */}
                     {activeTab === 'logos' && (
                         <div className="space-y-6">
-                            <div className="bg-white border rounded-lg p-6">
-                                <h3 className="text-lg font-medium text-gray-900 mb-4">Company Branding</h3>
+                            <div className="bg-theme-primary border rounded-lg p-6" style={{ backgroundColor: data.background_color, color: data.text_color }}>
+                                <h3 className="text-lg font-medium text-theme-primary mb-4">Company Branding</h3>
                                 <div className="space-y-4">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -451,7 +456,7 @@ export default function Branding() {
                                             placeholder="https://example.com/logo.png"
                                             className="w-full border border-gray-300 rounded-md px-3 py-2"
                                         />
-                                        <p className="text-xs text-gray-500 mt-1">Recommended size: 200x60 pixels</p>
+                                        <p className="text-xs text-theme-muted mt-1">Recommended size: 200x60 pixels</p>
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -464,13 +469,13 @@ export default function Branding() {
                                             placeholder="https://example.com/favicon.ico"
                                             className="w-full border border-gray-300 rounded-md px-3 py-2"
                                         />
-                                        <p className="text-xs text-gray-500 mt-1">Recommended size: 32x32 pixels (.ico format)</p>
+                                        <p className="text-xs text-theme-muted mt-1">Recommended size: 32x32 pixels (.ico format)</p>
                                     </div>
                                 </div>
                             </div>
 
-                            <div className="bg-white border rounded-lg p-6">
-                                <h3 className="text-lg font-medium text-gray-900 mb-4">Login Screen Customization</h3>
+                            <div className="bg-theme-primary border rounded-lg p-6" style={{ backgroundColor: data.background_color, color: data.text_color }}>
+                                <h3 className="text-lg font-medium text-theme-primary mb-4">Login Screen Customization</h3>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Login Background Image URL
@@ -482,7 +487,7 @@ export default function Branding() {
                                         placeholder="https://example.com/background.jpg"
                                         className="w-full border border-gray-300 rounded-md px-3 py-2"
                                     />
-                                    <p className="text-xs text-gray-500 mt-1">Recommended size: 1920x1080 pixels</p>
+                                    <p className="text-xs text-theme-muted mt-1">Recommended size: 1920x1080 pixels</p>
                                 </div>
                             </div>
                         </div>
@@ -491,7 +496,7 @@ export default function Branding() {
                     {/* Banners Tab */}
                     {activeTab === 'banners' && (
                         <div className="space-y-6">
-                            <div className="bg-white border rounded-lg p-6" style={{ backgroundColor: data.background_color, color: data.text_color }}>
+                            <div className="bg-theme-primary border rounded-lg p-6" style={{ backgroundColor: data.background_color, color: data.text_color }}>
                                 <h3 className="text-lg font-medium mb-4">Banner Templates</h3>
                                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
                                     {bannerTemplates.map((template) => (
@@ -537,7 +542,7 @@ export default function Branding() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="bg-white border rounded-lg p-6" style={{ backgroundColor: data.background_color, color: data.text_color }}>
+                            <div className="bg-theme-primary border rounded-lg p-6" style={{ backgroundColor: data.background_color, color: data.text_color }}>
                                 <h3 className="text-lg font-medium mb-4">Banner Preview</h3>
                                 <div 
                                     className="h-32 rounded-lg flex items-center justify-center relative overflow-hidden"
@@ -576,8 +581,8 @@ export default function Branding() {
 
                     {/* Layout Tab */}
                     {activeTab === 'layout' && (
-                        <div className="bg-white border rounded-lg p-6">
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">Layout & UI Features</h3>
+                        <div className="bg-theme-primary border rounded-lg p-6" style={{ backgroundColor: data.background_color, color: data.text_color }}>
+                            <h3 className="text-lg font-medium text-theme-primary mb-4">Layout & UI Features</h3>
                             <div className="space-y-4">
                                 <div>
                                     <h4 className="text-sm font-medium text-gray-700 mb-3">Dashboard Widgets</h4>
@@ -616,13 +621,13 @@ export default function Branding() {
                     )}
 
                     <div className="flex justify-end">
-                        <button
+                        <ThemedButton
                             type="submit"
+                            variant="primary"
                             disabled={processing}
-                            className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
                         >
                             {processing ? 'Saving...' : 'Save Branding Settings'}
-                        </button>
+                        </ThemedButton>
                     </div>
                 </form>
             </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
 
 export default function EmailSettings({ settings = {} }) {
     const [formData, setFormData] = useState({
@@ -15,12 +16,21 @@ export default function EmailSettings({ settings = {} }) {
         email_tracking: settings.email_tracking || false
     });
 
+    const [processing, setProcessing] = useState(false);
+    const [errors, setErrors] = useState({});
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        setProcessing(true);
+        
         router.put('/settings/email', formData, {
             onSuccess: () => {
                 router.visit('/settings');
-            }
+            },
+            onError: (errors) => {
+                setErrors(errors);
+                setProcessing(false);
+            },
         });
     };
 
@@ -29,143 +39,144 @@ export default function EmailSettings({ settings = {} }) {
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Email Settings</h1>
-                        <p className="text-gray-600">Configure SMTP server and email preferences</p>
+                        <h1 className="text-2xl font-bold text-theme-primary">Email Settings</h1>
+                        <p className="text-theme-secondary">Configure SMTP server and email preferences</p>
                     </div>
-                    <Link
-                        href="/settings"
-                        className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
-                    >
-                        Back
+                    <Link href="/settings">
+                        <ThemedButton variant="secondary">Back</ThemedButton>
                     </Link>
                 </div>
 
-                <div className="bg-white border rounded-lg p-6">
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">SMTP Host</label>
-                                <input
-                                    type="text"
-                                    value={formData.smtp_host}
-                                    onChange={(e) => setFormData({...formData, smtp_host: e.target.value})}
-                                    className="mt-1 block w-full border rounded-md px-3 py-2"
-                                    placeholder="smtp.gmail.com"
-                                    required
-                                />
+                <ThemedCard>
+                    <div className="p-4 border-b border-theme">
+                        <h3 className="text-lg font-medium text-theme-primary">Email Configuration</h3>
+                    </div>
+                    <div className="p-6">
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">SMTP Host</label>
+                                    <ThemedInput
+                                        type="text"
+                                        value={formData.smtp_host}
+                                        onChange={(e) => setFormData({...formData, smtp_host: e.target.value})}
+                                        placeholder="smtp.gmail.com"
+                                        required
+                                    />
+                                    {errors.smtp_host && <p className="text-red-500 text-sm mt-1">{errors.smtp_host}</p>}
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">SMTP Port</label>
+                                    <ThemedInput
+                                        type="number"
+                                        value={formData.smtp_port}
+                                        onChange={(e) => setFormData({...formData, smtp_port: parseInt(e.target.value)})}
+                                        required
+                                    />
+                                    {errors.smtp_port && <p className="text-red-500 text-sm mt-1">{errors.smtp_port}</p>}
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">SMTP Username</label>
+                                    <ThemedInput
+                                        type="text"
+                                        value={formData.smtp_username}
+                                        onChange={(e) => setFormData({...formData, smtp_username: e.target.value})}
+                                        required
+                                    />
+                                    {errors.smtp_username && <p className="text-red-500 text-sm mt-1">{errors.smtp_username}</p>}
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">SMTP Password</label>
+                                    <ThemedInput
+                                        type="password"
+                                        value={formData.smtp_password}
+                                        onChange={(e) => setFormData({...formData, smtp_password: e.target.value})}
+                                        required
+                                    />
+                                    {errors.smtp_password && <p className="text-red-500 text-sm mt-1">{errors.smtp_password}</p>}
+                                </div>
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">SMTP Port</label>
-                                <input
-                                    type="number"
-                                    value={formData.smtp_port}
-                                    onChange={(e) => setFormData({...formData, smtp_port: parseInt(e.target.value)})}
-                                    className="mt-1 block w-full border rounded-md px-3 py-2"
-                                    required
-                                />
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">SMTP Username</label>
-                                <input
-                                    type="text"
-                                    value={formData.smtp_username}
-                                    onChange={(e) => setFormData({...formData, smtp_username: e.target.value})}
-                                    className="mt-1 block w-full border rounded-md px-3 py-2"
-                                    required
-                                />
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Encryption</label>
+                                <select
+                                    value={formData.smtp_encryption}
+                                    onChange={(e) => setFormData({...formData, smtp_encryption: e.target.value})}
+                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary"
+                                >
+                                    <option value="tls">TLS</option>
+                                    <option value="ssl">SSL</option>
+                                    <option value="">None</option>
+                                </select>
+                                {errors.smtp_encryption && <p className="text-red-500 text-sm mt-1">{errors.smtp_encryption}</p>}
                             </div>
 
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">SMTP Password</label>
-                                <input
-                                    type="password"
-                                    value={formData.smtp_password}
-                                    onChange={(e) => setFormData({...formData, smtp_password: e.target.value})}
-                                    className="mt-1 block w-full border rounded-md px-3 py-2"
-                                    required
-                                />
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">From Email</label>
+                                    <ThemedInput
+                                        type="email"
+                                        value={formData.from_email}
+                                        onChange={(e) => setFormData({...formData, from_email: e.target.value})}
+                                        required
+                                    />
+                                    {errors.from_email && <p className="text-red-500 text-sm mt-1">{errors.from_email}</p>}
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">From Name</label>
+                                    <ThemedInput
+                                        type="text"
+                                        value={formData.from_name}
+                                        onChange={(e) => setFormData({...formData, from_name: e.target.value})}
+                                        required
+                                    />
+                                    {errors.from_name && <p className="text-red-500 text-sm mt-1">{errors.from_name}</p>}
+                                </div>
                             </div>
-                        </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Encryption</label>
-                            <select
-                                value={formData.smtp_encryption}
-                                onChange={(e) => setFormData({...formData, smtp_encryption: e.target.value})}
-                                className="mt-1 block w-full border rounded-md px-3 py-2"
-                            >
-                                <option value="tls">TLS</option>
-                                <option value="ssl">SSL</option>
-                                <option value="">None</option>
-                            </select>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">From Email</label>
-                                <input
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Reply-To Email</label>
+                                <ThemedInput
                                     type="email"
-                                    value={formData.from_email}
-                                    onChange={(e) => setFormData({...formData, from_email: e.target.value})}
-                                    className="mt-1 block w-full border rounded-md px-3 py-2"
-                                    required
+                                    value={formData.reply_to_email}
+                                    onChange={(e) => setFormData({...formData, reply_to_email: e.target.value})}
                                 />
+                                {errors.reply_to_email && <p className="text-red-500 text-sm mt-1">{errors.reply_to_email}</p>}
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700">From Name</label>
-                                <input
-                                    type="text"
-                                    value={formData.from_name}
-                                    onChange={(e) => setFormData({...formData, from_name: e.target.value})}
-                                    className="mt-1 block w-full border rounded-md px-3 py-2"
-                                    required
-                                />
+                                <label className="flex items-center">
+                                    <input
+                                        type="checkbox"
+                                        checked={formData.email_tracking}
+                                        onChange={(e) => setFormData({...formData, email_tracking: e.target.checked})}
+                                        className="mr-2"
+                                    />
+                                    <span className="text-sm font-medium text-theme-primary">Enable Email Tracking</span>
+                                </label>
                             </div>
-                        </div>
 
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700">Reply-To Email</label>
-                            <input
-                                type="email"
-                                value={formData.reply_to_email}
-                                onChange={(e) => setFormData({...formData, reply_to_email: e.target.value})}
-                                className="mt-1 block w-full border rounded-md px-3 py-2"
-                            />
-                        </div>
-
-                        <div>
-                            <label className="flex items-center">
-                                <input
-                                    type="checkbox"
-                                    checked={formData.email_tracking}
-                                    onChange={(e) => setFormData({...formData, email_tracking: e.target.checked})}
-                                    className="mr-2"
-                                />
-                                <span className="text-sm font-medium text-gray-700">Enable Email Tracking</span>
-                            </label>
-                        </div>
-
-                        <div className="flex justify-end space-x-2">
-                            <Link
-                                href="/settings"
-                                className="px-4 py-2 border rounded-md hover:bg-gray-50"
-                            >
-                                Cancel
-                            </Link>
-                            <button
-                                type="submit"
-                                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                            >
-                                Save Email Settings
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                            <div className="flex justify-end space-x-3">
+                                <Link href="/settings">
+                                    <ThemedButton variant="secondary">Cancel</ThemedButton>
+                                </Link>
+                                <ThemedButton
+                                    type="submit"
+                                    variant="primary"
+                                    disabled={processing}
+                                >
+                                    {processing ? 'Saving...' : 'Save Email Settings'}
+                                </ThemedButton>
+                            </div>
+                        </form>
+                    </div>
+                </ThemedCard>
             </div>
         </Layout>
     );

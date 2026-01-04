@@ -47,8 +47,8 @@ export default function CalendarView({ calendars = [] }) {
             case 'event': return 'bg-blue-500';
             case 'reminder': return 'bg-yellow-500';
             case 'task': return 'bg-orange-500';
-            case 'note': return 'bg-gray-500';
-            default: return 'bg-gray-500';
+            case 'note': return 'bg-theme-tertiary0';
+            default: return 'bg-theme-tertiary0';
         }
     };
 
@@ -71,7 +71,7 @@ export default function CalendarView({ calendars = [] }) {
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Calendar View</h1>
+                        <h1 className="text-2xl font-bold text-theme-primary">Calendar View</h1>
                         <p className="text-gray-600">Interactive calendar interface</p>
                     </div>
                     <Link
@@ -83,7 +83,7 @@ export default function CalendarView({ calendars = [] }) {
                 </div>
 
                 {/* Calendar Header */}
-                <div className="bg-white rounded-lg shadow p-4">
+                <div className="bg-theme-primary rounded-lg shadow p-4">
                     <div className="flex justify-between items-center">
                         <div className="flex items-center space-x-4">
                             <button
@@ -94,7 +94,7 @@ export default function CalendarView({ calendars = [] }) {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                                 </svg>
                             </button>
-                            <h2 className="text-xl font-semibold text-gray-900">
+                            <h2 className="text-xl font-semibold text-theme-primary">
                                 {getDateTitle()}
                             </h2>
                             <button
@@ -120,8 +120,8 @@ export default function CalendarView({ calendars = [] }) {
                                     onClick={() => setViewMode(mode)}
                                     className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
                                         viewMode === mode 
-                                            ? 'bg-white text-gray-900 shadow-sm' 
-                                            : 'text-gray-600 hover:text-gray-900'
+                                            ? 'bg-theme-primary text-theme-primary shadow-sm' 
+                                            : 'text-gray-600 hover:text-theme-primary'
                                     }`}
                                 >
                                     {mode.charAt(0).toUpperCase() + mode.slice(1)}
@@ -161,8 +161,8 @@ export default function CalendarView({ calendars = [] }) {
                 )}
 
                 {/* Legend */}
-                <div className="bg-white rounded-lg shadow p-4">
-                    <h3 className="text-sm font-medium mb-3 text-gray-900">Event Types</h3>
+                <div className="bg-theme-primary rounded-lg shadow p-4">
+                    <h3 className="text-sm font-medium mb-3 text-theme-primary">Event Types</h3>
                     <div className="flex flex-wrap gap-4">
                         {[
                             { type: 'meeting', label: 'Meeting' },

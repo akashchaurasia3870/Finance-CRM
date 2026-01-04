@@ -7,7 +7,7 @@ export default function PortfolioView({ portfolios = [] }) {
     const [searchTerm, setSearchTerm] = useState('');
 
     const filteredPortfolios = portfolios.filter(portfolio => 
-        (portfolio.name && portfolio.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (portfolio.portfolio_name && portfolio.portfolio_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
         (portfolio.description && portfolio.description.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
@@ -50,7 +50,7 @@ export default function PortfolioView({ portfolios = [] }) {
                                 <ThemedTableCell header>Value</ThemedTableCell>
                                 <ThemedTableCell header>Performance</ThemedTableCell>
                                 <ThemedTableCell header>Risk Level</ThemedTableCell>
-                                <ThemedTableCell header>Client</ThemedTableCell>
+                                <ThemedTableCell header>Account</ThemedTableCell>
                                 <ThemedTableCell header>Created</ThemedTableCell>
                                 <ThemedTableCell header>Actions</ThemedTableCell>
                             </ThemedTableRow>
@@ -59,7 +59,7 @@ export default function PortfolioView({ portfolios = [] }) {
                             {filteredPortfolios.length > 0 ? filteredPortfolios.map((portfolio) => (
                                 <ThemedTableRow key={portfolio.id}>
                                     <ThemedTableCell>
-                                        <div className="font-medium text-theme-primary">{portfolio.name}</div>
+                                        <div className="font-medium text-theme-primary">{portfolio.portfolio_name}</div>
                                         {portfolio.description && (
                                             <div className="text-sm text-theme-muted">{portfolio.description.substring(0, 50)}...</div>
                                         )}
@@ -83,7 +83,7 @@ export default function PortfolioView({ portfolios = [] }) {
                                         </ThemedBadge>
                                     </ThemedTableCell>
                                     <ThemedTableCell className="text-theme-primary">
-                                        {portfolio.client?.name || 'N/A'}
+                                        {portfolio.account?.name || 'N/A'}
                                     </ThemedTableCell>
                                     <ThemedTableCell className="text-theme-secondary">
                                         {portfolio.created_at ? new Date(portfolio.created_at).toLocaleDateString() : 'N/A'}
@@ -125,7 +125,7 @@ export default function PortfolioView({ portfolios = [] }) {
                                                 {index === 0 ? 'Medium' : index === 1 ? 'Low' : 'High'}
                                             </ThemedBadge>
                                         </ThemedTableCell>
-                                        <ThemedTableCell className="text-theme-primary">Sample Client</ThemedTableCell>
+                                        <ThemedTableCell className="text-theme-primary">Sample Account</ThemedTableCell>
                                         <ThemedTableCell className="text-theme-secondary">
                                             {new Date().toLocaleDateString()}
                                         </ThemedTableCell>
