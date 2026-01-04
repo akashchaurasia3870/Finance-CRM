@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedTable, ThemedTableHeader, ThemedTableBody, ThemedTableRow, ThemedTableCell, ThemedInput, ThemedBadge } from '@/Components/ThemedComponents';
 
 export default function ClientView({ clients = [] }) {
     const [searchTerm, setSearchTerm] = useState('');
@@ -22,101 +23,89 @@ export default function ClientView({ clients = [] }) {
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Clients</h1>
-                        <p className="text-gray-600">Manage client information</p>
+                        <h1 className="text-2xl font-bold text-theme-primary">Clients</h1>
+                        <p className="text-theme-secondary">Manage client information</p>
                     </div>
-                    <Link
-                        href="/client/new"
-                        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                    >
-                        Add Client
+                    <Link href="/client/new">
+                        <ThemedButton variant="primary">Add Client</ThemedButton>
                     </Link>
                 </div>
                 
-                <div className="bg-white border rounded-lg">
-                    <div className="p-4 border-b">
+                <ThemedCard>
+                    <div className="p-4 border-b border-theme">
                         <div className="flex justify-between items-center">
-                            <h3 className="text-lg font-medium">Client List</h3>
-                            <input
+                            <h3 className="text-lg font-medium text-theme-primary">Client List</h3>
+                            <ThemedInput
                                 type="text"
                                 placeholder="Search clients..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="border rounded-md px-3 py-2 w-64"
+                                className="w-64"
                             />
                         </div>
                     </div>
-                    <div className="overflow-x-auto">
-                        <table className="w-full">
-                            <thead className="bg-gray-50">
-                                <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Company</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Phone</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Created</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-200">
-                                {filteredClients.map((client) => (
-                                    <tr key={client.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="font-medium text-gray-900">{client.name}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-gray-900">{client.email}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-gray-900">{client.company || '-'}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-gray-900">{client.phone || '-'}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className={`px-2 py-1 text-xs rounded-full ${
-                                                client.status === 'active' 
-                                                    ? 'bg-green-100 text-green-800' 
-                                                    : 'bg-red-100 text-red-800'
-                                            }`}>
-                                                {client.status}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                                            {new Date(client.created_at).toLocaleDateString()}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                            <Link
-                                                href={`/client/${client.id}`}
-                                                className="text-blue-600 hover:text-blue-900"
-                                            >
-                                                View
+                    <ThemedTable>
+                        <ThemedTableHeader>
+                            <ThemedTableRow>
+                                <ThemedTableCell header>Name</ThemedTableCell>
+                                <ThemedTableCell header>Email</ThemedTableCell>
+                                <ThemedTableCell header>Company</ThemedTableCell>
+                                <ThemedTableCell header>Phone</ThemedTableCell>
+                                <ThemedTableCell header>Status</ThemedTableCell>
+                                <ThemedTableCell header>Created</ThemedTableCell>
+                                <ThemedTableCell header>Actions</ThemedTableCell>
+                            </ThemedTableRow>
+                        </ThemedTableHeader>
+                        <ThemedTableBody>
+                            {filteredClients.map((client) => (
+                                <ThemedTableRow key={client.id}>
+                                    <ThemedTableCell>
+                                        <div className="font-medium text-theme-primary">{client.name}</div>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <div className="text-theme-primary">{client.email}</div>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <div className="text-theme-primary">{client.company || '-'}</div>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <div className="text-theme-primary">{client.phone || '-'}</div>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <ThemedBadge variant={client.status === 'active' ? 'success' : 'error'}>
+                                            {client.status}
+                                        </ThemedBadge>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell className="text-theme-secondary">
+                                        {new Date(client.created_at).toLocaleDateString()}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <div className="space-x-2">
+                                            <Link href={`/client/${client.id}`}>
+                                                <ThemedButton variant="ghost" className="text-xs px-2 py-1">View</ThemedButton>
                                             </Link>
-                                            <Link
-                                                href={`/client/${client.id}/edit`}
-                                                className="text-indigo-600 hover:text-indigo-900"
-                                            >
-                                                Edit
+                                            <Link href={`/client/${client.id}/edit`}>
+                                                <ThemedButton variant="ghost" className="text-xs px-2 py-1">Edit</ThemedButton>
                                             </Link>
-                                            <button
+                                            <ThemedButton 
+                                                variant="ghost" 
+                                                className="text-xs px-2 py-1 text-red-600 hover:text-red-800"
                                                 onClick={() => handleDelete(client.id)}
-                                                className="text-red-600 hover:text-red-900"
                                             >
                                                 Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        {filteredClients.length === 0 && (
-                            <div className="p-8 text-center text-gray-500">
-                                No clients found.
-                            </div>
-                        )}
-                    </div>
-                </div>
+                                            </ThemedButton>
+                                        </div>
+                                    </ThemedTableCell>
+                                </ThemedTableRow>
+                            ))}
+                        </ThemedTableBody>
+                    </ThemedTable>
+                    {filteredClients.length === 0 && (
+                        <div className="p-8 text-center text-theme-muted">
+                            No clients found.
+                        </div>
+                    )}
+                </ThemedCard>
             </div>
         </Layout>
     );

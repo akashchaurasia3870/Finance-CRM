@@ -3,22 +3,24 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Loan;
+use App\Models\Product;
 
 class LoanSeeder extends Seeder
 {
     public function run(): void
     {
-        $statuses = ['pending', 'approved', 'disbursed', 'closed'];
+        $loanTypes = ['Personal Loan', 'Home Loan', 'Car Loan', 'Business Loan', 'Education Loan'];
         
-        for ($i = 1; $i <= 15; $i++) {
-            Loan::create([
-                'loan_number' => 'LN' . str_pad($i, 6, '0', STR_PAD_LEFT),
-                'amount' => rand(50000, 500000),
-                'interest_rate' => rand(500, 1500) / 100,
-                'term_months' => rand(12, 60),
-                'status' => $statuses[array_rand($statuses)],
-                'client_id' => 1,
+        foreach ($loanTypes as $i => $loanType) {
+            Product::create([
+                'name' => $loanType,
+                'symbol' => 'LOAN' . str_pad($i + 1, 2, '0', STR_PAD_LEFT),
+                'product_type' => 'derivative',
+                'description' => $loanType . ' product',
+                'sector' => 'Lending',
+                'risk_level' => 'medium',
+                'is_active' => true,
+                'created_by' => 1,
             ]);
         }
     }

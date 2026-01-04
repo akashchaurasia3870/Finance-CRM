@@ -11,9 +11,35 @@ class PortfolioRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    // You can add portfolio-specific methods here that aren't in the interface
-    public function findActivePortfolio()
+    public function findActivePortfolios()
     {
-        return $this->model->where('active', true)->get();
+        return $this->model->where('status', 'active')
+            ->with(['client', 'securityPositions.product'])
+            ->get();
+    }
+
+    public function findByClient($clientId)
+    {
+        return $this->model->where('client_id', $clientId)
+            ->with(['securityPositions.product'])
+            ->get();
+    }
+
+    public function findByPortfolioNo($portfolioNo)
+    {
+        return $this->model->where('portfolio_no', $portfolioNo)
+            ->with(['client', 'securityPositions.product'])
+            ->first();
+    }
+
+    public function findWithPositions($id)
+    {
+        return $this->model->with([
+            'client',
+            'securityPositions.product',
+            'transactions' => function($query) {
+                $query->latest()->limit(10);
+            }
+        ])->find($id);
     }
 }

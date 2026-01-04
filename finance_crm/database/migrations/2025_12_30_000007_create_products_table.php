@@ -47,7 +47,7 @@ return new class extends Migration
         Schema::create('portfolios', function (Blueprint $table) {
             $table->id();
             $table->string('portfolio_name');
-            $table->integer('portfolio_no');
+            $table->string('portfolio_no');
             $table->unsignedBigInteger('account_id')->nullable();
             $table->enum('status', ['active','inactive'])->default('active');
             $table->unsignedBigInteger('created_by')->nullable();
@@ -61,6 +61,7 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('portfolio_id')->nullable();
             $table->unsignedBigInteger('product_id')->nullable();
+            $table->enum('position_type', ['stock', 'cash', 'margin']);
             $table->decimal('quantity', 20, 6)->default(0);
             $table->decimal('avg_price', 15, 6)->default(0);
             $table->decimal('market_value', 20, 6)->default(0);

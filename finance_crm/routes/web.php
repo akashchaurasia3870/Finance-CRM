@@ -1,11 +1,13 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\AccountsWebController;
 use App\Http\Controllers\AddressWebController;
 use App\Http\Controllers\AddressController;
 use App\Http\Controllers\AttendanceWebController;
 use App\Http\Controllers\AttendanceController;
 use App\Http\Controllers\BondController;
+use App\Http\Controllers\CalendarWebController;
 use App\Http\Controllers\CalendarController;
 use App\Http\Controllers\CampaignsWebController;
 use App\Http\Controllers\CampaignsController;
@@ -25,13 +27,18 @@ use App\Http\Controllers\LeadsWebController;
 use App\Http\Controllers\LeadsController;
 use App\Http\Controllers\LoanController;
 use App\Http\Controllers\MarginController;
+use App\Http\Controllers\MeetingsWebController;
 use App\Http\Controllers\MeetingsController;
 use App\Http\Controllers\MutualFundsController;
 use App\Http\Controllers\NotesWebController;
 use App\Http\Controllers\NotesController;
+use App\Http\Controllers\PayrollWebController;
 use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\PortfolioWebController;
 use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\SecurityPositionWebController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\ProductWebController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportsController;
 use App\Http\Controllers\RoleWebController;
@@ -43,8 +50,11 @@ use App\Http\Controllers\TargetWebController;
 use App\Http\Controllers\TargetController;
 use App\Http\Controllers\TasksWebController;
 use App\Http\Controllers\TasksController;
+use App\Http\Controllers\TransactionWebController;
 use App\Http\Controllers\UserWebController;
 use App\Http\Controllers\UserController;
+use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\SettingsWebController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -102,9 +112,14 @@ Route::middleware('auth')->group(function () {
     });
     
     // Accounts Module Routes
-    Route::get('/accounts', fn() => Inertia::render('Modules/Accounts/View'))->name('accounts.view');
-    Route::get('/accounts/detail', fn() => Inertia::render('Modules/Accounts/Detail'))->name('accounts.detail');
-    Route::get('/accounts/edit', fn() => Inertia::render('Modules/Accounts/Edit'))->name('accounts.edit');
+    Route::get('/accounts', [AccountsWebController::class, 'index'])->name('accounts.view');
+    Route::get('/accounts/new', [AccountsWebController::class, 'create'])->name('accounts.new');
+    Route::post('/accounts', [AccountsWebController::class, 'store']);
+    Route::get('/accounts/{id}', [AccountsWebController::class, 'show'])->name('accounts.detail');
+    Route::get('/accounts/{id}/edit', [AccountsWebController::class, 'edit'])->name('accounts.edit');
+    Route::put('/accounts/{id}', [AccountsWebController::class, 'update']);
+    Route::delete('/accounts/{id}', [AccountsWebController::class, 'destroy']);
+    
     Route::prefix('api/accounts')->group(function () {
         Route::get('/', [AccountsController::class, 'index']);
         Route::get('/{id}', [AccountsController::class, 'show']);
@@ -131,9 +146,17 @@ Route::middleware('auth')->group(function () {
     });
     
     // Calendar Module Routes
-    Route::get('/calendar', fn() => Inertia::render('Modules/Calendar/View'))->name('calendar.view');
-    Route::get('/calendar/detail', fn() => Inertia::render('Modules/Calendar/Detail'))->name('calendar.detail');
-    Route::get('/calendar/edit', fn() => Inertia::render('Modules/Calendar/Edit'))->name('calendar.edit');
+    Route::get('/calendar/calendar-view', [CalendarWebController::class, 'calendarView'])->name('calendar.calendar-view');
+    Route::get('/calendar/reports', [CalendarWebController::class, 'reports'])->name('calendar.reports');
+    Route::get('/calendar', [CalendarWebController::class, 'index'])->name('calendar.view');
+    Route::get('/calendar/new', [CalendarWebController::class, 'create'])->name('calendar.new');
+    Route::post('/calendar', [CalendarWebController::class, 'store']);
+    Route::get('/calendar/{id}', [CalendarWebController::class, 'show'])->name('calendar.detail');
+    Route::get('/calendar/{id}/edit', [CalendarWebController::class, 'edit'])->name('calendar.edit');
+    Route::put('/calendar/{id}', [CalendarWebController::class, 'update']);
+    Route::delete('/calendar/{id}', [CalendarWebController::class, 'destroy']);
+    Route::post('/calendar/{id}/notes', [CalendarWebController::class, 'addNote']);
+    
     Route::prefix('api/calendar')->group(function () {
         Route::get('/', [CalendarController::class, 'index']);
         Route::get('/{id}', [CalendarController::class, 'show']);
@@ -274,9 +297,16 @@ Route::middleware('auth')->group(function () {
     });
     
     // Meetings Module Routes
-    Route::get('/meetings', fn() => Inertia::render('Modules/Meetings/View'))->name('meetings.view');
-    Route::get('/meetings/detail', fn() => Inertia::render('Modules/Meetings/Detail'))->name('meetings.detail');
-    Route::get('/meetings/edit', fn() => Inertia::render('Modules/Meetings/Edit'))->name('meetings.edit');
+    Route::get('/meetings', [MeetingsWebController::class, 'index'])->name('meetings.view');
+    Route::get('/meetings/new', [MeetingsWebController::class, 'create'])->name('meetings.new');
+    Route::post('/meetings', [MeetingsWebController::class, 'store']);
+    Route::get('/meetings/{id}', [MeetingsWebController::class, 'show'])->name('meetings.detail');
+    Route::get('/meetings/{id}/edit', [MeetingsWebController::class, 'edit'])->name('meetings.edit');
+    Route::put('/meetings/{id}', [MeetingsWebController::class, 'update']);
+    Route::delete('/meetings/{id}', [MeetingsWebController::class, 'destroy']);
+    
+    Route::post('/meetings/{id}/notes', [MeetingsWebController::class, 'addNote']);
+    
     Route::prefix('api/meetings')->group(function () {
         Route::get('/', [MeetingsController::class, 'index']);
         Route::get('/{id}', [MeetingsController::class, 'show']);
@@ -303,21 +333,36 @@ Route::middleware('auth')->group(function () {
     });
     
     // Payroll Module Routes
-    Route::get('/payroll', fn() => Inertia::render('Modules/Payroll/View'))->name('payroll.view');
-    Route::get('/payroll/detail', fn() => Inertia::render('Modules/Payroll/Detail'))->name('payroll.detail');
-    Route::get('/payroll/edit', fn() => Inertia::render('Modules/Payroll/Edit'))->name('payroll.edit');
+    Route::get('/payroll', [PayrollWebController::class, 'index'])->name('payroll.view');
+    Route::get('/payroll/new', [PayrollWebController::class, 'create'])->name('payroll.new');
+    Route::post('/payroll', [PayrollWebController::class, 'store']);
+    Route::get('/payroll/{id}', [PayrollWebController::class, 'show'])->name('payroll.detail');
+    Route::get('/payroll/{id}/edit', [PayrollWebController::class, 'edit'])->name('payroll.edit');
+    Route::put('/payroll/{id}', [PayrollWebController::class, 'update']);
+    Route::delete('/payroll/{id}', [PayrollWebController::class, 'destroy']);
+    
     Route::prefix('api/payroll')->group(function () {
         Route::get('/', [PayrollController::class, 'index']);
+        Route::get('/user/{userId}', [PayrollController::class, 'getByUser']);
+        Route::get('/period/{period}', [PayrollController::class, 'getByPeriod']);
+        Route::get('/pending', [PayrollController::class, 'getPendingApprovals']);
         Route::get('/{id}', [PayrollController::class, 'show']);
         Route::post('/', [PayrollController::class, 'store']);
         Route::put('/{id}', [PayrollController::class, 'update']);
         Route::delete('/{id}', [PayrollController::class, 'destroy']);
+        Route::post('/{id}/approve', [PayrollController::class, 'approve']);
+        Route::post('/{id}/mark-paid', [PayrollController::class, 'markPaid']);
     });
     
     // Portfolio Module Routes
-    Route::get('/portfolio', fn() => Inertia::render('Modules/Portfolio/View'))->name('portfolio.view');
-    Route::get('/portfolio/detail', fn() => Inertia::render('Modules/Portfolio/Detail'))->name('portfolio.detail');
-    Route::get('/portfolio/edit', fn() => Inertia::render('Modules/Portfolio/Edit'))->name('portfolio.edit');
+    Route::get('/portfolio', [PortfolioWebController::class, 'index'])->name('portfolio.view');
+    Route::get('/portfolio/new', [PortfolioWebController::class, 'create'])->name('portfolio.new');
+    Route::post('/portfolio', [PortfolioWebController::class, 'store']);
+    Route::get('/portfolio/{id}', [PortfolioWebController::class, 'show'])->name('portfolio.detail');
+    Route::get('/portfolio/{id}/edit', [PortfolioWebController::class, 'edit'])->name('portfolio.edit');
+    Route::put('/portfolio/{id}', [PortfolioWebController::class, 'update']);
+    Route::delete('/portfolio/{id}', [PortfolioWebController::class, 'destroy']);
+    
     Route::prefix('api/portfolio')->group(function () {
         Route::get('/', [PortfolioController::class, 'index']);
         Route::get('/{id}', [PortfolioController::class, 'show']);
@@ -327,9 +372,14 @@ Route::middleware('auth')->group(function () {
     });
     
     // Position Module Routes
-    Route::get('/position', fn() => Inertia::render('Modules/Position/View'))->name('position.view');
-    Route::get('/position/detail', fn() => Inertia::render('Modules/Position/Detail'))->name('position.detail');
-    Route::get('/position/edit', fn() => Inertia::render('Modules/Position/Edit'))->name('position.edit');
+    Route::get('/position', [SecurityPositionWebController::class, 'index'])->name('position.view');
+    Route::get('/position/new', [SecurityPositionWebController::class, 'create'])->name('position.new');
+    Route::post('/position', [SecurityPositionWebController::class, 'store']);
+    Route::get('/position/{id}', [SecurityPositionWebController::class, 'show'])->name('position.detail');
+    Route::get('/position/{id}/edit', [SecurityPositionWebController::class, 'edit'])->name('position.edit');
+    Route::put('/position/{id}', [SecurityPositionWebController::class, 'update']);
+    Route::delete('/position/{id}', [SecurityPositionWebController::class, 'destroy']);
+    
     Route::prefix('api/position')->group(function () {
         Route::get('/', [PositionController::class, 'index']);
         Route::get('/{id}', [PositionController::class, 'show']);
@@ -339,9 +389,14 @@ Route::middleware('auth')->group(function () {
     });
     
     // Product Module Routes
-    Route::get('/product', fn() => Inertia::render('Modules/Product/View'))->name('product.view');
-    Route::get('/product/detail', fn() => Inertia::render('Modules/Product/Detail'))->name('product.detail');
-    Route::get('/product/edit', fn() => Inertia::render('Modules/Product/Edit'))->name('product.edit');
+    Route::get('/product', [ProductWebController::class, 'index'])->name('product.view');
+    Route::get('/product/new', [ProductWebController::class, 'create'])->name('product.new');
+    Route::post('/product', [ProductWebController::class, 'store']);
+    Route::get('/product/{id}', [ProductWebController::class, 'show'])->name('product.detail');
+    Route::get('/product/{id}/edit', [ProductWebController::class, 'edit'])->name('product.edit');
+    Route::put('/product/{id}', [ProductWebController::class, 'update']);
+    Route::delete('/product/{id}', [ProductWebController::class, 'destroy']);
+    
     Route::prefix('api/product')->group(function () {
         Route::get('/', [ProductController::class, 'index']);
         Route::get('/{id}', [ProductController::class, 'show']);
@@ -434,6 +489,23 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [TasksController::class, 'destroy']);
     });
     
+    // Transaction Module Routes
+    Route::get('/transaction', [TransactionWebController::class, 'index'])->name('transaction.view');
+    Route::get('/transaction/new', [TransactionWebController::class, 'create'])->name('transaction.new');
+    Route::post('/transaction', [TransactionWebController::class, 'store']);
+    Route::get('/transaction/{id}', [TransactionWebController::class, 'show'])->name('transaction.detail');
+    Route::get('/transaction/{id}/edit', [TransactionWebController::class, 'edit'])->name('transaction.edit');
+    Route::put('/transaction/{id}', [TransactionWebController::class, 'update']);
+    Route::delete('/transaction/{id}', [TransactionWebController::class, 'destroy']);
+    
+    Route::prefix('api/transaction')->group(function () {
+        Route::get('/', [TransactionController::class, 'index']);
+        Route::get('/{id}', [TransactionController::class, 'show']);
+        Route::post('/', [TransactionController::class, 'store']);
+        Route::put('/{id}', [TransactionController::class, 'update']);
+        Route::delete('/{id}', [TransactionController::class, 'destroy']);
+    });
+    
     // Product Sub-module Routes
     // Bond Module Routes
     Route::get('/bond', fn() => Inertia::render('Modules/Product/Bond/View'))->name('bond.view');
@@ -505,6 +577,86 @@ Route::middleware('auth')->group(function () {
         Route::post('/', [StockController::class, 'store']);
         Route::put('/{id}', [StockController::class, 'update']);
         Route::delete('/{id}', [StockController::class, 'destroy']);
+    });
+    
+    // Settings Module Routes
+    Route::get('/settings', [SettingsWebController::class, 'index'])->name('settings.view');
+    Route::get('/settings/organization', [SettingsWebController::class, 'organizationSettings'])->name('settings.organization');
+    Route::put('/settings/organization', [SettingsWebController::class, 'updateOrganizationSettings']);
+    Route::get('/settings/users', [SettingsWebController::class, 'userManagement'])->name('settings.users');
+    Route::post('/settings/users', [SettingsWebController::class, 'createUser']);
+    Route::put('/settings/users/{id}', [SettingsWebController::class, 'updateUser']);
+    Route::get('/settings/roles', [SettingsWebController::class, 'roleManagement'])->name('settings.roles');
+    Route::post('/settings/roles', [SettingsWebController::class, 'createRole']);
+    Route::get('/settings/security', [SettingsWebController::class, 'securitySettings'])->name('settings.security');
+    Route::put('/settings/security', [SettingsWebController::class, 'updateSecuritySettings']);
+    Route::get('/settings/notifications', [SettingsWebController::class, 'notificationSettings'])->name('settings.notifications');
+    Route::put('/settings/notifications', [SettingsWebController::class, 'updateNotificationSettings']);
+    Route::get('/settings/email', [SettingsWebController::class, 'emailSettings'])->name('settings.email');
+    Route::put('/settings/email', [SettingsWebController::class, 'updateEmailSettings']);
+    Route::get('/settings/integrations', [SettingsWebController::class, 'integrationSettings'])->name('settings.integrations');
+    Route::get('/settings/data-management', [SettingsWebController::class, 'dataManagement'])->name('settings.data-management');
+    Route::get('/settings/audit', [SettingsWebController::class, 'auditSettings'])->name('settings.audit');
+    Route::get('/settings/localization', [SettingsWebController::class, 'localizationSettings'])->name('settings.localization');
+    Route::get('/settings/branding', [SettingsWebController::class, 'brandingSettings'])->name('settings.branding');
+    Route::put('/settings/branding', [SettingsWebController::class, 'updateBrandingSettings']);
+    Route::get('/settings/system-behavior', [SettingsWebController::class, 'systemBehaviorSettings'])->name('settings.system-behavior');
+    Route::get('/settings/compliance', [SettingsWebController::class, 'complianceSettings'])->name('settings.compliance');
+    
+    // Settings API Routes
+    Route::prefix('api/settings')->group(function () {
+        // Organization Settings
+        Route::get('/organization', [SettingsController::class, 'getOrganizationSettings']);
+        Route::put('/organization', [SettingsController::class, 'updateOrganizationSettings']);
+        
+        // Security Settings
+        Route::get('/security', [SettingsController::class, 'getSecuritySettings']);
+        Route::put('/security', [SettingsController::class, 'updateSecuritySettings']);
+        
+        // User Management
+        Route::post('/users', [SettingsController::class, 'createUser']);
+        Route::put('/users/{id}', [SettingsController::class, 'updateUser']);
+        Route::delete('/users/{id}', [SettingsController::class, 'deactivateUser']);
+        Route::post('/users/{id}/reset-password', [SettingsController::class, 'resetUserPassword']);
+        Route::post('/users/{userId}/roles', [SettingsController::class, 'assignRoleToUser']);
+        Route::delete('/users/{userId}/roles/{roleId}', [SettingsController::class, 'removeRoleFromUser']);
+        
+        // Role Management
+        Route::post('/roles', [SettingsController::class, 'createRole']);
+        Route::put('/roles/{roleId}/permissions', [SettingsController::class, 'updateRolePermissions']);
+        
+        // Notification Settings
+        Route::get('/notifications', [SettingsController::class, 'getNotificationSettings']);
+        Route::put('/notifications', [SettingsController::class, 'updateNotificationSettings']);
+        Route::put('/users/{userId}/notification-preferences', [SettingsController::class, 'updateUserNotificationPreferences']);
+        
+        // Email Settings
+        Route::get('/email', [SettingsController::class, 'getEmailSettings']);
+        Route::put('/email', [SettingsController::class, 'updateEmailSettings']);
+        
+        // Integration Settings
+        Route::post('/integrations/enable', [SettingsController::class, 'enableIntegration']);
+        Route::delete('/integrations/{integrationName}', [SettingsController::class, 'disableIntegration']);
+        
+        // Data Management
+        Route::put('/data-retention', [SettingsController::class, 'updateDataRetention']);
+        
+        // Audit & Activity
+        Route::get('/audit-logs', [SettingsController::class, 'getAuditLogs']);
+        Route::get('/audit-logs/export', [SettingsController::class, 'exportAuditLogs']);
+        
+        // Localization
+        Route::put('/localization', [SettingsController::class, 'updateLocalizationSettings']);
+        
+        // Branding
+        Route::get('/branding', [SettingsController::class, 'getBrandingSettings']);
+        Route::put('/branding', [SettingsController::class, 'updateBrandingSettings']);
+        
+        // System Behavior
+        Route::put('/system-behavior', [SettingsController::class, 'updateSystemBehaviorSettings']);
+        
+        // Compliance
+        Route::put('/compliance', [SettingsController::class, 'updateComplianceSettings']);
     });
 });
 

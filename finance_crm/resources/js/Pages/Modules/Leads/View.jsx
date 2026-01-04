@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedTable, ThemedTableHeader, ThemedTableBody, ThemedTableRow, ThemedTableCell, ThemedInput, ThemedBadge } from '@/Components/ThemedComponents';
 
 export default function LeadsView({ leads = [] }) {
     const [searchTerm, setSearchTerm] = useState('');
@@ -18,14 +19,14 @@ export default function LeadsView({ leads = [] }) {
         }
     };
 
-    const getStatusColor = (status) => {
+    const getStatusVariant = (status) => {
         switch(status) {
-            case 'new': return 'bg-blue-100 text-blue-800';
-            case 'contacted': return 'bg-yellow-100 text-yellow-800';
-            case 'qualified': return 'bg-purple-100 text-purple-800';
-            case 'converted': return 'bg-green-100 text-green-800';
-            case 'lost': return 'bg-red-100 text-red-800';
-            default: return 'bg-gray-100 text-gray-800';
+            case 'new': return 'info';
+            case 'contacted': return 'warning';
+            case 'qualified': return 'primary';
+            case 'converted': return 'success';
+            case 'lost': return 'error';
+            default: return 'info';
         }
     };
 
@@ -34,103 +35,93 @@ export default function LeadsView({ leads = [] }) {
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Leads</h1>
-                        <p className="text-gray-600">Manage lead information</p>
+                        <h1 className="text-2xl font-bold text-theme-primary">Leads</h1>
+                        <p className="text-theme-secondary">Manage lead information</p>
                     </div>
-                    <Link
-                        href="/leads/new"
-                        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                    >
-                        Add Lead
+                    <Link href="/leads/new">
+                        <ThemedButton variant="primary">Add Lead</ThemedButton>
                     </Link>
                 </div>
                 
-                <div className="bg-white border rounded-lg">
-                    <div className="p-4 border-b">
+                <ThemedCard>
+                    <div className="p-4 border-b border-theme">
                         <div className="flex justify-between items-center">
-                            <h3 className="text-lg font-medium">Lead List</h3>
-                            <input
+                            <h3 className="text-lg font-medium text-theme-primary">Lead List</h3>
+                            <ThemedInput
                                 type="text"
                                 placeholder="Search leads..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="border rounded-md px-3 py-2 w-64"
+                                className="w-64"
                             />
                         </div>
                     </div>
-                    <div className="overflow-x-auto">
-                        <table className="w-full">
-                            <thead className="bg-gray-50">
-                                <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Phone</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Value</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Assigned To</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Source</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-200">
-                                {filteredLeads.map((lead) => (
-                                    <tr key={lead.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="font-medium text-gray-900">{lead.name}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-gray-900">{lead.email || '-'}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-gray-900">{lead.phone || '-'}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className={`px-2 py-1 text-xs rounded-full ${getStatusColor(lead.status)}`}>
-                                                {lead.status}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-gray-900">{lead.value ? `$${lead.value}` : '-'}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-gray-900">
-                                                {lead.assigned_to ? (lead.assigned_to.name || 'N/A') : 'Unassigned'}
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="text-gray-900">{lead.source || '-'}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                            <Link
-                                                href={`/leads/${lead.id}`}
-                                                className="text-blue-600 hover:text-blue-900"
-                                            >
-                                                View
+                    <ThemedTable>
+                        <ThemedTableHeader>
+                            <ThemedTableRow>
+                                <ThemedTableCell header>Name</ThemedTableCell>
+                                <ThemedTableCell header>Email</ThemedTableCell>
+                                <ThemedTableCell header>Phone</ThemedTableCell>
+                                <ThemedTableCell header>Status</ThemedTableCell>
+                                <ThemedTableCell header>Value</ThemedTableCell>
+                                <ThemedTableCell header>Assigned To</ThemedTableCell>
+                                <ThemedTableCell header>Source</ThemedTableCell>
+                                <ThemedTableCell header>Actions</ThemedTableCell>
+                            </ThemedTableRow>
+                        </ThemedTableHeader>
+                        <ThemedTableBody>
+                            {filteredLeads.map((lead) => (
+                                <ThemedTableRow key={lead.id}>
+                                    <ThemedTableCell>
+                                        <div className="font-medium text-theme-primary">{lead.name}</div>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell className="text-theme-primary">
+                                        {lead.email || '-'}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell className="text-theme-primary">
+                                        {lead.phone || '-'}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <ThemedBadge variant={getStatusVariant(lead.status)}>
+                                            {lead.status}
+                                        </ThemedBadge>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell className="text-theme-primary">
+                                        {lead.value ? `$${lead.value}` : '-'}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell className="text-theme-primary">
+                                        {lead.assigned_to ? (lead.assigned_to.name || 'N/A') : 'Unassigned'}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell className="text-theme-primary">
+                                        {lead.source || '-'}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <div className="space-x-2">
+                                            <Link href={`/leads/${lead.id}`}>
+                                                <ThemedButton variant="ghost" className="text-xs px-2 py-1">View</ThemedButton>
                                             </Link>
-                                            <Link
-                                                href={`/leads/${lead.id}/edit`}
-                                                className="text-indigo-600 hover:text-indigo-900"
-                                            >
-                                                Edit
+                                            <Link href={`/leads/${lead.id}/edit`}>
+                                                <ThemedButton variant="ghost" className="text-xs px-2 py-1">Edit</ThemedButton>
                                             </Link>
-                                            <button
+                                            <ThemedButton 
+                                                variant="ghost" 
+                                                className="text-xs px-2 py-1 text-red-600 hover:text-red-800"
                                                 onClick={() => handleDelete(lead.id)}
-                                                className="text-red-600 hover:text-red-900"
                                             >
                                                 Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        {filteredLeads.length === 0 && (
-                            <div className="p-8 text-center text-gray-500">
-                                No leads found.
-                            </div>
-                        )}
-                    </div>
-                </div>
+                                            </ThemedButton>
+                                        </div>
+                                    </ThemedTableCell>
+                                </ThemedTableRow>
+                            ))}
+                        </ThemedTableBody>
+                    </ThemedTable>
+                    {filteredLeads.length === 0 && (
+                        <div className="p-8 text-center text-theme-muted">
+                            No leads found.
+                        </div>
+                    )}
+                </ThemedCard>
             </div>
         </Layout>
     );

@@ -11,9 +11,25 @@ class PayrollRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    // You can add payroll-specific methods here that aren't in the interface
-    public function findActivePayroll()
+    public function findByUser($userId)
     {
-        return $this->model->where('active', true)->get();
+        return $this->model->where('user_id', $userId)
+                          ->with(['user', 'payrollCycle', 'earnings', 'deductions'])
+                          ->orderBy('pay_date', 'desc')
+                          ->get();
+    }
+
+    public function findByPeriod($period)
+    {
+        return $this->model->where('pay_period', $period)
+                          ->with(['user', 'earnings', 'deductions'])
+                          ->get();
+    }
+
+    public function findPendingApproval()
+    {
+        return $this->model->where('status', 'generated')
+                          ->with(['user', 'creator'])
+                          ->get();
     }
 }

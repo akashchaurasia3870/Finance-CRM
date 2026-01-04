@@ -11,9 +11,18 @@ class ProductRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    // You can add product-specific methods here that aren't in the interface
-    public function findActiveProduct()
+    public function findActiveProducts()
     {
-        return $this->model->where('active', true)->get();
+        return $this->model->where('is_active', true)->get();
+    }
+
+    public function findByProductType($type)
+    {
+        return $this->model->where('product_type', $type)->get();
+    }
+
+    public function findBySymbol($symbol)
+    {
+        return $this->model->where('symbol', $symbol)->first();
     }
 }

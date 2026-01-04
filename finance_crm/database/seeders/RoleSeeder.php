@@ -10,40 +10,26 @@ class RoleSeeder extends Seeder
     public function run(): void
     {
         $roles = [
-            [
-                'name' => 'Super Admin',
-                'description' => 'Full system access with all permissions',
-                'permissions' => ['users.create', 'users.read', 'users.update', 'users.delete', 'roles.create', 'roles.read', 'roles.update', 'roles.delete'],
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Admin',
-                'description' => 'Administrative access with most permissions',
-                'permissions' => ['users.read', 'users.update', 'roles.read', 'clients.create', 'clients.read', 'clients.update'],
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Manager',
-                'description' => 'Management level access',
-                'permissions' => ['clients.read', 'clients.update', 'leads.create', 'leads.read', 'leads.update'],
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Employee',
-                'description' => 'Basic employee access',
-                'permissions' => ['clients.read', 'leads.read', 'tasks.create', 'tasks.read', 'tasks.update'],
-                'is_active' => true,
-            ],
-            [
-                'name' => 'Viewer',
-                'description' => 'Read-only access',
-                'permissions' => ['clients.read', 'leads.read', 'tasks.read'],
-                'is_active' => true,
-            ],
+            ['name' => 'Admin', 'description' => 'Full system access'],
+            ['name' => 'Manager', 'description' => 'Management level access'],
+            ['name' => 'Financial Advisor', 'description' => 'Client and portfolio management'],
+            ['name' => 'Analyst', 'description' => 'Research and analysis'],
+            ['name' => 'Support', 'description' => 'Customer support access'],
+            ['name' => 'Compliance', 'description' => 'Compliance and audit access'],
+            ['name' => 'Sales', 'description' => 'Sales and lead management'],
+            ['name' => 'Operations', 'description' => 'Operational tasks'],
+            ['name' => 'HR', 'description' => 'Human resources management'],
+            ['name' => 'Accountant', 'description' => 'Financial accounting'],
         ];
         
-        foreach ($roles as $roleData) {
-            Role::create($roleData);
+        foreach ($roles as $role) {
+            Role::create([
+                'name' => $role['name'],
+                'description' => $role['description'],
+                'permissions' => json_encode(['read', 'write']),
+                'is_active' => true,
+                'created_by' => 1,
+            ]);
         }
     }
 }

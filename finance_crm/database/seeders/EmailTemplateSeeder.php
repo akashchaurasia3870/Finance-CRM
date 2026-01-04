@@ -4,65 +4,34 @@ namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
 use App\Models\EmailTemplate;
-use App\Models\User;
-use Illuminate\Support\Str;
 
 class EmailTemplateSeeder extends Seeder
 {
     public function run(): void
     {
-        $categories = ['welcome', 'notification', 'marketing', 'reminder', 'support'];
-        $users = User::limit(3)->get();
+        $categories = ['welcome', 'notification', 'marketing', 'reminder', 'invoice'];
         
         $templates = [
-            [
-                'name' => 'Welcome Email',
-                'subject' => 'Welcome to Our Platform!',
-                'body' => '<h1>Welcome!</h1><p>Thank you for joining our platform. We are excited to have you on board.</p>',
-                'category' => 'welcome'
-            ],
-            [
-                'name' => 'Password Reset',
-                'subject' => 'Reset Your Password',
-                'body' => '<h2>Password Reset Request</h2><p>Click the link below to reset your password.</p>',
-                'category' => 'notification'
-            ],
-            [
-                'name' => 'Monthly Newsletter',
-                'subject' => 'Monthly Updates and News',
-                'body' => '<h1>Monthly Newsletter</h1><p>Here are the latest updates from our company.</p>',
-                'category' => 'marketing'
-            ],
+            ['name' => 'Welcome Email', 'slug' => 'welcome-email', 'subject' => 'Welcome to Finance CRM'],
+            ['name' => 'Password Reset', 'slug' => 'password-reset', 'subject' => 'Reset Your Password'],
+            ['name' => 'Meeting Reminder', 'slug' => 'meeting-reminder', 'subject' => 'Meeting Reminder'],
+            ['name' => 'Invoice Generated', 'slug' => 'invoice-generated', 'subject' => 'Your Invoice is Ready'],
+            ['name' => 'Campaign Newsletter', 'slug' => 'campaign-newsletter', 'subject' => 'Monthly Newsletter'],
+            ['name' => 'Account Activation', 'slug' => 'account-activation', 'subject' => 'Activate Your Account'],
+            ['name' => 'Payment Confirmation', 'slug' => 'payment-confirmation', 'subject' => 'Payment Received'],
+            ['name' => 'Task Assignment', 'slug' => 'task-assignment', 'subject' => 'New Task Assigned'],
         ];
         
-        foreach ($templates as $template) {
+        foreach ($templates as $i => $template) {
             EmailTemplate::create([
                 'name' => $template['name'],
-                'slug' => Str::slug($template['name']),
+                'slug' => $template['slug'],
                 'subject' => $template['subject'],
-                'body' => $template['body'],
-                'category' => $template['category'],
+                'body' => '<p>This is the email template body for ' . $template['name'] . '</p>',
+                'category' => $categories[array_rand($categories)],
                 'is_active' => true,
                 'version' => 1,
-                'created_by' => $users->isNotEmpty() ? $users->random()->id : null,
-                'created_at' => now()->subDays(rand(1, 30)),
-                'updated_at' => now()->subDays(rand(0, 15)),
-            ]);
-        }
-        
-        // Add more random templates
-        for ($i = 4; $i <= 10; $i++) {
-            EmailTemplate::create([
-                'name' => 'Template ' . $i,
-                'slug' => 'template-' . $i,
-                'subject' => 'Subject for Template ' . $i,
-                'body' => '<p>This is the body content for template ' . $i . '.</p>',
-                'category' => $categories[array_rand($categories)],
-                'is_active' => rand(0, 1) == 1,
-                'version' => rand(1, 3),
-                'created_by' => $users->isNotEmpty() ? $users->random()->id : null,
-                'created_at' => now()->subDays(rand(1, 60)),
-                'updated_at' => now()->subDays(rand(0, 30)),
+                'created_by' => 1,
             ]);
         }
     }

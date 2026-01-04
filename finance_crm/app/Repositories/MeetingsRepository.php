@@ -11,9 +11,31 @@ class MeetingsRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    // You can add meetings-specific methods here that aren't in the interface
     public function findActiveMeetings()
     {
-        return $this->model->where('active', true)->get();
+        return $this->model->where('status', '!=', 'cancelled')->get();
+    }
+
+    public function findUpcomingMeetings()
+    {
+        return $this->model->where('start_time', '>', now())
+                          ->where('status', 'scheduled')
+                          ->orderBy('start_time')
+                          ->get();
+    }
+
+    public function findMeetingsByOrganizer($organizerId)
+    {
+        return $this->model->where('organizer_id', $organizerId)->get();
+    }
+
+    public function getAllWithRelations()
+    {
+        return $this->model->with(['organizer', 'creator', 'participants.user'])->get();
+    }
+
+    public function findByIdWithRelations($id)
+    {
+        return $this->model->with(['organizer', 'creator', 'participants.user', 'notes.creator'])->find($id);
     }
 }

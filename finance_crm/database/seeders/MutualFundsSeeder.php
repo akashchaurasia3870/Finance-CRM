@@ -3,25 +3,25 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\MutualFunds;
+use App\Models\Product;
 
 class MutualFundsSeeder extends Seeder
 {
     public function run(): void
     {
-        $types = ['equity', 'debt', 'hybrid'];
+        $fundTypes = ['Equity Fund', 'Debt Fund', 'Hybrid Fund', 'Index Fund', 'ELSS Fund'];
+        $riskLevels = ['low', 'medium', 'high'];
         
-        for ($i = 1; $i <= 15; $i++) {
-            $nav = rand(1000, 5000) / 100;
-            $units = rand(100, 1000);
-            
-            MutualFunds::create([
-                'fund_name' => 'Fund ' . $i,
-                'fund_code' => 'MF' . str_pad($i, 4, '0', STR_PAD_LEFT),
-                'nav' => $nav,
-                'units' => $units,
-                'investment_amount' => $nav * $units,
-                'fund_type' => $types[array_rand($types)],
+        foreach ($fundTypes as $i => $fundType) {
+            Product::create([
+                'name' => $fundType . ' ' . ($i + 1),
+                'symbol' => 'MF' . str_pad($i + 1, 3, '0', STR_PAD_LEFT),
+                'product_type' => 'mutual_fund',
+                'description' => $fundType . ' mutual fund product',
+                'sector' => 'Mutual Funds',
+                'risk_level' => $riskLevels[array_rand($riskLevels)],
+                'is_active' => true,
+                'created_by' => 1,
             ]);
         }
     }

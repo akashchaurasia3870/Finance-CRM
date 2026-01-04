@@ -3,21 +3,24 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
-use App\Models\Bond;
+use App\Models\Product;
 
 class BondsSeeder extends Seeder
 {
     public function run(): void
     {
-        $issuers = ['US Treasury', 'Corporate Bond A', 'Municipal Bond', 'Government Bond'];
+        $sectors = ['Government', 'Corporate', 'Municipal'];
         
-        for ($i = 1; $i <= 15; $i++) {
-            Bond::create([
+        for ($i = 1; $i <= 8; $i++) {
+            Product::create([
                 'name' => 'Bond ' . $i,
-                'issuer' => $issuers[array_rand($issuers)],
-                'face_value' => rand(1000, 10000),
-                'coupon_rate' => rand(200, 800) / 100,
-                'maturity_date' => now()->addYears(rand(1, 10)),
+                'symbol' => 'BND' . str_pad($i, 3, '0', STR_PAD_LEFT),
+                'product_type' => 'bond',
+                'description' => 'Bond product ' . $i,
+                'sector' => $sectors[array_rand($sectors)],
+                'risk_level' => 'low',
+                'is_active' => true,
+                'created_by' => 1,
             ]);
         }
     }

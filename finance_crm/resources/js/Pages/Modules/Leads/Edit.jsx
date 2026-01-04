@@ -1,248 +1,152 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Layout from '@/Layouts/Layout';
-import { Link, router } from '@inertiajs/react';
+import { useForm, Link } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedSelect } from '@/Components/ThemedComponents';
 
-export default function EditLead({ lead, users = [] }) {
-    const [data, setData] = useState({
-        name: lead.name || '',
-        email: lead.email || '',
-        phone: lead.phone || '',
-        assigned_to: lead.assigned_to || '',
-        source: lead.source || '',
-        campaign: lead.campaign || '',
-        status: lead.status || 'new',
-        value: lead.value || '',
-        follow_up_date: lead.follow_up_date || '',
-        converted_at: lead.converted_at || '',
-        notes: lead.notes || '',
+export default function LeadsEdit({ lead, users = [] }) {
+    const { data, setData, put, processing, errors } = useForm({
+        name: lead?.name || '',
+        email: lead?.email || '',
+        phone: lead?.phone || '',
+        company: lead?.company || '',
+        status: lead?.status || 'new',
+        source: lead?.source || '',
+        value: lead?.value || '',
+        assigned_to: lead?.assigned_to || '',
+        notes: lead?.notes || '',
     });
-    const [errors, setErrors] = useState({});
-    const [processing, setProcessing] = useState(false);
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        setProcessing(true);
-        
-        const formData = new FormData();
-        formData.append('_method', 'PUT');
-        
-        Object.keys(data).forEach(key => {
-            if (data[key] !== null && data[key] !== '') {
-                formData.append(key, data[key]);
-            }
-        });
-        
-        router.post(`/leads/${lead.id}`, formData, {
-            forceFormData: true,
-            onSuccess: () => {
-                router.visit('/leads');
-            },
-            onError: (errors) => {
-                setErrors(errors);
-                setProcessing(false);
-            },
-        });
+        put(`/leads/${lead.id}`);
     };
 
     return (
         <Layout>
             <div className="space-y-6">
-                <div className="flex justify-between items-center">
-                    <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Edit Lead</h1>
-                        <p className="text-gray-600">Update lead information</p>
-                    </div>
-                    <Link
-                        href="/leads"
-                        className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
-                    >
-                        Back
+                <div className="flex items-center space-x-4">
+                    <Link href="/leads">
+                        <ThemedButton variant="ghost">← Back</ThemedButton>
                     </Link>
+                    <div>
+                        <h1 className="text-2xl font-bold text-theme-primary">Edit Lead</h1>
+                        <p className="text-theme-secondary">Update lead information</p>
+                    </div>
                 </div>
 
-                <div className="bg-white border rounded-lg p-6">
-                    {errors.error && (
-                        <div className="mb-4 p-4 bg-red-100 border border-red-400 text-red-700 rounded">
-                            {errors.error}
-                        </div>
-                    )}
+                <ThemedCard className="p-6">
                     <form onSubmit={handleSubmit} className="space-y-6">
-                        <div className="grid grid-cols-2 gap-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Name *
-                                </label>
-                                <input
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Name *</label>
+                                <ThemedInput
                                     type="text"
                                     value={data.name}
-                                    onChange={(e) => setData({...data, name: e.target.value})}
-                                    className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    onChange={(e) => setData('name', e.target.value)}
+                                    className={errors.name ? 'border-red-500' : ''}
                                     required
                                 />
                                 {errors.name && <p className="text-red-500 text-sm mt-1">{errors.name}</p>}
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Email
-                                </label>
-                                <input
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Email</label>
+                                <ThemedInput
                                     type="email"
                                     value={data.email}
-                                    onChange={(e) => setData({...data, email: e.target.value})}
-                                    className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    onChange={(e) => setData('email', e.target.value)}
+                                    className={errors.email ? 'border-red-500' : ''}
                                 />
                                 {errors.email && <p className="text-red-500 text-sm mt-1">{errors.email}</p>}
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Phone
-                                </label>
-                                <input
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Phone</label>
+                                <ThemedInput
                                     type="tel"
                                     value={data.phone}
-                                    onChange={(e) => setData({...data, phone: e.target.value})}
-                                    className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    onChange={(e) => setData('phone', e.target.value)}
                                 />
-                                {errors.phone && <p className="text-red-500 text-sm mt-1">{errors.phone}</p>}
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Assigned To
-                                </label>
-                                <select
-                                    value={data.assigned_to}
-                                    onChange={(e) => setData({...data, assigned_to: e.target.value})}
-                                    className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                >
-                                    <option value="">Select User</option>
-                                    {users.map((user) => (
-                                        <option key={user.id} value={user.id}>{user.name}</option>
-                                    ))}
-                                </select>
-                                {errors.assigned_to && <p className="text-red-500 text-sm mt-1">{errors.assigned_to}</p>}
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Source
-                                </label>
-                                <input
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Company</label>
+                                <ThemedInput
                                     type="text"
-                                    value={data.source}
-                                    onChange={(e) => setData({...data, source: e.target.value})}
-                                    className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="e.g., Website, Referral, Cold Call"
+                                    value={data.company}
+                                    onChange={(e) => setData('company', e.target.value)}
                                 />
-                                {errors.source && <p className="text-red-500 text-sm mt-1">{errors.source}</p>}
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Campaign
-                                </label>
-                                <input
-                                    type="text"
-                                    value={data.campaign}
-                                    onChange={(e) => setData({...data, campaign: e.target.value})}
-                                    className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                                {errors.campaign && <p className="text-red-500 text-sm mt-1">{errors.campaign}</p>}
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Status
-                                </label>
-                                <select
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Status</label>
+                                <ThemedSelect
                                     value={data.status}
-                                    onChange={(e) => setData({...data, status: e.target.value})}
-                                    className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                                    onChange={(e) => setData('status', e.target.value)}
                                 >
                                     <option value="new">New</option>
                                     <option value="contacted">Contacted</option>
                                     <option value="qualified">Qualified</option>
                                     <option value="converted">Converted</option>
                                     <option value="lost">Lost</option>
-                                </select>
-                                {errors.status && <p className="text-red-500 text-sm mt-1">{errors.status}</p>}
+                                </ThemedSelect>
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Value
-                                </label>
-                                <input
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Source</label>
+                                <ThemedInput
+                                    type="text"
+                                    value={data.source}
+                                    onChange={(e) => setData('source', e.target.value)}
+                                    placeholder="e.g., Website, Referral, Cold Call"
+                                />
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Estimated Value</label>
+                                <ThemedInput
                                     type="number"
                                     step="0.01"
-                                    min="0"
                                     value={data.value}
-                                    onChange={(e) => setData({...data, value: e.target.value})}
-                                    className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                    placeholder="0.00"
+                                    onChange={(e) => setData('value', e.target.value)}
                                 />
-                                {errors.value && <p className="text-red-500 text-sm mt-1">{errors.value}</p>}
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Follow Up Date
-                                </label>
-                                <input
-                                    type="date"
-                                    value={data.follow_up_date}
-                                    onChange={(e) => setData({...data, follow_up_date: e.target.value})}
-                                    className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                                {errors.follow_up_date && <p className="text-red-500 text-sm mt-1">{errors.follow_up_date}</p>}
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-2">
-                                    Converted At
-                                </label>
-                                <input
-                                    type="date"
-                                    value={data.converted_at}
-                                    onChange={(e) => setData({...data, converted_at: e.target.value})}
-                                    className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                />
-                                {errors.converted_at && <p className="text-red-500 text-sm mt-1">{errors.converted_at}</p>}
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Assigned To</label>
+                                <ThemedSelect
+                                    value={data.assigned_to}
+                                    onChange={(e) => setData('assigned_to', e.target.value)}
+                                >
+                                    <option value="">Unassigned</option>
+                                    {users.map((user) => (
+                                        <option key={user.id} value={user.id}>{user.name}</option>
+                                    ))}
+                                </ThemedSelect>
                             </div>
                         </div>
 
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-2">
-                                Notes
-                            </label>
+                            <label className="block text-sm font-medium text-theme-primary mb-2">Notes</label>
                             <textarea
+                                rows={4}
                                 value={data.notes}
-                                onChange={(e) => setData({...data, notes: e.target.value})}
-                                className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
-                                rows="3"
+                                onChange={(e) => setData('notes', e.target.value)}
+                                className="w-full px-3 py-2 border border-theme rounded-md bg-theme-primary text-theme-primary placeholder-theme-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
+                                placeholder="Additional notes about this lead..."
                             />
-                            {errors.notes && <p className="text-red-500 text-sm mt-1">{errors.notes}</p>}
                         </div>
 
-                        <div className="flex justify-end space-x-3">
-                            <Link
-                                href="/leads"
-                                className="bg-gray-300 text-gray-700 px-4 py-2 rounded-md hover:bg-gray-400"
-                            >
-                                Cancel
+                        <div className="flex justify-end space-x-4">
+                            <Link href="/leads">
+                                <ThemedButton variant="ghost">Cancel</ThemedButton>
                             </Link>
-                            <button
-                                type="submit"
-                                disabled={processing}
-                                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
-                            >
+                            <ThemedButton type="submit" variant="primary" disabled={processing}>
                                 {processing ? 'Updating...' : 'Update Lead'}
-                            </button>
+                            </ThemedButton>
                         </div>
                     </form>
-                </div>
+                </ThemedCard>
             </div>
         </Layout>
     );

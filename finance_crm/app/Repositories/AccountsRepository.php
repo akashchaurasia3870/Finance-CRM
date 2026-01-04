@@ -11,9 +11,18 @@ class AccountsRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    // You can add accounts-specific methods here that aren't in the interface
     public function findActiveAccounts()
     {
-        return $this->model->where('active', true)->get();
+        return $this->model->where('status', 'active')->get();
+    }
+
+    public function findByAccountNo($accountNo)
+    {
+        return $this->model->where('account_no', $accountNo)->first();
+    }
+
+    public function findByClient($clientId)
+    {
+        return $this->model->where('client_id', $clientId)->get();
     }
 }

@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Http\Request;
 use Inertia\Middleware;
+use App\Services\SettingsService;
 
 class HandleInertiaRequests extends Middleware
 {
@@ -29,11 +30,19 @@ class HandleInertiaRequests extends Middleware
      */
     public function share(Request $request): array
     {
-        return [
+        $sharedData = [
             ...parent::share($request),
             'auth' => [
                 'user' => $request->user(),
             ],
         ];
+
+        // Add branding settings for authenticated users
+        if ($request->user()) {
+            $settingsService = app(SettingsService::class);
+            $sharedData['branding'] = $settingsService->getBrandingSettings($request->user()->id);
+        }
+
+        return $sharedData;
     }
 }

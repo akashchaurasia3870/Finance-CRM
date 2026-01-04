@@ -11,9 +11,33 @@ class PositionRepository extends BaseRepository
         parent::__construct($model);
     }
 
-    // You can add position-specific methods here that aren't in the interface
-    public function findActivePosition()
+    public function findByPortfolio($portfolioId)
     {
-        return $this->model->where('active', true)->get();
+        return $this->model->where('portfolio_id', $portfolioId)
+            ->with('product')
+            ->get();
+    }
+
+    public function findByPortfolioAndType($portfolioId, $type)
+    {
+        return $this->model->where('portfolio_id', $portfolioId)
+            ->where('position_type', $type)
+            ->with('product')
+            ->get();
+    }
+
+    public function findByPortfolioAndProduct($portfolioId, $productId, $type)
+    {
+        return $this->model->where('portfolio_id', $portfolioId)
+            ->where('product_id', $productId)
+            ->where('position_type', $type)
+            ->first();
+    }
+
+    public function getActivePositions()
+    {
+        return $this->model->where('quantity', '>', 0)
+            ->with(['portfolio', 'product'])
+            ->get();
     }
 }

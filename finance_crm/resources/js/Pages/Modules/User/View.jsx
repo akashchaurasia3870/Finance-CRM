@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedTable, ThemedTableHeader, ThemedTableBody, ThemedTableRow, ThemedTableCell, ThemedInput, ThemedBadge } from '@/Components/ThemedComponents';
 
 export default function UserView({ users = [] }) {
     const [searchTerm, setSearchTerm] = useState('');
@@ -21,102 +22,90 @@ export default function UserView({ users = [] }) {
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Users</h1>
-                        <p className="text-gray-600">Manage system users</p>
+                        <h1 className="text-2xl font-bold text-theme-primary">Users</h1>
+                        <p className="text-theme-secondary">Manage system users</p>
                     </div>
-                    <Link
-                        href="/user/new"
-                        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                    >
-                        Create
+                    <Link href="/user/new">
+                        <ThemedButton variant="primary">Create</ThemedButton>
                     </Link>
                 </div>
                 
-                <div className="bg-white border rounded-lg">
-                    <div className="p-4 border-b">
+                <ThemedCard>
+                    <div className="p-4 border-b border-theme">
                         <div className="flex justify-between items-center">
-                            <h3 className="text-lg font-medium">User List</h3>
-                            <input
+                            <h3 className="text-lg font-medium text-theme-primary">User List</h3>
+                            <ThemedInput
                                 type="text"
                                 placeholder="Search users..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="border rounded-md px-3 py-2 w-64"
+                                className="w-64"
                             />
                         </div>
                     </div>
-                    <div className="overflow-x-auto">
-                        <table className="w-full">
-                            <thead className="bg-gray-50">
-                                <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Roles</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Created</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-200">
-                                {filteredUsers.map((user) => (
-                                    <tr key={user.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="font-medium text-gray-900">{user.name}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                                            {user.email}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="text-gray-500">
-                                                {user.roles && user.roles.length > 0
-                                                    ? user.roles.map(role => role.name).join(', ')
-                                                    : 'No roles'
-                                                }
-                                            </div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className={`px-2 py-1 text-xs rounded-full ${
-                                                user.is_active 
-                                                    ? 'bg-green-100 text-green-800' 
-                                                    : 'bg-red-100 text-red-800'
-                                            }`}>
-                                                {user.is_active ? 'Active' : 'Inactive'}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                                            {new Date(user.created_at).toLocaleDateString()}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                            <Link
-                                                href={`/user/${user.id}`}
-                                                className="text-blue-600 hover:text-blue-900"
-                                            >
-                                                View
+                    <ThemedTable>
+                        <ThemedTableHeader>
+                            <ThemedTableRow>
+                                <ThemedTableCell header>Name</ThemedTableCell>
+                                <ThemedTableCell header>Email</ThemedTableCell>
+                                <ThemedTableCell header>Roles</ThemedTableCell>
+                                <ThemedTableCell header>Status</ThemedTableCell>
+                                <ThemedTableCell header>Created</ThemedTableCell>
+                                <ThemedTableCell header>Actions</ThemedTableCell>
+                            </ThemedTableRow>
+                        </ThemedTableHeader>
+                        <ThemedTableBody>
+                            {filteredUsers.map((user) => (
+                                <ThemedTableRow key={user.id}>
+                                    <ThemedTableCell>
+                                        <div className="font-medium text-theme-primary">{user.name}</div>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell className="text-theme-secondary">
+                                        {user.email}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <div className="text-theme-secondary">
+                                            {user.roles && user.roles.length > 0
+                                                ? user.roles.map(role => role.name).join(', ')
+                                                : 'No roles'
+                                            }
+                                        </div>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <ThemedBadge variant={user.is_active ? 'success' : 'error'}>
+                                            {user.is_active ? 'Active' : 'Inactive'}
+                                        </ThemedBadge>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell className="text-theme-secondary">
+                                        {new Date(user.created_at).toLocaleDateString()}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <div className="space-x-2">
+                                            <Link href={`/user/${user.id}`}>
+                                                <ThemedButton variant="ghost" className="text-xs px-2 py-1">View</ThemedButton>
                                             </Link>
-                                            <Link
-                                                href={`/user/${user.id}/edit`}
-                                                className="text-indigo-600 hover:text-indigo-900"
-                                            >
-                                                Edit
+                                            <Link href={`/user/${user.id}/edit`}>
+                                                <ThemedButton variant="ghost" className="text-xs px-2 py-1">Edit</ThemedButton>
                                             </Link>
-                                            <button
+                                            <ThemedButton 
+                                                variant="ghost" 
+                                                className="text-xs px-2 py-1 text-red-600 hover:text-red-800"
                                                 onClick={() => handleDelete(user.id)}
-                                                className="text-red-600 hover:text-red-900"
                                             >
                                                 Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        {filteredUsers.length === 0 && (
-                            <div className="p-8 text-center text-gray-500">
-                                No users found.
-                            </div>
-                        )}
-                    </div>
-                </div>
+                                            </ThemedButton>
+                                        </div>
+                                    </ThemedTableCell>
+                                </ThemedTableRow>
+                            ))}
+                        </ThemedTableBody>
+                    </ThemedTable>
+                    {filteredUsers.length === 0 && (
+                        <div className="p-8 text-center text-theme-muted">
+                            No users found.
+                        </div>
+                    )}
+                </ThemedCard>
             </div>
         </Layout>
     );

@@ -9,14 +9,18 @@ class ClientsSeeder extends Seeder
 {
     public function run(): void
     {
-        for ($i = 1; $i <= 15; $i++) {
+        $companies = ['Tech Corp', 'Finance Ltd', 'Healthcare Inc', 'Energy Solutions', 'Retail Group'];
+        $statuses = ['active', 'inactive'];
+        
+        for ($i = 1; $i <= 12; $i++) {
             Client::create([
                 'name' => 'Client ' . $i,
                 'email' => 'client' . $i . '@example.com',
-                'phone' => '555-' . str_pad($i, 3, '0', STR_PAD_LEFT) . '-' . rand(1000, 9999),
-                'company' => 'Company ' . $i,
-                'address' => $i . ' Business Ave, City',
-                'status' => rand(0, 1) ? 'active' : 'inactive',
+                'phone' => '+1234567' . str_pad($i, 3, '0', STR_PAD_LEFT),
+                'company' => $companies[array_rand($companies)],
+                'address' => $i . ' Business Street, City, State',
+                'status' => $statuses[array_rand($statuses)],
+                'created_by' => 1,
             ]);
         }
     }

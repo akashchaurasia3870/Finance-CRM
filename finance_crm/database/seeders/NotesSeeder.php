@@ -9,15 +9,15 @@ class NotesSeeder extends Seeder
 {
     public function run(): void
     {
-        $categories = ['personal', 'work', 'meeting', 'idea'];
+        $categories = ['meeting', 'call', 'email', 'general', 'follow_up'];
         
         for ($i = 1; $i <= 15; $i++) {
             Notes::create([
+                'created_by' => rand(1, 5),
+                'client_id' => rand(1, 12),
                 'title' => 'Note ' . $i,
-                'content' => 'Content for note ' . $i,
-                'user_id' => 1,
+                'content' => 'Content for note ' . $i . '. This is a detailed note about client interaction.',
                 'category' => $categories[array_rand($categories)],
-                'is_private' => rand(0, 1),
             ]);
         }
     }
