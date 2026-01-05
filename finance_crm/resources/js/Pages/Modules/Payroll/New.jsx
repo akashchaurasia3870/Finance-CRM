@@ -6,11 +6,11 @@ import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedCompon
 export default function PayrollNew({ users = [] }) {
     const [formData, setFormData] = useState({
         user_id: '',
+        payroll_cycle_id: null,
         pay_period: '',
         period_start: '',
         period_end: '',
         pay_date: '',
-        gross_salary: '',
         working_days: 22,
         present_days: 22,
         leave_days: 0,
@@ -18,12 +18,10 @@ export default function PayrollNew({ users = [] }) {
         status: 'generated',
         earnings: [
             { type: 'basic', amount: '' },
-            { type: 'hra', amount: '' },
-            { type: 'allowances', amount: '' }
+            { type: 'hra', amount: '' }
         ],
         deductions: [
-            { type: 'tax', amount: '' },
-            { type: 'pf', amount: '' }
+            { type: 'tax', amount: '' }
         ]
     });
 
@@ -97,7 +95,8 @@ export default function PayrollNew({ users = [] }) {
             ...formData,
             total_earnings: totalEarnings,
             total_deductions: totalDeductions,
-            net_salary: netSalary
+            net_salary: netSalary,
+            gross_salary: totalEarnings
         };
         
         router.post('/payroll', submitData, {
@@ -132,9 +131,7 @@ export default function PayrollNew({ users = [] }) {
                         <div className="p-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-theme-primary mb-2">
-                                        Employee *
-                                    </label>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">Employee *</label>
                                     <select
                                         value={formData.user_id}
                                         onChange={(e) => setFormData(prev => ({ ...prev, user_id: e.target.value }))}
@@ -152,9 +149,7 @@ export default function PayrollNew({ users = [] }) {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-theme-primary mb-2">
-                                        Pay Period *
-                                    </label>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">Pay Period *</label>
                                     <ThemedInput
                                         type="month"
                                         value={formData.pay_period}
@@ -164,9 +159,7 @@ export default function PayrollNew({ users = [] }) {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-theme-primary mb-2">
-                                        Period Start *
-                                    </label>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">Period Start *</label>
                                     <ThemedInput
                                         type="date"
                                         value={formData.period_start}
@@ -176,9 +169,7 @@ export default function PayrollNew({ users = [] }) {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-theme-primary mb-2">
-                                        Period End *
-                                    </label>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">Period End *</label>
                                     <ThemedInput
                                         type="date"
                                         value={formData.period_end}
@@ -188,9 +179,7 @@ export default function PayrollNew({ users = [] }) {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-theme-primary mb-2">
-                                        Pay Date *
-                                    </label>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">Pay Date *</label>
                                     <ThemedInput
                                         type="date"
                                         value={formData.pay_date}
@@ -200,9 +189,7 @@ export default function PayrollNew({ users = [] }) {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-theme-primary mb-2">
-                                        Working Days *
-                                    </label>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">Working Days *</label>
                                     <ThemedInput
                                         type="number"
                                         value={formData.working_days}
@@ -212,9 +199,7 @@ export default function PayrollNew({ users = [] }) {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-theme-primary mb-2">
-                                        Present Days *
-                                    </label>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">Present Days *</label>
                                     <ThemedInput
                                         type="number"
                                         value={formData.present_days}
@@ -224,9 +209,7 @@ export default function PayrollNew({ users = [] }) {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-theme-primary mb-2">
-                                        Leave Days
-                                    </label>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">Leave Days</label>
                                     <ThemedInput
                                         type="number"
                                         value={formData.leave_days}

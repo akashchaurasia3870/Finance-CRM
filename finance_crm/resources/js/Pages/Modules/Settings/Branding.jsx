@@ -40,9 +40,11 @@ export default function Branding() {
     }, [data.primary_color, data.secondary_color, data.accent_color, data.background_color, data.text_color, data.theme]);
 
     const themes = [
+        // Default Theme Group
         { 
             name: 'Light', 
             value: 'light', 
+            group: 'Default',
             colors: { 
                 primary: '#3B82F6', 
                 secondary: '#10B981', 
@@ -56,6 +58,7 @@ export default function Branding() {
         { 
             name: 'Dark', 
             value: 'dark', 
+            group: 'Default',
             colors: { 
                 primary: '#60A5FA', 
                 secondary: '#34D399', 
@@ -69,6 +72,7 @@ export default function Branding() {
         { 
             name: 'Warm', 
             value: 'warm', 
+            group: 'Default',
             colors: { 
                 primary: '#F59E0B', 
                 secondary: '#EF4444', 
@@ -82,6 +86,7 @@ export default function Branding() {
         { 
             name: 'Cool', 
             value: 'cool', 
+            group: 'Default',
             colors: { 
                 primary: '#06B6D4', 
                 secondary: '#3B82F6', 
@@ -95,6 +100,7 @@ export default function Branding() {
         { 
             name: 'Cozy', 
             value: 'cozy', 
+            group: 'Default',
             colors: { 
                 primary: '#D97706', 
                 secondary: '#DC2626', 
@@ -108,6 +114,7 @@ export default function Branding() {
         { 
             name: 'Sunny', 
             value: 'sunny', 
+            group: 'Default',
             colors: { 
                 primary: '#FBBF24', 
                 secondary: '#F59E0B', 
@@ -121,6 +128,7 @@ export default function Branding() {
         { 
             name: 'Monsoon', 
             value: 'monsoon', 
+            group: 'Default',
             colors: { 
                 primary: '#059669', 
                 secondary: '#0D9488', 
@@ -130,6 +138,254 @@ export default function Branding() {
                 cardBg: '#FFFFFF',
                 buttonText: '#FFFFFF'
             } 
+        },
+        
+        // High-Impact Colors
+        {
+            name: 'High Contrast',
+            value: 'high-contrast',
+            group: 'High-Impact',
+            colors: {
+                primary: '#000000',
+                secondary: '#FF0000',
+                accent: '#FFFF00',
+                bg: '#FFFFFF',
+                text: '#000000',
+                cardBg: '#F5F5F5',
+                buttonText: '#FFFFFF'
+            }
+        },
+        {
+            name: 'Bold Palette',
+            value: 'bold-palette',
+            group: 'High-Impact',
+            colors: {
+                primary: '#FF4500',
+                secondary: '#8A2BE2',
+                accent: '#00CED1',
+                bg: '#1C1C1C',
+                text: '#FFFFFF',
+                cardBg: '#2D2D2D',
+                buttonText: '#FFFFFF'
+            }
+        },
+        {
+            name: 'Vivid Scheme',
+            value: 'vivid-scheme',
+            group: 'High-Impact',
+            colors: {
+                primary: '#FF1493',
+                secondary: '#00FF7F',
+                accent: '#FFD700',
+                bg: '#1A1A2E',
+                text: '#FFFFFF',
+                cardBg: '#16213E',
+                buttonText: '#FFFFFF'
+            }
+        },
+        {
+            name: 'Power Colors',
+            value: 'power-colors',
+            group: 'High-Impact',
+            colors: {
+                primary: '#DC143C',
+                secondary: '#FF8C00',
+                accent: '#32CD32',
+                bg: '#2F4F4F',
+                text: '#FFFFFF',
+                cardBg: '#708090',
+                buttonText: '#FFFFFF'
+            }
+        },
+        {
+            name: 'Statement Colors',
+            value: 'statement-colors',
+            group: 'High-Impact',
+            colors: {
+                primary: '#FF6347',
+                secondary: '#4169E1',
+                accent: '#FFD700',
+                bg: '#2E2E2E',
+                text: '#FFFFFF',
+                cardBg: '#404040',
+                buttonText: '#FFFFFF'
+            }
+        },
+        
+        // Nature / Weather
+        {
+            name: 'Rainy Night',
+            value: 'rainy-night',
+            group: 'Nature/Weather',
+            colors: {
+                primary: '#4682B4',
+                secondary: '#708090',
+                accent: '#87CEEB',
+                bg: '#2F4F4F',
+                text: '#E6E6FA',
+                cardBg: '#36454F',
+                buttonText: '#FFFFFF'
+            }
+        },
+        {
+            name: 'Storm',
+            value: 'storm',
+            group: 'Nature/Weather',
+            colors: {
+                primary: '#483D8B',
+                secondary: '#696969',
+                accent: '#B0C4DE',
+                bg: '#2F2F2F',
+                text: '#F5F5DC',
+                cardBg: '#404040',
+                buttonText: '#FFFFFF'
+            }
+        },
+        {
+            name: 'Autumn',
+            value: 'autumn',
+            group: 'Nature/Weather',
+            colors: {
+                primary: '#D2691E',
+                secondary: '#CD853F',
+                accent: '#FF8C00',
+                bg: '#F5DEB3',
+                text: '#8B4513',
+                cardBg: '#FFEFD5',
+                buttonText: '#FFFFFF'
+            }
+        },
+        {
+            name: 'Ocean Breeze',
+            value: 'ocean-breeze',
+            group: 'Nature/Weather',
+            colors: {
+                primary: '#20B2AA',
+                secondary: '#48D1CC',
+                accent: '#00CED1',
+                bg: '#F0F8FF',
+                text: '#2F4F4F',
+                cardBg: '#E0FFFF',
+                buttonText: '#FFFFFF'
+            }
+        },
+        
+        // Time / Mood
+        {
+            name: 'Midnight',
+            value: 'midnight',
+            group: 'Time/Mood',
+            colors: {
+                primary: '#191970',
+                secondary: '#4169E1',
+                accent: '#6495ED',
+                bg: '#0C0C0C',
+                text: '#E6E6FA',
+                cardBg: '#1C1C1C',
+                buttonText: '#FFFFFF'
+            }
+        },
+        {
+            name: 'Golden Hour',
+            value: 'golden-hour',
+            group: 'Time/Mood',
+            colors: {
+                primary: '#FFD700',
+                secondary: '#FFA500',
+                accent: '#FF8C00',
+                bg: '#FFF8DC',
+                text: '#8B4513',
+                cardBg: '#FFFACD',
+                buttonText: '#8B4513'
+            }
+        },
+        {
+            name: 'Serenity',
+            value: 'serenity',
+            group: 'Time/Mood',
+            colors: {
+                primary: '#87CEEB',
+                secondary: '#B0E0E6',
+                accent: '#ADD8E6',
+                bg: '#F0F8FF',
+                text: '#2F4F4F',
+                cardBg: '#E6F3FF',
+                buttonText: '#2F4F4F'
+            }
+        },
+        
+        // Professional / UI-Focused
+        {
+            name: 'Corporate',
+            value: 'corporate',
+            group: 'Professional',
+            colors: {
+                primary: '#003366',
+                secondary: '#0066CC',
+                accent: '#3399FF',
+                bg: '#F8F9FA',
+                text: '#212529',
+                cardBg: '#FFFFFF',
+                buttonText: '#FFFFFF'
+            }
+        },
+        {
+            name: 'Minimal',
+            value: 'minimal',
+            group: 'Professional',
+            colors: {
+                primary: '#6C757D',
+                secondary: '#ADB5BD',
+                accent: '#DEE2E6',
+                bg: '#FFFFFF',
+                text: '#212529',
+                cardBg: '#F8F9FA',
+                buttonText: '#FFFFFF'
+            }
+        },
+        
+        // Special / Creative
+        {
+            name: 'Cyberpunk',
+            value: 'cyberpunk',
+            group: 'Special/Creative',
+            colors: {
+                primary: '#FF00FF',
+                secondary: '#00FFFF',
+                accent: '#FFFF00',
+                bg: '#0D0D0D',
+                text: '#00FF41',
+                cardBg: '#1A1A1A',
+                buttonText: '#FFFFFF'
+            }
+        },
+        {
+            name: 'Galaxy',
+            value: 'galaxy',
+            group: 'Special/Creative',
+            colors: {
+                primary: '#9932CC',
+                secondary: '#8A2BE2',
+                accent: '#DA70D6',
+                bg: '#191970',
+                text: '#E6E6FA',
+                cardBg: '#2E2E4F',
+                buttonText: '#FFFFFF'
+            }
+        },
+        {
+            name: 'Sunset',
+            value: 'sunset',
+            group: 'Special/Creative',
+            colors: {
+                primary: '#FF4500',
+                secondary: '#FF6347',
+                accent: '#FFD700',
+                bg: '#FFF8DC',
+                text: '#8B0000',
+                cardBg: '#FFEBCD',
+                buttonText: '#FFFFFF'
+            }
         }
     ];
 
@@ -157,10 +413,43 @@ export default function Branding() {
     const handleSubmit = (e) => {
         e.preventDefault();
         put('/settings/branding', {
+            onSuccess: () => {
+                console.log('Branding settings saved successfully');
+            },
             onError: (errors) => {
                 console.error('Failed to save branding settings:', errors);
             }
         });
+    };
+
+    const getThemeDescription = (themeName) => {
+        const descriptions = {
+            'Light': 'Clean & Professional',
+            'Dark': 'Modern & Sleek',
+            'Warm': 'Cozy & Inviting',
+            'Cool': 'Fresh & Calm',
+            'Cozy': 'Comfortable & Earthy',
+            'Sunny': 'Bright & Energetic',
+            'Monsoon': 'Natural & Refreshing',
+            'High Contrast': 'Maximum Visibility',
+            'Bold Palette': 'Aggressive & Striking',
+            'Vivid Scheme': 'Electric & Dynamic',
+            'Power Colors': 'Commanding & Strong',
+            'Statement Colors': 'Bold & Confident',
+            'Rainy Night': 'Moody & Atmospheric',
+            'Storm': 'Dramatic & Intense',
+            'Autumn': 'Warm & Natural',
+            'Ocean Breeze': 'Fresh & Calming',
+            'Midnight': 'Deep & Mysterious',
+            'Golden Hour': 'Warm & Luxurious',
+            'Serenity': 'Peaceful & Tranquil',
+            'Corporate': 'Professional & Trustworthy',
+            'Minimal': 'Clean & Simple',
+            'Cyberpunk': 'Futuristic & Edgy',
+            'Galaxy': 'Cosmic & Mystical',
+            'Sunset': 'Vibrant & Energetic'
+        };
+        return descriptions[themeName] || 'Unique Style';
     };
 
     const applyTheme = (theme) => {
@@ -215,108 +504,127 @@ export default function Branding() {
                     {activeTab === 'themes' && (
                         <div className="bg-theme-primary border rounded-lg p-6" style={{ backgroundColor: data.background_color, color: data.text_color }}>
                             <h3 className="text-lg font-medium text-theme-primary mb-4">Theme Selection</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-6">
-                                {themes.map((theme) => (
-                                    <div
-                                        key={theme.value}
-                                        onClick={() => applyTheme(theme)}
-                                        className={`cursor-pointer border-2 rounded-xl p-4 transition-all hover:shadow-lg ${
-                                            data.theme === theme.value ? 'border-blue-500 shadow-md' : 'border-gray-200 hover:border-gray-300'
-                                        }`}
-                                    >
-                                        {/* Theme Preview Card */}
-                                        <div 
-                                            className="rounded-lg p-4 mb-3 relative overflow-hidden"
-                                            style={{ backgroundColor: theme.colors.bg }}
-                                        >
-                                            {/* Header */}
-                                            <div className="flex items-center justify-between mb-3">
-                                                <h4 
-                                                    className="text-sm font-semibold"
-                                                    style={{ color: theme.colors.text }}
+                            
+                            {/* Group themes by category */}
+                            {['Default', 'High-Impact', 'Nature/Weather', 'Time/Mood', 'Professional', 'Special/Creative'].map(group => {
+                                const groupThemes = themes.filter(theme => theme.group === group);
+                                if (groupThemes.length === 0) return null;
+                                
+                                return (
+                                    <div key={group} className="mb-8">
+                                        <h4 className="text-md font-semibold text-theme-primary mb-4 border-b border-theme pb-2">
+                                            {group} Themes
+                                        </h4>
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                                            {groupThemes.map((theme) => (
+                                                <div
+                                                    key={theme.value}
+                                                    onClick={() => applyTheme(theme)}
+                                                    className={`cursor-pointer border-2 rounded-xl p-4 transition-all hover:shadow-lg relative ${
+                                                        data.theme === theme.value ? 'border-blue-500 shadow-md ring-2 ring-blue-200' : 'border-gray-200 hover:border-gray-300'
+                                                    }`}
                                                 >
-                                                    Finance CRM
-                                                </h4>
-                                                <div className="flex space-x-1">
-                                                    <div className="w-2 h-2 rounded-full bg-red-400"></div>
-                                                    <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
-                                                    <div className="w-2 h-2 rounded-full bg-green-400"></div>
-                                                </div>
-                                            </div>
-                                            
-                                            {/* Content Card */}
-                                            <div 
-                                                className="rounded p-3 mb-3"
-                                                style={{ backgroundColor: theme.colors.cardBg }}
-                                            >
-                                                <div className="flex items-center space-x-2 mb-2">
+                                                    {/* Theme Preview Card */}
                                                     <div 
-                                                        className="w-3 h-3 rounded"
-                                                        style={{ backgroundColor: theme.colors.primary }}
-                                                    ></div>
-                                                    <div 
-                                                        className="h-2 bg-gray-300 rounded flex-1"
-                                                        style={{ backgroundColor: theme.colors.text, opacity: 0.3 }}
-                                                    ></div>
+                                                        className="rounded-lg p-4 mb-3 relative overflow-hidden"
+                                                        style={{ backgroundColor: theme.colors.bg }}
+                                                    >
+                                                        {/* Header */}
+                                                        <div className="flex items-center justify-between mb-3">
+                                                            <h4 
+                                                                className="text-sm font-semibold"
+                                                                style={{ color: theme.colors.text }}
+                                                            >
+                                                                Finance CRM
+                                                            </h4>
+                                                            <div className="flex space-x-1">
+                                                                <div className="w-2 h-2 rounded-full bg-red-400"></div>
+                                                                <div className="w-2 h-2 rounded-full bg-yellow-400"></div>
+                                                                <div className="w-2 h-2 rounded-full bg-green-400"></div>
+                                                            </div>
+                                                        </div>
+                                                        
+                                                        {/* Content Card */}
+                                                        <div 
+                                                            className="rounded p-3 mb-3"
+                                                            style={{ backgroundColor: theme.colors.cardBg }}
+                                                        >
+                                                            <div className="flex items-center space-x-2 mb-2">
+                                                                <div 
+                                                                    className="w-3 h-3 rounded"
+                                                                    style={{ backgroundColor: theme.colors.primary }}
+                                                                ></div>
+                                                                <div 
+                                                                    className="h-2 bg-gray-300 rounded flex-1"
+                                                                    style={{ backgroundColor: theme.colors.text, opacity: 0.3 }}
+                                                                ></div>
+                                                            </div>
+                                                            <div 
+                                                                className="h-1 bg-gray-200 rounded mb-1"
+                                                                style={{ backgroundColor: theme.colors.text, opacity: 0.2 }}
+                                                            ></div>
+                                                            <div 
+                                                                className="h-1 bg-gray-200 rounded w-3/4"
+                                                                style={{ backgroundColor: theme.colors.text, opacity: 0.2 }}
+                                                            ></div>
+                                                        </div>
+                                                        
+                                                        {/* Buttons */}
+                                                        <div className="flex space-x-2">
+                                                            <div 
+                                                                className="px-3 py-1 rounded text-xs font-bold"
+                                                                style={{ 
+                                                                    backgroundColor: theme.colors.primary,
+                                                                    color: theme.colors.buttonText,
+                                                                    fontWeight: group === 'High-Impact' ? '800' : '600'
+                                                                }}
+                                                            >
+                                                                Primary
+                                                            </div>
+                                                            <div 
+                                                                className="px-3 py-1 rounded text-xs font-bold"
+                                                                style={{ 
+                                                                    backgroundColor: theme.colors.secondary,
+                                                                    color: theme.colors.buttonText,
+                                                                    fontWeight: group === 'High-Impact' ? '800' : '600'
+                                                                }}
+                                                            >
+                                                                Secondary
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    
+                                                    {/* Theme Name */}
+                                                    <div className="text-center">
+                                                        <h5 className={`font-semibold text-theme-primary ${
+                                                            group === 'High-Impact' ? 'font-bold text-lg' : 'font-medium'
+                                                        }`}>{theme.name}</h5>
+                                                        <p className="text-xs text-theme-muted mt-1">
+                                                            {getThemeDescription(theme.name)}
+                                                        </p>
+                                                    </div>
+                                                    
+                                                    {/* Selected Indicator */}
+                                                    {data.theme === theme.value && (
+                                                        <div className="absolute top-2 right-2 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
+                                                            <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
+                                                                <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                                                            </svg>
+                                                        </div>
+                                                    )}
+                                                    
+                                                    {/* High-Impact Badge */}
+                                                    {group === 'High-Impact' && (
+                                                        <div className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded-full font-bold">
+                                                            BOLD
+                                                        </div>
+                                                    )}
                                                 </div>
-                                                <div 
-                                                    className="h-1 bg-gray-200 rounded mb-1"
-                                                    style={{ backgroundColor: theme.colors.text, opacity: 0.2 }}
-                                                ></div>
-                                                <div 
-                                                    className="h-1 bg-gray-200 rounded w-3/4"
-                                                    style={{ backgroundColor: theme.colors.text, opacity: 0.2 }}
-                                                ></div>
-                                            </div>
-                                            
-                                            {/* Buttons */}
-                                            <div className="flex space-x-2">
-                                                <div 
-                                                    className="px-3 py-1 rounded text-xs font-medium"
-                                                    style={{ 
-                                                        backgroundColor: theme.colors.primary,
-                                                        color: theme.colors.buttonText
-                                                    }}
-                                                >
-                                                    Primary
-                                                </div>
-                                                <div 
-                                                    className="px-3 py-1 rounded text-xs font-medium"
-                                                    style={{ 
-                                                        backgroundColor: theme.colors.secondary,
-                                                        color: theme.colors.buttonText
-                                                    }}
-                                                >
-                                                    Secondary
-                                                </div>
-                                            </div>
+                                            ))}
                                         </div>
-                                        
-                                        {/* Theme Name */}
-                                        <div className="text-center">
-                                            <h5 className="font-semibold text-theme-primary">{theme.name}</h5>
-                                            <p className="text-xs text-theme-muted mt-1">
-                                                {theme.name === 'Light' ? 'Clean & Professional' :
-                                                 theme.name === 'Dark' ? 'Modern & Sleek' :
-                                                 theme.name === 'Warm' ? 'Cozy & Inviting' :
-                                                 theme.name === 'Cool' ? 'Fresh & Calm' :
-                                                 theme.name === 'Cozy' ? 'Comfortable & Earthy' :
-                                                 theme.name === 'Sunny' ? 'Bright & Energetic' :
-                                                 'Natural & Refreshing'}
-                                            </p>
-                                        </div>
-                                        
-                                        {/* Selected Indicator */}
-                                        {data.theme === theme.value && (
-                                            <div className="absolute top-2 right-2 w-6 h-6 bg-blue-500 rounded-full flex items-center justify-center">
-                                                <svg className="w-4 h-4 text-white" fill="currentColor" viewBox="0 0 20 20">
-                                                    <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
-                                                </svg>
-                                            </div>
-                                        )}
                                     </div>
-                                ))}
-                            </div>
+                                );
+                            })}
                             
                             {/* Current Theme Preview */}
                             <div className="border rounded-lg p-4" style={{ backgroundColor: data.background_color }}>

@@ -7,7 +7,7 @@ export default function OrganizationSettings({ settings = {} }) {
     const [formData, setFormData] = useState({
         company_name: settings.company_name || '',
         timezone: settings.timezone || 'UTC',
-        fiscal_year_start: settings.fiscal_year_start || '',
+        fiscal_year_start: settings.fiscal_year_start || `${new Date().getFullYear()}-04-01`,
         business_hours: settings.business_hours || {},
         working_days: settings.working_days || [1,2,3,4,5]
     });

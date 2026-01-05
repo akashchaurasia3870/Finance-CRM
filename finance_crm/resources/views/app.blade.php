@@ -14,18 +14,36 @@
         @php
             $branding = null;
             if (auth()->check()) {
-                $settingsService = app(\App\Services\SettingsService::class);
-                $branding = $settingsService->getBrandingSettings(auth()->id());
+                try {
+                    $settingsService = app(\App\Services\SettingsService::class);
+                    $branding = $settingsService->getBrandingSettings(auth()->id());
+                } catch (\Exception $e) {
+                    // Fallback to default if there's any error
+                    $branding = null;
+                }
             }
+            // Use default values if not logged in or if branding is null
+            $defaultBranding = (object) [
+                'primary_color' => '#3B82F6',
+                'secondary_color' => '#10B981',
+                'accent_color' => '#F59E0B',
+                'background_color' => '#FFFFFF',
+                'text_color' => '#111827',
+                'font_family' => 'Inter',
+                'font_size' => 'medium',
+                'font_weight' => 'normal',
+                'theme' => 'light'
+            ];
+            $branding = $branding ?? $defaultBranding;
         @endphp
         
         <style>
             :root {
-                --primary-color: {{ $branding->primary_color ?? '#3B82F6' }};
-                --secondary-color: {{ $branding->secondary_color ?? '#10B981' }};
-                --accent-color: {{ $branding->accent_color ?? '#F59E0B' }};
-                --background-color: {{ $branding->background_color ?? '#FFFFFF' }};
-                --text-color: {{ $branding->text_color ?? '#111827' }};
+                --primary-color: {{ $branding->primary_color }};
+                --secondary-color: {{ $branding->secondary_color }};
+                --accent-color: {{ $branding->accent_color }};
+                --background-color: {{ $branding->background_color }};
+                --text-color: {{ $branding->text_color }};
                 --font-family: {{ $branding->font_family && $branding->font_family !== 'Default' ? $branding->font_family : 'Inter' }}, sans-serif;
                 --font-size: {{ 
                     $branding->font_size === 'small' ? '14px' : 
@@ -46,7 +64,7 @@
         @vite(['resources/js/app.jsx', "resources/js/Pages/{$page['component']}.jsx"])
         @inertiaHead
     </head>
-    <body class="font-sans antialiased theme-{{ $branding->theme ?? 'light' }}">
+    <body class="font-sans antialiased theme-{{ $branding->theme }}">
         @inertia
     </body>
 </html>

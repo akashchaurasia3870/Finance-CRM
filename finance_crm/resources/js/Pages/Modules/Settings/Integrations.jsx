@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { useForm, Link } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedBadge } from '@/Components/ThemedComponents';
 
 export default function IntegrationSettings() {
     const [activeTab, setActiveTab] = useState('available');

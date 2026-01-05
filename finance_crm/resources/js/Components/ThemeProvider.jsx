@@ -34,8 +34,12 @@ export default function ThemeProvider({ children }) {
             root.style.setProperty('--text-color', branding.text_color || '#111827');
             
             // Update theme class
-            document.body.className = document.body.className.replace(/theme-\w+/g, '');
+            document.body.className = document.body.className.replace(/theme-\w+/g, '').replace(/theme-[\w-]+/g, '');
             document.body.classList.add(`theme-${branding.theme || 'light'}`);
+            
+            // Force update body background and text color for immediate effect
+            document.body.style.backgroundColor = branding.background_color || '#FFFFFF';
+            document.body.style.color = branding.text_color || '#111827';
             
             // Update font settings
             if (branding.font_family && branding.font_family !== 'Default') {
