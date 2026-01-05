@@ -2,6 +2,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Hide scrollbars but keep functionality */
+* {
+  scrollbar-width: none; /* Firefox */
+  -ms-overflow-style: none; /* Internet Explorer 10+ */
+}
+
+*::-webkit-scrollbar {
+  display: none; /* WebKit */
+}
+
 /* Theme CSS Variables */
 :root {
   --primary-color: #3B82F6;
@@ -44,6 +54,97 @@ body {
   --text-muted: #94a3b8;
 }
 
+/* Bold Palette theme */
+.theme-bold-palette {
+  --bg-primary: #1C1C1C;
+  --bg-secondary: #2D2D2D;
+  --bg-tertiary: #404040;
+  --border-color: #555555;
+  --text-primary: #FFFFFF;
+  --text-secondary: #CCCCCC;
+  --text-muted: #999999;
+}
+
+/* High Contrast theme */
+.theme-high-contrast {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F5F5F5;
+  --bg-tertiary: #E0E0E0;
+  --border-color: #000000;
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --text-muted: #666666;
+}
+
+/* Cyberpunk theme */
+.theme-cyberpunk {
+  --bg-primary: #0D0D0D;
+  --bg-secondary: #1A1A1A;
+  --bg-tertiary: #2A2A2A;
+  --border-color: #FF00FF;
+  --text-primary: #00FF41;
+  --text-secondary: #00FFFF;
+  --text-muted: #FFFF00;
+}
+
+/* Galaxy theme */
+.theme-galaxy {
+  --bg-primary: #191970;
+  --bg-secondary: #2E2E4F;
+  --bg-tertiary: #4B0082;
+  --border-color: #9932CC;
+  --text-primary: #E6E6FA;
+  --text-secondary: #DDA0DD;
+  --text-muted: #C8A2C8;
+}
+
+/* Midnight theme */
+.theme-midnight {
+  --bg-primary: #0C0C0C;
+  --bg-secondary: #1C1C1C;
+  --bg-tertiary: #2C2C2C;
+  --border-color: #191970;
+  --text-primary: #E6E6FA;
+  --text-secondary: #C8C8FA;
+  --text-muted: #A8A8FA;
+}
+
+/* Corporate theme */
+.theme-corporate {
+  --bg-primary: #F8F9FA;
+  --bg-secondary: #FFFFFF;
+  --bg-tertiary: #E9ECEF;
+  --border-color: #DEE2E6;
+  --text-primary: #212529;
+  --text-secondary: #495057;
+  --text-muted: #6C757D;
+}
+
+/* Minimal theme */
+.theme-minimal {
+  --bg-primary: #FFFFFF;
+  --bg-secondary: #F8F9FA;
+  --bg-tertiary: #E9ECEF;
+  --border-color: #DEE2E6;
+  --text-primary: #212529;
+  --text-secondary: #495057;
+  --text-muted: #6C757D;
+}
+
+/* Default theme styles for other themes */
+.theme-warm, .theme-cool, .theme-cozy, .theme-sunny, .theme-monsoon,
+.theme-vivid-scheme, .theme-power-colors, .theme-statement-colors,
+.theme-rainy-night, .theme-storm, .theme-autumn, .theme-ocean-breeze,
+.theme-golden-hour, .theme-serenity, .theme-sunset {
+  --bg-primary: var(--background-color);
+  --bg-secondary: color-mix(in srgb, var(--background-color) 95%, var(--primary-color) 5%);
+  --bg-tertiary: color-mix(in srgb, var(--background-color) 90%, var(--primary-color) 10%);
+  --border-color: color-mix(in srgb, var(--text-color) 20%, transparent 80%);
+  --text-primary: var(--text-color);
+  --text-secondary: color-mix(in srgb, var(--text-color) 80%, transparent 20%);
+  --text-muted: color-mix(in srgb, var(--text-color) 60%, transparent 40%);
+}
+
 /* Theme utility classes */
 .bg-theme-primary { background-color: var(--bg-primary); }
 .bg-theme-secondary { background-color: var(--bg-secondary); }
@@ -67,3 +168,49 @@ body {
 .bg-accent { background-color: var(--accent-color); }
 .text-accent { color: var(--accent-color); }
 .border-accent { border-color: var(--accent-color); }
+
+/* Force text color inheritance for themed components */
+.text-theme-primary { color: var(--text-primary) !important; }
+.text-theme-secondary { color: var(--text-secondary) !important; }
+.text-theme-muted { color: var(--text-muted) !important; }
+
+/* Ensure proper background colors */
+.bg-theme-primary { background-color: var(--bg-primary) !important; }
+.bg-theme-secondary { background-color: var(--bg-secondary) !important; }
+.bg-theme-tertiary { background-color: var(--bg-tertiary) !important; }
+
+/* High contrast themes need stronger borders */
+.theme-high-contrast .border-theme,
+.theme-bold-palette .border-theme,
+.theme-cyberpunk .border-theme {
+  border-width: 2px;
+}
+
+/* Ensure buttons have proper contrast */
+.theme-bold-palette .bg-primary,
+.theme-cyberpunk .bg-primary,
+.theme-galaxy .bg-primary {
+  color: #FFFFFF !important;
+}
+
+/* Fix table text visibility in dark themes */
+.theme-bold-palette table,
+.theme-cyberpunk table,
+.theme-galaxy table,
+.theme-midnight table {
+  color: var(--text-primary);
+}
+
+.theme-bold-palette th,
+.theme-cyberpunk th,
+.theme-galaxy th,
+.theme-midnight th {
+  color: var(--text-secondary) !important;
+}
+
+.theme-bold-palette td,
+.theme-cyberpunk td,
+.theme-galaxy td,
+.theme-midnight td {
+  color: var(--text-primary) !important;
+}

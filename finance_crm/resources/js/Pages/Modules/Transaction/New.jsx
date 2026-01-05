@@ -1,7 +1,7 @@
 import React from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import Layout from '@/Layouts/Layout';
-import './style.css';
+import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
 
 export default function New({ auth, portfolios = [], products = [], transactionTypes = {} }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -36,167 +36,171 @@ export default function New({ auth, portfolios = [], products = [], transactionT
         <Layout>
             <Head title="New Transaction" />
             
-            <div className="transaction-container">
-                <div className="transaction-header">
-                    <h1>Create New Transaction</h1>
-                    <p>Process a new transaction that will update portfolio positions automatically</p>
+            <div className="space-y-6">
+                <div className="flex justify-between items-center">
+                    <div>
+                        <h1 className="text-2xl font-bold text-theme-primary">Create New Transaction</h1>
+                        <p className="text-theme-secondary">Process a new transaction that will update portfolio positions automatically</p>
+                    </div>
+                    <a href="/transaction">
+                        <ThemedButton variant="secondary">Back</ThemedButton>
+                    </a>
                 </div>
 
-                <form onSubmit={handleSubmit} className="transaction-form">
-                    <div className="form-group">
-                        <label htmlFor="portfolio_id">Portfolio *</label>
-                        <select
-                            id="portfolio_id"
-                            value={data.portfolio_id}
-                            onChange={(e) => setData('portfolio_id', e.target.value)}
-                            className={errors.portfolio_id ? 'error' : ''}
-                        >
-                            <option value="">Select Portfolio</option>
-                            {portfolios.map((portfolio) => (
-                                <option key={portfolio.id} value={portfolio.id}>
-                                    {portfolio.portfolio_name} ({portfolio.portfolio_no})
-                                </option>
-                            ))}
-                        </select>
-                        {errors.portfolio_id && <span className="error-message">{errors.portfolio_id}</span>}
+                <ThemedCard>
+                    <div className="p-4 border-b border-theme">
+                        <h3 className="text-lg font-medium text-theme-primary">Transaction Information</h3>
                     </div>
-
-                    <div className="form-group">
-                        <label htmlFor="transaction_type">Transaction Type *</label>
-                        <select
-                            id="transaction_type"
-                            value={data.transaction_type}
-                            onChange={(e) => setData('transaction_type', e.target.value)}
-                            className={errors.transaction_type ? 'error' : ''}
-                        >
-                            {Object.entries(transactionTypes).map(([key, label]) => (
-                                <option key={key} value={key}>{label}</option>
-                            ))}
-                        </select>
-                        {errors.transaction_type && <span className="error-message">{errors.transaction_type}</span>}
-                    </div>
-
-                    {requiresProduct && (
-                        <div className="form-group">
-                            <label htmlFor="product_id">Product *</label>
-                            <select
-                                id="product_id"
-                                value={data.product_id}
-                                onChange={(e) => setData('product_id', e.target.value)}
-                                className={errors.product_id ? 'error' : ''}
-                            >
-                                <option value="">Select Product</option>
-                                {products.map((product) => (
-                                    <option key={product.id} value={product.id}>
-                                        {product.name} ({product.symbol}) - {product.product_type}
-                                    </option>
-                                ))}
-                            </select>
-                            {errors.product_id && <span className="error-message">{errors.product_id}</span>}
-                        </div>
-                    )}
-
-                    {requiresQuantityPrice && (
-                        <>
-                            <div className="form-group">
-                                <label htmlFor="quantity">Quantity *</label>
-                                <input
-                                    type="number"
-                                    id="quantity"
-                                    step="0.000001"
-                                    value={data.quantity}
-                                    onChange={(e) => setData('quantity', e.target.value)}
-                                    onBlur={calculateAmount}
-                                    className={errors.quantity ? 'error' : ''}
-                                />
-                                {errors.quantity && <span className="error-message">{errors.quantity}</span>}
+                    <div className="p-6">
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            <div>
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Portfolio *</label>
+                                <select
+                                    value={data.portfolio_id}
+                                    onChange={(e) => setData('portfolio_id', e.target.value)}
+                                    className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent ${errors.portfolio_id ? 'border-red-500' : ''}`}
+                                >
+                                    <option value="">Select Portfolio</option>
+                                    {portfolios.map((portfolio) => (
+                                        <option key={portfolio.id} value={portfolio.id}>
+                                            {portfolio.portfolio_name} ({portfolio.portfolio_no})
+                                        </option>
+                                    ))}
+                                </select>
+                                {errors.portfolio_id && <p className="text-red-500 text-sm mt-1">{errors.portfolio_id}</p>}
                             </div>
 
-                            <div className="form-group">
-                                <label htmlFor="price">Price per Unit *</label>
-                                <input
+                            <div>
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Transaction Type *</label>
+                                <select
+                                    value={data.transaction_type}
+                                    onChange={(e) => setData('transaction_type', e.target.value)}
+                                    className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent ${errors.transaction_type ? 'border-red-500' : ''}`}
+                                >
+                                    {Object.entries(transactionTypes).map(([key, label]) => (
+                                        <option key={key} value={key}>{label}</option>
+                                    ))}
+                                </select>
+                                {errors.transaction_type && <p className="text-red-500 text-sm mt-1">{errors.transaction_type}</p>}
+                            </div>
+
+                            {requiresProduct && (
+                                <div>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">Product *</label>
+                                    <select
+                                        value={data.product_id}
+                                        onChange={(e) => setData('product_id', e.target.value)}
+                                        className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent ${errors.product_id ? 'border-red-500' : ''}`}
+                                    >
+                                        <option value="">Select Product</option>
+                                        {products.map((product) => (
+                                            <option key={product.id} value={product.id}>
+                                                {product.name} ({product.symbol}) - {product.product_type}
+                                            </option>
+                                        ))}
+                                    </select>
+                                    {errors.product_id && <p className="text-red-500 text-sm mt-1">{errors.product_id}</p>}
+                                </div>
+                            )}
+
+                            {requiresQuantityPrice && (
+                                <>
+                                    <div>
+                                        <label className="block text-sm font-medium text-theme-primary mb-2">Quantity *</label>
+                                        <ThemedInput
+                                            type="number"
+                                            step="0.000001"
+                                            value={data.quantity}
+                                            onChange={(e) => setData('quantity', e.target.value)}
+                                            onBlur={calculateAmount}
+                                            className={errors.quantity ? 'border-red-500' : ''}
+                                        />
+                                        {errors.quantity && <p className="text-red-500 text-sm mt-1">{errors.quantity}</p>}
+                                    </div>
+
+                                    <div>
+                                        <label className="block text-sm font-medium text-theme-primary mb-2">Price per Unit *</label>
+                                        <ThemedInput
+                                            type="number"
+                                            step="0.01"
+                                            value={data.price}
+                                            onChange={(e) => setData('price', e.target.value)}
+                                            onBlur={calculateAmount}
+                                            className={errors.price ? 'border-red-500' : ''}
+                                        />
+                                        {errors.price && <p className="text-red-500 text-sm mt-1">{errors.price}</p>}
+                                    </div>
+                                </>
+                            )}
+
+                            <div>
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Amount *</label>
+                                <ThemedInput
                                     type="number"
-                                    id="price"
                                     step="0.01"
-                                    value={data.price}
-                                    onChange={(e) => setData('price', e.target.value)}
-                                    onBlur={calculateAmount}
-                                    className={errors.price ? 'error' : ''}
+                                    value={data.amount}
+                                    onChange={(e) => setData('amount', e.target.value)}
+                                    className={errors.amount ? 'border-red-500' : ''}
                                 />
-                                {errors.price && <span className="error-message">{errors.price}</span>}
+                                {errors.amount && <p className="text-red-500 text-sm mt-1">{errors.amount}</p>}
                             </div>
-                        </>
-                    )}
 
-                    <div className="form-group">
-                        <label htmlFor="amount">Amount *</label>
-                        <input
-                            type="number"
-                            id="amount"
-                            step="0.01"
-                            value={data.amount}
-                            onChange={(e) => setData('amount', e.target.value)}
-                            className={errors.amount ? 'error' : ''}
-                        />
-                        {errors.amount && <span className="error-message">{errors.amount}</span>}
-                    </div>
+                            <div>
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Fees</label>
+                                <ThemedInput
+                                    type="number"
+                                    step="0.01"
+                                    value={data.fees}
+                                    onChange={(e) => setData('fees', e.target.value)}
+                                    className={errors.fees ? 'border-red-500' : ''}
+                                />
+                                {errors.fees && <p className="text-red-500 text-sm mt-1">{errors.fees}</p>}
+                            </div>
 
-                    <div className="form-group">
-                        <label htmlFor="fees">Fees</label>
-                        <input
-                            type="number"
-                            id="fees"
-                            step="0.01"
-                            value={data.fees}
-                            onChange={(e) => setData('fees', e.target.value)}
-                            className={errors.fees ? 'error' : ''}
-                        />
-                        {errors.fees && <span className="error-message">{errors.fees}</span>}
-                    </div>
+                            <div>
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Transaction Date</label>
+                                <ThemedInput
+                                    type="date"
+                                    value={data.transaction_date}
+                                    onChange={(e) => setData('transaction_date', e.target.value)}
+                                    className={errors.transaction_date ? 'border-red-500' : ''}
+                                />
+                                {errors.transaction_date && <p className="text-red-500 text-sm mt-1">{errors.transaction_date}</p>}
+                            </div>
 
-                    <div className="form-group">
-                        <label htmlFor="transaction_date">Transaction Date</label>
-                        <input
-                            type="date"
-                            id="transaction_date"
-                            value={data.transaction_date}
-                            onChange={(e) => setData('transaction_date', e.target.value)}
-                            className={errors.transaction_date ? 'error' : ''}
-                        />
-                        {errors.transaction_date && <span className="error-message">{errors.transaction_date}</span>}
-                    </div>
+                            <div>
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Reference</label>
+                                <ThemedInput
+                                    type="text"
+                                    value={data.reference}
+                                    onChange={(e) => setData('reference', e.target.value)}
+                                    className={errors.reference ? 'border-red-500' : ''}
+                                />
+                                {errors.reference && <p className="text-red-500 text-sm mt-1">{errors.reference}</p>}
+                            </div>
 
-                    <div className="form-group">
-                        <label htmlFor="reference">Reference</label>
-                        <input
-                            type="text"
-                            id="reference"
-                            value={data.reference}
-                            onChange={(e) => setData('reference', e.target.value)}
-                            className={errors.reference ? 'error' : ''}
-                        />
-                        {errors.reference && <span className="error-message">{errors.reference}</span>}
-                    </div>
+                            <div>
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Notes</label>
+                                <textarea
+                                    rows="3"
+                                    value={data.notes}
+                                    onChange={(e) => setData('notes', e.target.value)}
+                                    className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent ${errors.notes ? 'border-red-500' : ''}`}
+                                />
+                                {errors.notes && <p className="text-red-500 text-sm mt-1">{errors.notes}</p>}
+                            </div>
 
-                    <div className="form-group">
-                        <label htmlFor="notes">Notes</label>
-                        <textarea
-                            id="notes"
-                            rows="3"
-                            value={data.notes}
-                            onChange={(e) => setData('notes', e.target.value)}
-                            className={errors.notes ? 'error' : ''}
-                        />
-                        {errors.notes && <span className="error-message">{errors.notes}</span>}
+                            <div className="flex justify-end space-x-3">
+                                <a href="/transaction">
+                                    <ThemedButton variant="secondary">Cancel</ThemedButton>
+                                </a>
+                                <ThemedButton type="submit" variant="primary" disabled={processing}>
+                                    {processing ? 'Processing...' : 'Process Transaction'}
+                                </ThemedButton>
+                            </div>
+                        </form>
                     </div>
-
-                    <div className="form-actions">
-                        <button type="submit" disabled={processing} className="btn btn-primary">
-                            {processing ? 'Processing...' : 'Process Transaction'}
-                        </button>
-                        <a href="/transaction" className="btn btn-secondary">Cancel</a>
-                    </div>
-                </form>
+                </ThemedCard>
             </div>
         </Layout>
     );

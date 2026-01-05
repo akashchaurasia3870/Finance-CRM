@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { useForm, Link } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
 
 export default function Localization() {
     const { data, setData, put, processing } = useForm({
@@ -68,20 +69,23 @@ export default function Localization() {
     return (
         <Layout>
             <div className="space-y-6">
-                <div className="flex items-center space-x-4">
-                    <Link href="/settings" className="text-blue-600 hover:text-blue-800">
-                        ← Back to Settings
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-2xl font-bold text-theme-primary">Localization & Regional Settings</h1>
+                        <p className="text-theme-secondary">Configure language, currency, and regional preferences</p>
+                    </div>
+                    <Link href="/settings">
+                        <ThemedButton variant="secondary">Back</ThemedButton>
                     </Link>
-                </div>
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Localization & Regional Settings</h1>
-                    <p className="text-gray-600">Configure language, currency, and regional preferences</p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Language Settings */}
-                    <div className="bg-white border rounded-lg p-6">
-                        <h3 className="text-lg font-medium text-gray-900 mb-4">Language Settings</h3>
+                    <ThemedCard>
+                        <div className="p-4 border-b border-theme">
+                            <h3 className="text-lg font-medium text-theme-primary">Language Settings</h3>
+                        </div>
+                        <div className="p-6">
                         <div className="space-y-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -109,7 +113,7 @@ export default function Localization() {
                                     />
                                     <span className="ml-2 text-sm text-gray-700">Enable Multi-language Support</span>
                                 </label>
-                                <p className="text-xs text-gray-500 mt-1 ml-6">Allow users to switch between languages</p>
+                                <p className="text-xs text-theme-muted mt-1 ml-6">Allow users to switch between languages</p>
                             </div>
                             {data.multi_language_enabled && (
                                 <div>
@@ -131,11 +135,15 @@ export default function Localization() {
                                 </div>
                             )}
                         </div>
-                    </div>
+                        </div>
+                    </ThemedCard>
 
                     {/* Currency Settings */}
-                    <div className="bg-white border rounded-lg p-6">
-                        <h3 className="text-lg font-medium text-gray-900 mb-4">Currency & Number Format</h3>
+                    <ThemedCard>
+                        <div className="p-4 border-b border-theme">
+                            <h3 className="text-lg font-medium text-theme-primary">Currency & Number Format</h3>
+                        </div>
+                        <div className="p-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -184,18 +192,22 @@ export default function Localization() {
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Preview
                                 </label>
-                                <div className="border border-gray-300 rounded-md px-3 py-2 bg-gray-50">
+                                <div className="border border-gray-300 rounded-md px-3 py-2 bg-theme-tertiary">
                                     <span className="text-sm text-gray-700">
                                         {data.currency_position === 'before' ? `${data.currency_symbol}1,234.56` : `1,234.56${data.currency_symbol}`}
                                     </span>
                                 </div>
                             </div>
                         </div>
-                    </div>
+                        </div>
+                    </ThemedCard>
 
                     {/* Date & Time Settings */}
-                    <div className="bg-white border rounded-lg p-6">
-                        <h3 className="text-lg font-medium text-gray-900 mb-4">Date & Time Format</h3>
+                    <ThemedCard>
+                        <div className="p-4 border-b border-theme">
+                            <h3 className="text-lg font-medium text-theme-primary">Date & Time Format</h3>
+                        </div>
+                        <div className="p-6">
                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -243,7 +255,7 @@ export default function Localization() {
                                 </select>
                             </div>
                         </div>
-                        <div className="mt-4 p-3 bg-gray-50 rounded-md">
+                        <div className="mt-4 p-3 bg-theme-tertiary rounded-md">
                             <span className="text-sm text-gray-600">Preview: </span>
                             <span className="text-sm font-medium">
                                 {new Date().toLocaleDateString('en-US', {
@@ -257,11 +269,15 @@ export default function Localization() {
                                 })}
                             </span>
                         </div>
-                    </div>
+                        </div>
+                    </ThemedCard>
 
                     {/* Regional Settings */}
-                    <div className="bg-white border rounded-lg p-6">
-                        <h3 className="text-lg font-medium text-gray-900 mb-4">Regional Settings</h3>
+                    <ThemedCard>
+                        <div className="p-4 border-b border-theme">
+                            <h3 className="text-lg font-medium text-theme-primary">Regional Settings</h3>
+                        </div>
+                        <div className="p-6">
                         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -282,16 +298,17 @@ export default function Localization() {
                                 </select>
                             </div>
                         </div>
-                    </div>
+                        </div>
+                    </ThemedCard>
 
                     <div className="flex justify-end">
-                        <button
+                        <ThemedButton
                             type="submit"
+                            variant="primary"
                             disabled={processing}
-                            className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
                         >
                             {processing ? 'Saving...' : 'Save Localization Settings'}
-                        </button>
+                        </ThemedButton>
                     </div>
                 </form>
             </div>

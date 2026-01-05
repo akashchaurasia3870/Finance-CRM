@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedBadge } from '@/Components/ThemedComponents';
 
 export default function CalendarDetail({ calendar }) {
     const [noteText, setNoteText] = useState('');
@@ -8,7 +9,11 @@ export default function CalendarDetail({ calendar }) {
 
     const handleDelete = () => {
         if (confirm('Are you sure you want to delete this calendar event?')) {
-            router.delete(`/calendar/${calendar.id}`);
+            router.delete(`/calendar/${calendar.id}`, {
+                onSuccess: () => {
+                    router.visit('/calendar');
+                }
+            });
         }
     };
 
@@ -22,23 +27,23 @@ export default function CalendarDetail({ calendar }) {
         });
     };
 
-    const getStatusColor = (status) => {
+    const getStatusVariant = (status) => {
         switch (status) {
-            case 'scheduled': return 'bg-blue-100 text-blue-800';
-            case 'completed': return 'bg-green-100 text-green-800';
-            case 'cancelled': return 'bg-red-100 text-red-800';
-            default: return 'bg-gray-100 text-gray-800';
+            case 'scheduled': return 'info';
+            case 'completed': return 'success';
+            case 'cancelled': return 'error';
+            default: return 'info';
         }
     };
 
-    const getTypeColor = (type) => {
+    const getTypeVariant = (type) => {
         switch (type) {
-            case 'meeting': return 'bg-purple-100 text-purple-800';
-            case 'event': return 'bg-indigo-100 text-indigo-800';
-            case 'reminder': return 'bg-yellow-100 text-yellow-800';
-            case 'task': return 'bg-orange-100 text-orange-800';
-            case 'note': return 'bg-gray-100 text-gray-800';
-            default: return 'bg-gray-100 text-gray-800';
+            case 'meeting': return 'warning';
+            case 'event': return 'info';
+            case 'reminder': return 'warning';
+            case 'task': return 'success';
+            case 'note': return 'info';
+            default: return 'info';
         }
     };
 
@@ -47,214 +52,223 @@ export default function CalendarDetail({ calendar }) {
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">{calendar.title}</h1>
-                        <p className="text-gray-600">Calendar Event Details</p>
+                        <h1 className="text-2xl font-bold text-theme-primary">{calendar.title}</h1>
+                        <p className="text-theme-secondary">Calendar Event Details</p>
                     </div>
-                    <div className="flex space-x-2">
-                        <Link
-                            href={`/calendar/${calendar.id}/edit`}
-                            className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 text-sm"
-                        >
-                            Edit
+                    <div className="flex space-x-3">
+                        <Link href="/calendar">
+                            <ThemedButton variant="secondary">Back</ThemedButton>
                         </Link>
-                        <button
-                            onClick={handleDelete}
-                            className="px-4 py-2 bg-red-600 text-white rounded-md hover:bg-red-700 text-sm"
-                        >
+                        <Link href={`/calendar/${calendar.id}/edit`}>
+                            <ThemedButton variant="primary">Edit</ThemedButton>
+                        </Link>
+                        <ThemedButton variant="danger" onClick={handleDelete}>
                             Delete
-                        </button>
-                        <Link
-                            href="/calendar"
-                            className="px-4 py-2 bg-gray-600 text-white rounded-md hover:bg-gray-700 text-sm"
-                        >
-                            Back to Calendar
-                        </Link>
+                        </ThemedButton>
                     </div>
                 </div>
 
                 <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
                     {/* Main Event Info */}
                     <div className="lg:col-span-2 space-y-6">
-                        <div className="bg-white border rounded-lg p-6">
-                            <h3 className="text-lg font-medium mb-4">Event Information</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-500">Title</label>
-                                    <p className="text-gray-900">{calendar.title}</p>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-500">Type</label>
-                                    <span className={`inline-block px-2 py-1 text-xs rounded-full ${getTypeColor(calendar.type)}`}>
-                                        {calendar.type.charAt(0).toUpperCase() + calendar.type.slice(1)}
-                                    </span>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-500">Status</label>
-                                    <span className={`inline-block px-2 py-1 text-xs rounded-full ${getStatusColor(calendar.status)}`}>
-                                        {calendar.status.charAt(0).toUpperCase() + calendar.status.slice(1)}
-                                    </span>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-500">All Day</label>
-                                    <p className="text-gray-900">{calendar.is_all_day ? 'Yes' : 'No'}</p>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-500">Start Date & Time</label>
-                                    <p className="text-gray-900">
-                                        {calendar.is_all_day ? 
-                                            new Date(calendar.start_datetime).toLocaleDateString() :
-                                            new Date(calendar.start_datetime).toLocaleString()
-                                        }
-                                    </p>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-500">End Date & Time</label>
-                                    <p className="text-gray-900">
-                                        {calendar.is_all_day ? 
-                                            new Date(calendar.end_datetime).toLocaleDateString() :
-                                            new Date(calendar.end_datetime).toLocaleString()
-                                        }
-                                    </p>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-gray-500">Created By</label>
-                                    <p className="text-gray-900">{calendar.creator ? calendar.creator.name : 'N/A'}</p>
-                                </div>
-                                {calendar.location && (
+                        <ThemedCard>
+                            <div className="p-4 border-b border-theme">
+                                <h3 className="text-lg font-medium text-theme-primary">Event Information</h3>
+                            </div>
+                            <div className="p-6 space-y-4">
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-500">Location</label>
-                                        <p className="text-gray-900">{calendar.location}</p>
+                                        <label className="block text-sm font-medium text-theme-muted">Title</label>
+                                        <p className="mt-1 text-sm text-theme-primary">{calendar.title}</p>
                                     </div>
-                                )}
-                                {calendar.meeting_link && (
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-500">Meeting Link</label>
-                                        <a 
-                                            href={calendar.meeting_link} 
-                                            target="_blank" 
-                                            rel="noopener noreferrer"
-                                            className="text-blue-600 hover:text-blue-800 underline"
-                                        >
-                                            Join Event
-                                        </a>
+                                        <label className="block text-sm font-medium text-theme-muted">Type</label>
+                                        <div className="mt-1">
+                                            <ThemedBadge variant={getTypeVariant(calendar.type)}>
+                                                {calendar.type.charAt(0).toUpperCase() + calendar.type.slice(1)}
+                                            </ThemedBadge>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-theme-muted">Status</label>
+                                        <div className="mt-1">
+                                            <ThemedBadge variant={getStatusVariant(calendar.status)}>
+                                                {calendar.status.charAt(0).toUpperCase() + calendar.status.slice(1)}
+                                            </ThemedBadge>
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-theme-muted">All Day</label>
+                                        <p className="mt-1 text-sm text-theme-primary">{calendar.is_all_day ? 'Yes' : 'No'}</p>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-theme-muted">Start Date & Time</label>
+                                        <p className="mt-1 text-sm text-theme-secondary">
+                                            {calendar.is_all_day ? 
+                                                new Date(calendar.start_datetime).toLocaleDateString() :
+                                                new Date(calendar.start_datetime).toLocaleString()
+                                            }
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-theme-muted">End Date & Time</label>
+                                        <p className="mt-1 text-sm text-theme-secondary">
+                                            {calendar.is_all_day ? 
+                                                new Date(calendar.end_datetime).toLocaleDateString() :
+                                                new Date(calendar.end_datetime).toLocaleString()
+                                            }
+                                        </p>
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-theme-muted">Created By</label>
+                                        <p className="mt-1 text-sm text-theme-primary">{calendar.creator ? calendar.creator.name : 'N/A'}</p>
+                                    </div>
+                                    {calendar.location && (
+                                        <div>
+                                            <label className="block text-sm font-medium text-theme-muted">Location</label>
+                                            <p className="mt-1 text-sm text-theme-primary">{calendar.location}</p>
+                                        </div>
+                                    )}
+                                    {calendar.meeting_link && (
+                                        <div>
+                                            <label className="block text-sm font-medium text-theme-muted">Meeting Link</label>
+                                            <a 
+                                                href={calendar.meeting_link} 
+                                                target="_blank" 
+                                                rel="noopener noreferrer"
+                                                className="mt-1 text-sm text-blue-600 hover:text-blue-800 underline"
+                                            >
+                                                Join Event
+                                            </a>
+                                        </div>
+                                    )}
+                                </div>
+                                {calendar.description && (
+                                    <div className="mt-6">
+                                        <label className="block text-sm font-medium text-theme-muted">Description</label>
+                                        <p className="mt-1 text-sm text-theme-primary whitespace-pre-wrap">{calendar.description}</p>
                                     </div>
                                 )}
                             </div>
-                            {calendar.description && (
-                                <div className="mt-4">
-                                    <label className="block text-sm font-medium text-gray-500 mb-2">Description</label>
-                                    <p className="text-gray-900 whitespace-pre-wrap">{calendar.description}</p>
-                                </div>
-                            )}
-                        </div>
+                        </ThemedCard>
 
                         {/* Event Notes */}
-                        <div className="bg-white border rounded-lg p-6">
-                            <div className="flex justify-between items-center mb-4">
-                                <h3 className="text-lg font-medium">Event Notes</h3>
-                                <button
-                                    onClick={() => setShowNoteForm(!showNoteForm)}
-                                    className="px-3 py-1 bg-blue-600 text-white rounded text-sm hover:bg-blue-700"
-                                >
-                                    Add Note
-                                </button>
-                            </div>
-                            
-                            {showNoteForm && (
-                                <form onSubmit={handleAddNote} className="mb-4 p-4 bg-gray-50 rounded">
-                                    <textarea
-                                        value={noteText}
-                                        onChange={(e) => setNoteText(e.target.value)}
-                                        placeholder="Add your event note..."
-                                        className="w-full border rounded px-3 py-2 mb-2"
-                                        rows={3}
-                                        required
-                                    />
-                                    <div className="flex space-x-2">
-                                        <button type="submit" className="px-3 py-1 bg-green-600 text-white rounded text-sm hover:bg-green-700">
-                                            Save Note
-                                        </button>
-                                        <button 
-                                            type="button" 
-                                            onClick={() => setShowNoteForm(false)}
-                                            className="px-3 py-1 bg-gray-600 text-white rounded text-sm hover:bg-gray-700"
-                                        >
-                                            Cancel
-                                        </button>
-                                    </div>
-                                </form>
-                            )}
-                            
-                            {calendar.notes && calendar.notes.length > 0 ? (
-                                <div className="space-y-4">
-                                    {calendar.notes.map((note) => (
-                                        <div key={note.id} className="border-l-4 border-blue-500 pl-4">
-                                            <div className="flex justify-between items-start mb-2">
-                                                <span className="text-sm text-gray-500">
-                                                    By {note.creator ? note.creator.name : 'Unknown'}
-                                                </span>
-                                                <span className="text-sm text-gray-500">
-                                                    {new Date(note.created_at).toLocaleString()}
-                                                </span>
-                                            </div>
-                                            <p className="text-gray-900 whitespace-pre-wrap">{note.note}</p>
-                                        </div>
-                                    ))}
+                        <ThemedCard>
+                            <div className="p-4 border-b border-theme">
+                                <div className="flex justify-between items-center">
+                                    <h3 className="text-lg font-medium text-theme-primary">Event Notes</h3>
+                                    <ThemedButton
+                                        variant="primary"
+                                        onClick={() => setShowNoteForm(!showNoteForm)}
+                                        className="text-sm"
+                                    >
+                                        Add Note
+                                    </ThemedButton>
                                 </div>
-                            ) : (
-                                <p className="text-gray-500 text-center py-4">No notes added yet.</p>
-                            )}
-                        </div>
+                            </div>
+                            <div className="p-6">
+                                {showNoteForm && (
+                                    <form onSubmit={handleAddNote} className="mb-4 p-4 bg-theme-surface rounded border border-theme">
+                                        <textarea
+                                            value={noteText}
+                                            onChange={(e) => setNoteText(e.target.value)}
+                                            placeholder="Add your event note..."
+                                            className="w-full border border-theme rounded px-3 py-2 mb-2 bg-theme-surface text-theme-primary"
+                                            rows={3}
+                                            required
+                                        />
+                                        <div className="flex space-x-2">
+                                            <ThemedButton type="submit" variant="success" className="text-sm">
+                                                Save Note
+                                            </ThemedButton>
+                                            <ThemedButton 
+                                                type="button" 
+                                                onClick={() => setShowNoteForm(false)}
+                                                variant="secondary"
+                                                className="text-sm"
+                                            >
+                                                Cancel
+                                            </ThemedButton>
+                                        </div>
+                                    </form>
+                                )}
+                                
+                                {calendar.notes && calendar.notes.length > 0 ? (
+                                    <div className="space-y-4">
+                                        {calendar.notes.map((note) => (
+                                            <div key={note.id} className="border-l-4 border-blue-500 pl-4 bg-theme-surface p-3 rounded">
+                                                <div className="flex justify-between items-start mb-2">
+                                                    <span className="text-sm text-theme-muted">
+                                                        By {note.creator ? note.creator.name : 'Unknown'}
+                                                    </span>
+                                                    <span className="text-sm text-theme-muted">
+                                                        {new Date(note.created_at).toLocaleString()}
+                                                    </span>
+                                                </div>
+                                                <p className="text-theme-primary whitespace-pre-wrap">{note.note}</p>
+                                            </div>
+                                        ))}
+                                    </div>
+                                ) : (
+                                    <p className="text-theme-muted text-center py-4">No notes added yet.</p>
+                                )}
+                            </div>
+                        </ThemedCard>
                     </div>
 
                     {/* Sidebar */}
                     <div className="space-y-6">
                         {/* Participants */}
                         {calendar.participants && calendar.participants.length > 0 && (
-                            <div className="bg-white border rounded-lg p-6">
-                                <h3 className="text-lg font-medium mb-4">Participants</h3>
-                                <div className="space-y-3">
-                                    {calendar.participants.map((participant) => (
-                                        <div key={participant.id} className="flex justify-between items-center">
-                                            <div>
-                                                <p className="text-gray-900">
-                                                    {participant.user ? participant.user.name : participant.external_email}
-                                                </p>
-                                                <p className="text-sm text-gray-500">
-                                                    {participant.role.charAt(0).toUpperCase() + participant.role.slice(1)}
-                                                </p>
-                                            </div>
-                                            <span className={`px-2 py-1 text-xs rounded-full ${
-                                                participant.response === 'accepted' ? 'bg-green-100 text-green-800' :
-                                                participant.response === 'declined' ? 'bg-red-100 text-red-800' :
-                                                'bg-yellow-100 text-yellow-800'
-                                            }`}>
-                                                {participant.response.charAt(0).toUpperCase() + participant.response.slice(1)}
-                                            </span>
-                                        </div>
-                                    ))}
+                            <ThemedCard>
+                                <div className="p-4 border-b border-theme">
+                                    <h3 className="text-lg font-medium text-theme-primary">Participants</h3>
                                 </div>
-                            </div>
+                                <div className="p-6">
+                                    <div className="space-y-3">
+                                        {calendar.participants.map((participant) => (
+                                            <div key={participant.id} className="flex justify-between items-center p-3 bg-theme-surface rounded">
+                                                <div>
+                                                    <p className="text-theme-primary">
+                                                        {participant.user ? participant.user.name : participant.external_email}
+                                                    </p>
+                                                    <p className="text-sm text-theme-muted">
+                                                        {participant.role.charAt(0).toUpperCase() + participant.role.slice(1)}
+                                                    </p>
+                                                </div>
+                                                <ThemedBadge variant={
+                                                    participant.response === 'accepted' ? 'success' :
+                                                    participant.response === 'declined' ? 'error' : 'warning'
+                                                }>
+                                                    {participant.response.charAt(0).toUpperCase() + participant.response.slice(1)}
+                                                </ThemedBadge>
+                                            </div>
+                                        ))}
+                                    </div>
+                                </div>
+                            </ThemedCard>
                         )}
 
                         {/* Event Metadata */}
-                        <div className="bg-white border rounded-lg p-6">
-                            <h3 className="text-lg font-medium mb-4">Metadata</h3>
-                            <div className="space-y-3">
+                        <ThemedCard>
+                            <div className="p-4 border-b border-theme">
+                                <h3 className="text-lg font-medium text-theme-primary">Metadata</h3>
+                            </div>
+                            <div className="p-6 space-y-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-500">Created</label>
-                                    <p className="text-gray-900">{new Date(calendar.created_at).toLocaleString()}</p>
+                                    <label className="block text-sm font-medium text-theme-muted">Created</label>
+                                    <p className="mt-1 text-sm text-theme-secondary">{new Date(calendar.created_at).toLocaleString()}</p>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-500">Last Updated</label>
-                                    <p className="text-gray-900">{new Date(calendar.updated_at).toLocaleString()}</p>
+                                    <label className="block text-sm font-medium text-theme-muted">Last Updated</label>
+                                    <p className="mt-1 text-sm text-theme-secondary">{new Date(calendar.updated_at).toLocaleString()}</p>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-500">Event ID</label>
-                                    <p className="text-gray-900 font-mono text-sm">{calendar.id}</p>
+                                    <label className="block text-sm font-medium text-theme-muted">Event ID</label>
+                                    <p className="mt-1 text-sm text-theme-primary font-mono">{calendar.id}</p>
                                 </div>
                             </div>
-                        </div>
+                        </ThemedCard>
                     </div>
                 </div>
             </div>

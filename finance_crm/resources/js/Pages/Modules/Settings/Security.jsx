@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
 
 export default function SecuritySettings({ settings = {} }) {
     const [formData, setFormData] = useState({
@@ -17,12 +18,21 @@ export default function SecuritySettings({ settings = {} }) {
         }
     });
 
+    const [processing, setProcessing] = useState(false);
+    const [errors, setErrors] = useState({});
+
     const handleSubmit = (e) => {
         e.preventDefault();
+        setProcessing(true);
+        
         router.put('/settings/security', formData, {
             onSuccess: () => {
                 router.visit('/settings');
-            }
+            },
+            onError: (errors) => {
+                setErrors(errors);
+                setProcessing(false);
+            },
         });
     };
 
@@ -31,157 +41,154 @@ export default function SecuritySettings({ settings = {} }) {
             <div className="space-y-6">
                 <div className="flex items-center justify-between">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Security Settings</h1>
-                        <p className="text-gray-600">Configure security policies and access controls</p>
+                        <h1 className="text-2xl font-bold text-theme-primary">Security Settings</h1>
+                        <p className="text-theme-secondary">Configure security policies and access controls</p>
                     </div>
-                    <Link
-                        href="/settings"
-                        className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
-                    >
-                        Back
+                    <Link href="/settings">
+                        <ThemedButton variant="secondary">Back</ThemedButton>
                     </Link>
                 </div>
 
-                <div className="bg-white border rounded-lg p-6">
-                    <form onSubmit={handleSubmit} className="space-y-6">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label className="flex items-center">
-                                    <input
-                                        type="checkbox"
-                                        checked={formData.two_factor_enabled}
-                                        onChange={(e) => setFormData({...formData, two_factor_enabled: e.target.checked})}
-                                        className="mr-2"
-                                    />
-                                    <span className="text-sm font-medium text-gray-700">Enable Two-Factor Authentication</span>
-                                </label>
-                            </div>
-
-                            <div>
-                                <label className="flex items-center">
-                                    <input
-                                        type="checkbox"
-                                        checked={formData.force_password_change}
-                                        onChange={(e) => setFormData({...formData, force_password_change: e.target.checked})}
-                                        className="mr-2"
-                                    />
-                                    <span className="text-sm font-medium text-gray-700">Force Password Change on First Login</span>
-                                </label>
-                            </div>
-                        </div>
-
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Login Attempt Limit</label>
-                                <input
-                                    type="number"
-                                    min="1"
-                                    max="10"
-                                    value={formData.login_attempt_limit}
-                                    onChange={(e) => setFormData({...formData, login_attempt_limit: parseInt(e.target.value)})}
-                                    className="mt-1 block w-full border rounded-md px-3 py-2"
-                                />
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700">Session Timeout (minutes)</label>
-                                <input
-                                    type="number"
-                                    min="5"
-                                    max="1440"
-                                    value={formData.session_timeout}
-                                    onChange={(e) => setFormData({...formData, session_timeout: parseInt(e.target.value)})}
-                                    className="mt-1 block w-full border rounded-md px-3 py-2"
-                                />
-                            </div>
-                        </div>
-
-                        <div>
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">Password Policy</h3>
-                            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <ThemedCard>
+                    <div className="p-4 border-b border-theme">
+                        <h3 className="text-lg font-medium text-theme-primary">Security Configuration</h3>
+                    </div>
+                    <div className="p-6">
+                        <form onSubmit={handleSubmit} className="space-y-6">
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700">Minimum Length</label>
-                                    <input
-                                        type="number"
-                                        min="6"
-                                        max="32"
-                                        value={formData.password_policy.min_length}
-                                        onChange={(e) => setFormData({
-                                            ...formData,
-                                            password_policy: {...formData.password_policy, min_length: parseInt(e.target.value)}
-                                        })}
-                                        className="mt-1 block w-full border rounded-md px-3 py-2"
-                                    />
+                                    <label className="flex items-center">
+                                        <input
+                                            type="checkbox"
+                                            checked={formData.two_factor_enabled}
+                                            onChange={(e) => setFormData({...formData, two_factor_enabled: e.target.checked})}
+                                            className="mr-2"
+                                        />
+                                        <span className="text-sm font-medium text-theme-primary">Enable Two-Factor Authentication</span>
+                                    </label>
                                 </div>
-                                <div className="space-y-2">
+
+                                <div>
                                     <label className="flex items-center">
                                         <input
                                             type="checkbox"
-                                            checked={formData.password_policy.require_uppercase}
-                                            onChange={(e) => setFormData({
-                                                ...formData,
-                                                password_policy: {...formData.password_policy, require_uppercase: e.target.checked}
-                                            })}
+                                            checked={formData.force_password_change}
+                                            onChange={(e) => setFormData({...formData, force_password_change: e.target.checked})}
                                             className="mr-2"
                                         />
-                                        <span className="text-sm">Require Uppercase</span>
-                                    </label>
-                                    <label className="flex items-center">
-                                        <input
-                                            type="checkbox"
-                                            checked={formData.password_policy.require_lowercase}
-                                            onChange={(e) => setFormData({
-                                                ...formData,
-                                                password_policy: {...formData.password_policy, require_lowercase: e.target.checked}
-                                            })}
-                                            className="mr-2"
-                                        />
-                                        <span className="text-sm">Require Lowercase</span>
-                                    </label>
-                                    <label className="flex items-center">
-                                        <input
-                                            type="checkbox"
-                                            checked={formData.password_policy.require_numbers}
-                                            onChange={(e) => setFormData({
-                                                ...formData,
-                                                password_policy: {...formData.password_policy, require_numbers: e.target.checked}
-                                            })}
-                                            className="mr-2"
-                                        />
-                                        <span className="text-sm">Require Numbers</span>
-                                    </label>
-                                    <label className="flex items-center">
-                                        <input
-                                            type="checkbox"
-                                            checked={formData.password_policy.require_special}
-                                            onChange={(e) => setFormData({
-                                                ...formData,
-                                                password_policy: {...formData.password_policy, require_special: e.target.checked}
-                                            })}
-                                            className="mr-2"
-                                        />
-                                        <span className="text-sm">Require Special Characters</span>
+                                        <span className="text-sm font-medium text-theme-primary">Force Password Change on First Login</span>
                                     </label>
                                 </div>
                             </div>
-                        </div>
 
-                        <div className="flex justify-end space-x-2">
-                            <Link
-                                href="/settings"
-                                className="px-4 py-2 border rounded-md hover:bg-gray-50"
-                            >
-                                Cancel
-                            </Link>
-                            <button
-                                type="submit"
-                                className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                            >
-                                Save Security Settings
-                            </button>
-                        </div>
-                    </form>
-                </div>
+                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <div>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">Login Attempt Limit</label>
+                                    <ThemedInput
+                                        type="number"
+                                        min="1"
+                                        max="10"
+                                        value={formData.login_attempt_limit}
+                                        onChange={(e) => setFormData({...formData, login_attempt_limit: parseInt(e.target.value)})}
+                                    />
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-theme-primary mb-2">Session Timeout (minutes)</label>
+                                    <ThemedInput
+                                        type="number"
+                                        min="5"
+                                        max="1440"
+                                        value={formData.session_timeout}
+                                        onChange={(e) => setFormData({...formData, session_timeout: parseInt(e.target.value)})}
+                                    />
+                                </div>
+                            </div>
+
+                            <div>
+                                <h3 className="text-lg font-medium text-theme-primary mb-4">Password Policy</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-theme-primary mb-2">Minimum Length</label>
+                                        <ThemedInput
+                                            type="number"
+                                            min="6"
+                                            max="32"
+                                            value={formData.password_policy.min_length}
+                                            onChange={(e) => setFormData({
+                                                ...formData,
+                                                password_policy: {...formData.password_policy, min_length: parseInt(e.target.value)}
+                                            })}
+                                        />
+                                    </div>
+                                    <div className="space-y-2">
+                                        <label className="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.password_policy.require_uppercase}
+                                                onChange={(e) => setFormData({
+                                                    ...formData,
+                                                    password_policy: {...formData.password_policy, require_uppercase: e.target.checked}
+                                                })}
+                                                className="mr-2"
+                                            />
+                                            <span className="text-sm text-theme-primary">Require Uppercase</span>
+                                        </label>
+                                        <label className="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.password_policy.require_lowercase}
+                                                onChange={(e) => setFormData({
+                                                    ...formData,
+                                                    password_policy: {...formData.password_policy, require_lowercase: e.target.checked}
+                                                })}
+                                                className="mr-2"
+                                            />
+                                            <span className="text-sm text-theme-primary">Require Lowercase</span>
+                                        </label>
+                                        <label className="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.password_policy.require_numbers}
+                                                onChange={(e) => setFormData({
+                                                    ...formData,
+                                                    password_policy: {...formData.password_policy, require_numbers: e.target.checked}
+                                                })}
+                                                className="mr-2"
+                                            />
+                                            <span className="text-sm text-theme-primary">Require Numbers</span>
+                                        </label>
+                                        <label className="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                checked={formData.password_policy.require_special}
+                                                onChange={(e) => setFormData({
+                                                    ...formData,
+                                                    password_policy: {...formData.password_policy, require_special: e.target.checked}
+                                                })}
+                                                className="mr-2"
+                                            />
+                                            <span className="text-sm text-theme-primary">Require Special Characters</span>
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="flex justify-end space-x-3">
+                                <Link href="/settings">
+                                    <ThemedButton variant="secondary">Cancel</ThemedButton>
+                                </Link>
+                                <ThemedButton
+                                    type="submit"
+                                    variant="primary"
+                                    disabled={processing}
+                                >
+                                    {processing ? 'Saving...' : 'Save Security Settings'}
+                                </ThemedButton>
+                            </div>
+                        </form>
+                    </div>
+                </ThemedCard>
             </div>
         </Layout>
     );

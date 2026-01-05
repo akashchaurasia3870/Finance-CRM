@@ -200,7 +200,7 @@ class SettingsWebController extends Controller
     public function updateBrandingSettings(Request $request)
     {
         $request->validate([
-            'theme' => 'string|in:light,dark,warm,cool,cozy,sunny,monsoon',
+            'theme' => 'string|in:light,dark,warm,cool,cozy,sunny,monsoon,high-contrast,bold-palette,vivid-scheme,power-colors,statement-colors,rainy-night,storm,autumn,ocean-breeze,midnight,golden-hour,serenity,corporate,minimal,cyberpunk,galaxy,sunset',
             'primary_color' => 'string|regex:/^#[0-9A-Fa-f]{6}$/',
             'secondary_color' => 'string|regex:/^#[0-9A-Fa-f]{6}$/',
             'accent_color' => 'string|regex:/^#[0-9A-Fa-f]{6}$/',

@@ -7,14 +7,24 @@ export default function PayrollView({ payrolls = [] }) {
     const [searchTerm, setSearchTerm] = useState('');
 
     const filteredPayrolls = payrolls.filter(payroll => 
-        (payroll.employee?.name && payroll.employee.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (payroll.period && payroll.period.toLowerCase().includes(searchTerm.toLowerCase()))
+        (payroll.user?.name && payroll.user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (payroll.pay_period && payroll.pay_period.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
     const handleDelete = (id) => {
         if (confirm('Are you sure you want to delete this payroll record?')) {
             router.delete(`/payroll/${id}`);
         }
+    };
+
+    const getStatusVariant = (status) => {
+        const variants = {
+            'generated': 'info',
+            'approved': 'warning', 
+            'paid': 'success',
+            'locked': 'error'
+        };
+        return variants[status] || 'info';
     };
 
     return (
@@ -43,13 +53,13 @@ export default function PayrollView({ payrolls = [] }) {
                             />
                         </div>
                     </div>
+                    
                     <ThemedTable>
                         <ThemedTableHeader>
                             <ThemedTableRow>
                                 <ThemedTableCell header>Employee</ThemedTableCell>
                                 <ThemedTableCell header>Period</ThemedTableCell>
-                                <ThemedTableCell header>Basic Salary</ThemedTableCell>
-                                <ThemedTableCell header>Allowances</ThemedTableCell>
+                                <ThemedTableCell header>Gross Salary</ThemedTableCell>
                                 <ThemedTableCell header>Deductions</ThemedTableCell>
                                 <ThemedTableCell header>Net Pay</ThemedTableCell>
                                 <ThemedTableCell header>Status</ThemedTableCell>
@@ -60,34 +70,28 @@ export default function PayrollView({ payrolls = [] }) {
                             {filteredPayrolls.length > 0 ? filteredPayrolls.map((payroll) => (
                                 <ThemedTableRow key={payroll.id}>
                                     <ThemedTableCell>
-                                        <div className="font-medium text-theme-primary">{payroll.employee?.name || 'N/A'}</div>
-                                        <div className="text-sm text-theme-muted">{payroll.employee?.employee_id || 'N/A'}</div>
+                                        <div className="font-medium text-theme-primary">{payroll.user?.name || 'N/A'}</div>
+                                        <div className="text-sm text-theme-muted">{payroll.user?.email || 'N/A'}</div>
                                     </ThemedTableCell>
                                     <ThemedTableCell className="text-theme-primary">
-                                        {payroll.period || 'N/A'}
+                                        {payroll.pay_period || 'N/A'}
                                     </ThemedTableCell>
                                     <ThemedTableCell className="text-theme-primary font-medium">
-                                        ${payroll.basic_salary || '0.00'}
+                                        ${parseFloat(payroll.gross_salary || 0).toFixed(2)}
                                     </ThemedTableCell>
                                     <ThemedTableCell className="text-theme-primary">
-                                        ${payroll.allowances || '0.00'}
-                                    </ThemedTableCell>
-                                    <ThemedTableCell className="text-theme-primary">
-                                        ${payroll.deductions || '0.00'}
+                                        ${parseFloat(payroll.total_deductions || 0).toFixed(2)}
                                     </ThemedTableCell>
                                     <ThemedTableCell className="text-theme-primary font-semibold">
-                                        ${payroll.net_pay || '0.00'}
+                                        ${parseFloat(payroll.net_salary || 0).toFixed(2)}
                                     </ThemedTableCell>
                                     <ThemedTableCell>
-                                        <ThemedBadge variant={
-                                            payroll.status === 'paid' ? 'success' :
-                                            payroll.status === 'pending' ? 'warning' : 'error'
-                                        }>
-                                            {payroll.status || 'Pending'}
+                                        <ThemedBadge variant={getStatusVariant(payroll.status)}>
+                                            {payroll.status || 'Generated'}
                                         </ThemedBadge>
                                     </ThemedTableCell>
                                     <ThemedTableCell>
-                                        <div className="space-x-2">
+                                        <div className="flex space-x-2">
                                             <Link href={`/payroll/${payroll.id}`}>
                                                 <ThemedButton variant="ghost" className="text-xs px-2 py-1">View</ThemedButton>
                                             </Link>
@@ -105,41 +109,11 @@ export default function PayrollView({ payrolls = [] }) {
                                     </ThemedTableCell>
                                 </ThemedTableRow>
                             )) : (
-                                ['John Doe', 'Jane Smith', 'Bob Johnson'].map((name, index) => (
-                                    <ThemedTableRow key={index}>
-                                        <ThemedTableCell>
-                                            <div className="font-medium text-theme-primary">{name}</div>
-                                            <div className="text-sm text-theme-muted">EMP00{index + 1}</div>
-                                        </ThemedTableCell>
-                                        <ThemedTableCell className="text-theme-primary">
-                                            {new Date().toLocaleDateString('en-US', { year: 'numeric', month: 'long' })}
-                                        </ThemedTableCell>
-                                        <ThemedTableCell className="text-theme-primary font-medium">
-                                            ${((index + 1) * 5000).toLocaleString()}
-                                        </ThemedTableCell>
-                                        <ThemedTableCell className="text-theme-primary">
-                                            ${((index + 1) * 500).toLocaleString()}
-                                        </ThemedTableCell>
-                                        <ThemedTableCell className="text-theme-primary">
-                                            ${((index + 1) * 200).toLocaleString()}
-                                        </ThemedTableCell>
-                                        <ThemedTableCell className="text-theme-primary font-semibold">
-                                            ${((index + 1) * 5300).toLocaleString()}
-                                        </ThemedTableCell>
-                                        <ThemedTableCell>
-                                            <ThemedBadge variant={index === 0 ? 'success' : index === 1 ? 'warning' : 'info'}>
-                                                {index === 0 ? 'Paid' : index === 1 ? 'Pending' : 'Processing'}
-                                            </ThemedBadge>
-                                        </ThemedTableCell>
-                                        <ThemedTableCell>
-                                            <div className="space-x-2">
-                                                <ThemedButton variant="ghost" className="text-xs px-2 py-1">View</ThemedButton>
-                                                <ThemedButton variant="ghost" className="text-xs px-2 py-1">Edit</ThemedButton>
-                                                <ThemedButton variant="ghost" className="text-xs px-2 py-1 text-red-600 hover:text-red-800">Delete</ThemedButton>
-                                            </div>
-                                        </ThemedTableCell>
-                                    </ThemedTableRow>
-                                ))
+                                <ThemedTableRow>
+                                    <ThemedTableCell colSpan="7" className="text-center text-theme-muted">
+                                        No payroll records found. Click "Process Payroll" to create one.
+                                    </ThemedTableCell>
+                                </ThemedTableRow>
                             )}
                         </ThemedTableBody>
                     </ThemedTable>

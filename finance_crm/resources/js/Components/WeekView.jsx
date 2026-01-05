@@ -17,7 +17,7 @@ export default function WeekView({ currentDate, calendars, getEventsForDate, get
     const days = getWeekDays();
 
     return (
-        <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="bg-theme-primary shadow-lg rounded-lg overflow-hidden">
             {/* Header */}
             <div className="grid grid-cols-7 bg-gray-800 text-white">
                 {days.map((day, index) => {
@@ -43,8 +43,8 @@ export default function WeekView({ currentDate, calendars, getEventsForDate, get
                     
                     return (
                         <div key={index} className={`p-3 border-r border-gray-200 last:border-r-0 cursor-pointer ${
-                            isToday ? 'bg-blue-50' : 'bg-white'
-                        } hover:bg-gray-50 transition-colors`}
+                            isToday ? 'bg-blue-50' : 'bg-theme-primary'
+                        } hover:bg-theme-tertiary transition-colors`}
                              onClick={() => onDateClick(day)}>
                             <div className="space-y-2">
                                 {events.map(event => (

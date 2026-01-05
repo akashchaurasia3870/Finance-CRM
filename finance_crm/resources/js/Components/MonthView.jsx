@@ -24,7 +24,7 @@ export default function MonthView({ currentDate, calendars, getEventsForDate, ge
     const currentMonth = currentDate.getMonth();
 
     return (
-        <div className="bg-white shadow-lg rounded-lg overflow-hidden">
+        <div className="bg-theme-primary shadow-lg rounded-lg overflow-hidden">
             {/* Header with day names */}
             <div className="grid grid-cols-7 bg-gray-800 text-white">
                 {['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'].map(day => (
@@ -45,12 +45,12 @@ export default function MonthView({ currentDate, calendars, getEventsForDate, ge
                             
                             return (
                                 <div key={dayIndex} className={`h-28 border-r border-gray-200 last:border-r-0 p-2 relative cursor-pointer ${
-                                    isCurrentMonth ? 'bg-white' : 'bg-gray-50'
+                                    isCurrentMonth ? 'bg-theme-primary' : 'bg-theme-tertiary'
                                 } ${isToday ? 'bg-blue-50' : ''                                } hover:bg-gray-100 transition-colors`}
                                      onClick={() => onDateClick(day)}>
                                     {/* Date number */}
                                     <div className={`text-sm font-medium ${
-                                        isCurrentMonth ? 'text-gray-900' : 'text-gray-400'
+                                        isCurrentMonth ? 'text-theme-primary' : 'text-gray-400'
                                     } ${isToday ? 'bg-blue-600 text-white rounded-full w-6 h-6 flex items-center justify-center' : ''}`}>
                                         {day.getDate()}
                                     </div>
@@ -65,7 +65,7 @@ export default function MonthView({ currentDate, calendars, getEventsForDate, ge
                                             </div>
                                         ))}
                                         {events.length > 3 && (
-                                            <div className="text-xs text-gray-500 font-medium">
+                                            <div className="text-xs text-theme-muted font-medium">
                                                 +{events.length - 3} more
                                             </div>
                                         )}

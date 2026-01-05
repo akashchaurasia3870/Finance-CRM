@@ -13,6 +13,7 @@ class Portfolio extends Model
     protected $fillable = [
         'portfolio_name',
         'portfolio_no',
+        'account_id',
         'client_id',
         'total_value',
         'cash_balance',
@@ -26,6 +27,11 @@ class Portfolio extends Model
         'cash_balance' => 'decimal:2',
         'margin_used' => 'decimal:2',
     ];
+
+    public function account()
+    {
+        return $this->belongsTo(Accounts::class, 'account_id');
+    }
 
     public function client()
     {

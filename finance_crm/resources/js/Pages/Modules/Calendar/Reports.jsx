@@ -36,7 +36,7 @@ export default function CalendarReports({ calendars = [], stats }) {
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Calendar Reports</h1>
+                        <h1 className="text-2xl font-bold text-theme-primary">Calendar Reports</h1>
                         <p className="text-gray-600">Analytics and insights for calendar events</p>
                     </div>
                     <Link
@@ -49,7 +49,7 @@ export default function CalendarReports({ calendars = [], stats }) {
 
                 {/* Statistics Cards */}
                 <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                    <div className="bg-white border rounded-lg p-6">
+                    <div className="bg-theme-primary border rounded-lg p-6">
                         <div className="flex items-center">
                             <div className="p-2 bg-blue-100 rounded-lg">
                                 <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -58,12 +58,12 @@ export default function CalendarReports({ calendars = [], stats }) {
                             </div>
                             <div className="ml-4">
                                 <p className="text-sm font-medium text-gray-600">Total Events</p>
-                                <p className="text-2xl font-semibold text-gray-900">{stats.total_events}</p>
+                                <p className="text-2xl font-semibold text-theme-primary">{stats.total_events}</p>
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-white border rounded-lg p-6">
+                    <div className="bg-theme-primary border rounded-lg p-6">
                         <div className="flex items-center">
                             <div className="p-2 bg-green-100 rounded-lg">
                                 <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -72,12 +72,12 @@ export default function CalendarReports({ calendars = [], stats }) {
                             </div>
                             <div className="ml-4">
                                 <p className="text-sm font-medium text-gray-600">Completed</p>
-                                <p className="text-2xl font-semibold text-gray-900">{stats.completed}</p>
+                                <p className="text-2xl font-semibold text-theme-primary">{stats.completed}</p>
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-white border rounded-lg p-6">
+                    <div className="bg-theme-primary border rounded-lg p-6">
                         <div className="flex items-center">
                             <div className="p-2 bg-yellow-100 rounded-lg">
                                 <svg className="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -86,12 +86,12 @@ export default function CalendarReports({ calendars = [], stats }) {
                             </div>
                             <div className="ml-4">
                                 <p className="text-sm font-medium text-gray-600">Scheduled</p>
-                                <p className="text-2xl font-semibold text-gray-900">{stats.scheduled}</p>
+                                <p className="text-2xl font-semibold text-theme-primary">{stats.scheduled}</p>
                             </div>
                         </div>
                     </div>
 
-                    <div className="bg-white border rounded-lg p-6">
+                    <div className="bg-theme-primary border rounded-lg p-6">
                         <div className="flex items-center">
                             <div className="p-2 bg-red-100 rounded-lg">
                                 <svg className="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -100,7 +100,7 @@ export default function CalendarReports({ calendars = [], stats }) {
                             </div>
                             <div className="ml-4">
                                 <p className="text-sm font-medium text-gray-600">Cancelled</p>
-                                <p className="text-2xl font-semibold text-gray-900">{stats.cancelled}</p>
+                                <p className="text-2xl font-semibold text-theme-primary">{stats.cancelled}</p>
                             </div>
                         </div>
                     </div>
@@ -108,7 +108,7 @@ export default function CalendarReports({ calendars = [], stats }) {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Event Types Chart */}
-                    <div className="bg-white border rounded-lg p-6">
+                    <div className="bg-theme-primary border rounded-lg p-6">
                         <h3 className="text-lg font-medium mb-4">Events by Type</h3>
                         <div className="space-y-3">
                             {Object.entries(stats.by_type).map(([type, count]) => (
@@ -125,7 +125,7 @@ export default function CalendarReports({ calendars = [], stats }) {
                                                 style={{ width: `${stats.total_events > 0 ? (count / stats.total_events) * 100 : 0}%` }}
                                             ></div>
                                         </div>
-                                        <span className="text-sm font-medium text-gray-900 w-8">{count}</span>
+                                        <span className="text-sm font-medium text-theme-primary w-8">{count}</span>
                                     </div>
                                 </div>
                             ))}
@@ -133,7 +133,7 @@ export default function CalendarReports({ calendars = [], stats }) {
                     </div>
 
                     {/* Status Distribution */}
-                    <div className="bg-white border rounded-lg p-6">
+                    <div className="bg-theme-primary border rounded-lg p-6">
                         <h3 className="text-lg font-medium mb-4">Status Distribution</h3>
                         <div className="space-y-3">
                             {[
@@ -154,7 +154,7 @@ export default function CalendarReports({ calendars = [], stats }) {
                                                 style={{ width: `${stats.total_events > 0 ? (count / stats.total_events) * 100 : 0}%` }}
                                             ></div>
                                         </div>
-                                        <span className="text-sm font-medium text-gray-900 w-8">{count}</span>
+                                        <span className="text-sm font-medium text-theme-primary w-8">{count}</span>
                                     </div>
                                 </div>
                             ))}
@@ -164,14 +164,14 @@ export default function CalendarReports({ calendars = [], stats }) {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Upcoming Events */}
-                    <div className="bg-white border rounded-lg p-6">
+                    <div className="bg-theme-primary border rounded-lg p-6">
                         <h3 className="text-lg font-medium mb-4">Upcoming Events</h3>
                         <div className="space-y-3">
                             {upcomingEvents.length > 0 ? upcomingEvents.map(event => (
-                                <div key={event.id} className="flex items-center justify-between p-3 bg-gray-50 rounded">
+                                <div key={event.id} className="flex items-center justify-between p-3 bg-theme-tertiary rounded">
                                     <div>
-                                        <p className="font-medium text-gray-900">{event.title}</p>
-                                        <p className="text-sm text-gray-500">
+                                        <p className="font-medium text-theme-primary">{event.title}</p>
+                                        <p className="text-sm text-theme-muted">
                                             {new Date(event.start_datetime).toLocaleDateString()} at {new Date(event.start_datetime).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' })}
                                         </p>
                                     </div>
@@ -180,20 +180,20 @@ export default function CalendarReports({ calendars = [], stats }) {
                                     </span>
                                 </div>
                             )) : (
-                                <p className="text-gray-500 text-center py-4">No upcoming events</p>
+                                <p className="text-theme-muted text-center py-4">No upcoming events</p>
                             )}
                         </div>
                     </div>
 
                     {/* Recent Completed Events */}
-                    <div className="bg-white border rounded-lg p-6">
+                    <div className="bg-theme-primary border rounded-lg p-6">
                         <h3 className="text-lg font-medium mb-4">Recently Completed</h3>
                         <div className="space-y-3">
                             {recentEvents.length > 0 ? recentEvents.map(event => (
-                                <div key={event.id} className="flex items-center justify-between p-3 bg-gray-50 rounded">
+                                <div key={event.id} className="flex items-center justify-between p-3 bg-theme-tertiary rounded">
                                     <div>
-                                        <p className="font-medium text-gray-900">{event.title}</p>
-                                        <p className="text-sm text-gray-500">
+                                        <p className="font-medium text-theme-primary">{event.title}</p>
+                                        <p className="text-sm text-theme-muted">
                                             {new Date(event.start_datetime).toLocaleDateString()}
                                         </p>
                                     </div>
@@ -202,37 +202,37 @@ export default function CalendarReports({ calendars = [], stats }) {
                                     </span>
                                 </div>
                             )) : (
-                                <p className="text-gray-500 text-center py-4">No completed events</p>
+                                <p className="text-theme-muted text-center py-4">No completed events</p>
                             )}
                         </div>
                     </div>
                 </div>
 
                 {/* All Events Summary */}
-                <div className="bg-white border rounded-lg p-6">
+                <div className="bg-theme-primary border rounded-lg p-6">
                     <h3 className="text-lg font-medium mb-4">All Events Summary</h3>
                     <div className="overflow-x-auto">
                         <table className="w-full">
-                            <thead className="bg-gray-50">
+                            <thead className="bg-theme-tertiary">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Title</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Type</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-theme-muted uppercase">Title</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-theme-muted uppercase">Type</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-theme-muted uppercase">Date</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-theme-muted uppercase">Status</th>
                                 </tr>
                             </thead>
                             <tbody className="divide-y divide-gray-200">
                                 {calendars.slice(0, 10).map((calendar) => (
-                                    <tr key={calendar.id} className="hover:bg-gray-50">
+                                    <tr key={calendar.id} className="hover:bg-theme-tertiary">
                                         <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="font-medium text-gray-900">{calendar.title}</div>
+                                            <div className="font-medium text-theme-primary">{calendar.title}</div>
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">
                                             <span className={`px-2 py-1 text-xs rounded-full ${getTypeColor(calendar.type)}`}>
                                                 {calendar.type}
                                             </span>
                                         </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-gray-500">
+                                        <td className="px-6 py-4 whitespace-nowrap text-theme-muted">
                                             {new Date(calendar.start_datetime).toLocaleDateString()}
                                         </td>
                                         <td className="px-6 py-4 whitespace-nowrap">

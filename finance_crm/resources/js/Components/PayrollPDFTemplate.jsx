@@ -17,7 +17,7 @@ export default function PayrollPDFTemplate({ payroll }) {
     };
 
     return (
-        <div className="bg-white p-8 max-w-4xl mx-auto" style={{ fontFamily: 'Arial, sans-serif' }}>
+        <div className="bg-theme-primary p-8 max-w-4xl mx-auto" style={{ fontFamily: 'Arial, sans-serif' }}>
             {/* Header */}
             <div className="border-b-2 border-blue-600 pb-6 mb-6">
                 <div className="flex justify-between items-start">
@@ -97,7 +97,7 @@ export default function PayrollPDFTemplate({ payroll }) {
                         <div className="text-2xl font-bold text-yellow-600">{payroll.leave_days}</div>
                         <div className="text-sm text-gray-600">Leave Days</div>
                     </div>
-                    <div className="text-center p-3 bg-red-50 rounded">
+                    <div className="text-center p-3 bg-red-100 rounded">
                         <div className="text-2xl font-bold text-red-600">{payroll.lop_days}</div>
                         <div className="text-sm text-gray-600">LOP Days</div>
                     </div>
@@ -150,9 +150,9 @@ export default function PayrollPDFTemplate({ payroll }) {
                                 </div>
                             ))
                         ) : (
-                            <div className="text-gray-500 py-2">No deductions</div>
+                            <div className="text-theme-muted py-2">No deductions</div>
                         )}
-                        <div className="flex justify-between py-3 bg-red-50 px-3 rounded font-semibold text-red-700">
+                        <div className="flex justify-between py-3 bg-red-100 px-3 rounded font-semibold text-red-700">
                             <span>Total Deductions</span>
                             <span>{formatCurrency(payroll.total_deductions || 0)}</span>
                         </div>

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Services\PortfolioService;
 use App\Services\ClientService;
+use App\Services\AccountsService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -11,18 +12,20 @@ class PortfolioWebController extends Controller
 {
     protected $portfolioService;
     protected $clientService;
+    protected $accountsService;
 
-    public function __construct(PortfolioService $portfolioService, ClientService $clientService)
+    public function __construct(PortfolioService $portfolioService, ClientService $clientService, AccountsService $accountsService)
     {
         $this->portfolioService = $portfolioService;
         $this->clientService = $clientService;
+        $this->accountsService = $accountsService;
     }
 
     public function index()
     {
         $portfolios = collect($this->portfolioService->getAllRecords())->map(function ($portfolio) {
             $portfolioModel = $this->portfolioService->getRecordById($portfolio['id']);
-            $portfolioModel->load(['client', 'creator']);
+            $portfolioModel->load(['account', 'creator']);
             return $portfolioModel->toArray();
         });
         return Inertia::render('Modules/Portfolio/View', ['portfolios' => $portfolios]);
@@ -30,15 +33,15 @@ class PortfolioWebController extends Controller
 
     public function create()
     {
-        $clients = $this->clientService->getActiveClients();
-        return Inertia::render('Modules/Portfolio/New', ['clients' => $clients]);
+        $accounts = $this->accountsService->getAllRecords();
+        return Inertia::render('Modules/Portfolio/New', ['accounts' => $accounts]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'portfolio_name' => 'required|string|max:255',
-            'client_id' => 'required|exists:clients,id',
+            'account_id' => 'required|exists:accounts,id',
             'status' => 'required|in:active,inactive,closed',
         ]);
 
@@ -55,10 +58,10 @@ class PortfolioWebController extends Controller
     public function edit($id)
     {
         $portfolio = $this->portfolioService->getRecordById($id);
-        $clients = $this->clientService->getActiveClients();
+        $accounts = $this->accountsService->getAllRecords();
         return Inertia::render('Modules/Portfolio/Edit', [
             'portfolio' => $portfolio,
-            'clients' => $clients
+            'accounts' => $accounts
         ]);
     }
 
@@ -66,7 +69,7 @@ class PortfolioWebController extends Controller
     {
         $request->validate([
             'portfolio_name' => 'required|string|max:255',
-            'client_id' => 'required|exists:clients,id',
+            'account_id' => 'required|exists:accounts,id',
             'status' => 'required|in:active,inactive,closed',
         ]);
 

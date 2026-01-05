@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { useForm, Link } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
 
 export default function SystemBehavior() {
     const [activeTab, setActiveTab] = useState('landing');
@@ -32,18 +33,18 @@ export default function SystemBehavior() {
     return (
         <Layout>
             <div className="space-y-6">
-                <div className="flex items-center space-x-4">
-                    <Link href="/settings" className="text-blue-600 hover:text-blue-800">
-                        ← Back to Settings
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-2xl font-bold text-theme-primary">System Behavior Settings</h1>
+                        <p className="text-theme-secondary">Configure system behavior and business rules</p>
+                    </div>
+                    <Link href="/settings">
+                        <ThemedButton variant="secondary">Back</ThemedButton>
                     </Link>
-                </div>
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-900">System Behavior Settings</h1>
-                    <p className="text-gray-600">Configure system behavior and business rules</p>
                 </div>
 
                 {/* Tab Navigation */}
-                <div className="border-b border-gray-200">
+                <div className="border-b border-theme">
                     <nav className="-mb-px flex space-x-8">
                         {['landing', 'ownership', 'assignment', 'duplicates', 'validation'].map((tab) => (
                             <button
@@ -51,8 +52,8 @@ export default function SystemBehavior() {
                                 onClick={() => setActiveTab(tab)}
                                 className={`py-2 px-1 border-b-2 font-medium text-sm capitalize ${
                                     activeTab === tab
-                                        ? 'border-blue-500 text-blue-600'
-                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                        ? 'border-theme-accent text-theme-accent'
+                                        : 'border-transparent text-theme-muted hover:text-theme-secondary hover:border-theme-muted'
                                 }`}
                             >
                                 {tab === 'landing' ? 'Landing Page' : 
@@ -68,8 +69,11 @@ export default function SystemBehavior() {
                 <form onSubmit={handleSubmit} className="space-y-6">
                     {/* Landing Page Settings */}
                     {activeTab === 'landing' && (
-                        <div className="bg-white border rounded-lg p-6">
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">Default Landing Page</h3>
+                        <ThemedCard>
+                            <div className="p-4 border-b border-theme">
+                                <h3 className="text-lg font-medium text-theme-primary">Default Landing Page</h3>
+                            </div>
+                            <div className="p-6">
                             <div className="space-y-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -86,7 +90,7 @@ export default function SystemBehavior() {
                                             </option>
                                         ))}
                                     </select>
-                                    <p className="text-xs text-gray-500 mt-1">
+                                    <p className="text-xs text-theme-muted mt-1">
                                         Users will be redirected to this page after successful login
                                     </p>
                                 </div>
@@ -109,13 +113,17 @@ export default function SystemBehavior() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            </div>
+                        </ThemedCard>
                     )}
 
                     {/* Record Ownership Rules */}
                     {activeTab === 'ownership' && (
-                        <div className="bg-white border rounded-lg p-6">
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">Record Ownership Rules</h3>
+                        <ThemedCard>
+                            <div className="p-4 border-b border-theme">
+                                <h3 className="text-lg font-medium text-theme-primary">Record Ownership Rules</h3>
+                            </div>
+                            <div className="p-6">
                             <div className="space-y-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -167,13 +175,17 @@ export default function SystemBehavior() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            </div>
+                        </ThemedCard>
                     )}
 
                     {/* Auto-Assignment Rules */}
                     {activeTab === 'assignment' && (
-                        <div className="bg-white border rounded-lg p-6">
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">Auto-Assignment Rules</h3>
+                        <ThemedCard>
+                            <div className="p-4 border-b border-theme">
+                                <h3 className="text-lg font-medium text-theme-primary">Auto-Assignment Rules</h3>
+                            </div>
+                            <div className="p-6">
                             <div className="space-y-4">
                                 <div>
                                     <label className="flex items-center">
@@ -185,7 +197,7 @@ export default function SystemBehavior() {
                                         />
                                         <span className="ml-2 text-sm font-medium text-gray-700">Enable Auto-Assignment</span>
                                     </label>
-                                    <p className="text-xs text-gray-500 mt-1 ml-6">
+                                    <p className="text-xs text-theme-muted mt-1 ml-6">
                                         Automatically assign new records to users based on rules
                                     </p>
                                 </div>
@@ -249,13 +261,17 @@ export default function SystemBehavior() {
                                     </div>
                                 )}
                             </div>
-                        </div>
+                            </div>
+                        </ThemedCard>
                     )}
 
                     {/* Duplicate Detection */}
                     {activeTab === 'duplicates' && (
-                        <div className="bg-white border rounded-lg p-6">
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">Duplicate Detection Rules</h3>
+                        <ThemedCard>
+                            <div className="p-4 border-b border-theme">
+                                <h3 className="text-lg font-medium text-theme-primary">Duplicate Detection Rules</h3>
+                            </div>
+                            <div className="p-6">
                             <div className="space-y-4">
                                 <div>
                                     <label className="flex items-center">
@@ -325,13 +341,17 @@ export default function SystemBehavior() {
                                     </div>
                                 )}
                             </div>
-                        </div>
+                            </div>
+                        </ThemedCard>
                     )}
 
                     {/* Data Validation */}
                     {activeTab === 'validation' && (
-                        <div className="bg-white border rounded-lg p-6">
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">Data Validation Rules</h3>
+                        <ThemedCard>
+                            <div className="p-4 border-b border-theme">
+                                <h3 className="text-lg font-medium text-theme-primary">Data Validation Rules</h3>
+                            </div>
+                            <div className="p-6">
                             <div className="space-y-4">
                                 <div>
                                     <label className="flex items-center">
@@ -414,17 +434,18 @@ export default function SystemBehavior() {
                                     </div>
                                 )}
                             </div>
-                        </div>
+                            </div>
+                        </ThemedCard>
                     )}
 
                     <div className="flex justify-end">
-                        <button
+                        <ThemedButton
                             type="submit"
+                            variant="primary"
                             disabled={processing}
-                            className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
                         >
                             {processing ? 'Saving...' : 'Save System Behavior Settings'}
-                        </button>
+                        </ThemedButton>
                     </div>
                 </form>
             </div>

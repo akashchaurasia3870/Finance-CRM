@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { useForm, Link } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
 
 export default function Compliance() {
     const [activeTab, setActiveTab] = useState('gdpr');
@@ -24,18 +25,18 @@ export default function Compliance() {
     return (
         <Layout>
             <div className="space-y-6">
-                <div className="flex items-center space-x-4">
-                    <Link href="/settings" className="text-blue-600 hover:text-blue-800">
-                        ← Back to Settings
+                <div className="flex items-center justify-between">
+                    <div>
+                        <h1 className="text-2xl font-bold text-theme-primary">Compliance & Policy Settings</h1>
+                        <p className="text-theme-secondary">Configure GDPR, consent management, and legal policies</p>
+                    </div>
+                    <Link href="/settings">
+                        <ThemedButton variant="secondary">Back</ThemedButton>
                     </Link>
-                </div>
-                <div>
-                    <h1 className="text-2xl font-bold text-gray-900">Compliance & Policy Settings</h1>
-                    <p className="text-gray-600">Configure GDPR, consent management, and legal policies</p>
                 </div>
 
                 {/* Tab Navigation */}
-                <div className="border-b border-gray-200">
+                <div className="border-b border-theme">
                     <nav className="-mb-px flex space-x-8">
                         {['gdpr', 'consent', 'access', 'policies', 'disclaimers'].map((tab) => (
                             <button
@@ -43,8 +44,8 @@ export default function Compliance() {
                                 onClick={() => setActiveTab(tab)}
                                 className={`py-2 px-1 border-b-2 font-medium text-sm capitalize ${
                                     activeTab === tab
-                                        ? 'border-blue-500 text-blue-600'
-                                        : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
+                                        ? 'border-theme-accent text-theme-accent'
+                                        : 'border-transparent text-theme-muted hover:text-theme-secondary hover:border-theme-muted'
                                 }`}
                             >
                                 {tab === 'gdpr' ? 'GDPR' : 
@@ -61,82 +62,88 @@ export default function Compliance() {
                     {/* GDPR Settings */}
                     {activeTab === 'gdpr' && (
                         <div className="space-y-6">
-                            <div className="bg-white border rounded-lg p-6">
-                                <h3 className="text-lg font-medium text-gray-900 mb-4">GDPR Compliance</h3>
-                                <div className="space-y-4">
-                                    <div>
-                                        <label className="flex items-center">
-                                            <input
-                                                type="checkbox"
-                                                checked={data.gdpr_enabled}
-                                                onChange={(e) => setData('gdpr_enabled', e.target.checked)}
-                                                className="rounded border-gray-300"
-                                            />
-                                            <span className="ml-2 text-sm font-medium text-gray-700">Enable GDPR Compliance</span>
-                                        </label>
-                                        <p className="text-xs text-gray-500 mt-1 ml-6">
-                                            Activate GDPR data protection features and user rights
-                                        </p>
-                                    </div>
-                                    
-                                    {data.gdpr_enabled && (
-                                        <div className="space-y-4 ml-6">
-                                            <div>
-                                                <label className="flex items-center">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={data.right_to_be_forgotten}
-                                                        onChange={(e) => setData('right_to_be_forgotten', e.target.checked)}
-                                                        className="rounded border-gray-300"
-                                                    />
-                                                    <span className="ml-2 text-sm text-gray-700">Right to be Forgotten</span>
-                                                </label>
-                                                <p className="text-xs text-gray-500 mt-1 ml-6">
-                                                    Allow users to request complete data deletion
-                                                </p>
-                                            </div>
-                                            
-                                            <div>
-                                                <label className="flex items-center">
-                                                    <input
-                                                        type="checkbox"
-                                                        checked={data.data_portability}
-                                                        onChange={(e) => setData('data_portability', e.target.checked)}
-                                                        className="rounded border-gray-300"
-                                                    />
-                                                    <span className="ml-2 text-sm text-gray-700">Data Portability</span>
-                                                </label>
-                                                <p className="text-xs text-gray-500 mt-1 ml-6">
-                                                    Allow users to export their personal data
-                                                </p>
-                                            </div>
-                                            
-                                            <div>
-                                                <label className="flex items-center">
-                                                    <input type="checkbox" defaultChecked className="rounded border-gray-300" />
-                                                    <span className="ml-2 text-sm text-gray-700">Data Processing Transparency</span>
-                                                </label>
-                                                <p className="text-xs text-gray-500 mt-1 ml-6">
-                                                    Provide clear information about data processing activities
-                                                </p>
-                                            </div>
-                                            
-                                            <div>
-                                                <label className="flex items-center">
-                                                    <input type="checkbox" defaultChecked className="rounded border-gray-300" />
-                                                    <span className="ml-2 text-sm text-gray-700">Data Breach Notifications</span>
-                                                </label>
-                                                <p className="text-xs text-gray-500 mt-1 ml-6">
-                                                    Automatic notifications for data security incidents
-                                                </p>
-                                            </div>
-                                        </div>
-                                    )}
+                            <ThemedCard>
+                                <div className="p-4 border-b border-theme">
+                                    <h3 className="text-lg font-medium text-theme-primary">GDPR Compliance</h3>
                                 </div>
-                            </div>
+                                <div className="p-6">
+                                    <div className="space-y-4">
+                                        <div>
+                                            <label className="flex items-center">
+                                                <input
+                                                    type="checkbox"
+                                                    checked={data.gdpr_enabled}
+                                                    onChange={(e) => setData('gdpr_enabled', e.target.checked)}
+                                                    className="rounded border-gray-300"
+                                                />
+                                                <span className="ml-2 text-sm font-medium text-gray-700">Enable GDPR Compliance</span>
+                                            </label>
+                                            <p className="text-xs text-theme-muted mt-1 ml-6">
+                                                Activate GDPR data protection features and user rights
+                                            </p>
+                                        </div>
+                                        
+                                        {data.gdpr_enabled && (
+                                            <div className="space-y-4 ml-6">
+                                                <div>
+                                                    <label className="flex items-center">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={data.right_to_be_forgotten}
+                                                            onChange={(e) => setData('right_to_be_forgotten', e.target.checked)}
+                                                            className="rounded border-gray-300"
+                                                        />
+                                                        <span className="ml-2 text-sm text-gray-700">Right to be Forgotten</span>
+                                                    </label>
+                                                    <p className="text-xs text-theme-muted mt-1 ml-6">
+                                                        Allow users to request complete data deletion
+                                                    </p>
+                                                </div>
+                                                
+                                                <div>
+                                                    <label className="flex items-center">
+                                                        <input
+                                                            type="checkbox"
+                                                            checked={data.data_portability}
+                                                            onChange={(e) => setData('data_portability', e.target.checked)}
+                                                            className="rounded border-gray-300"
+                                                        />
+                                                        <span className="ml-2 text-sm text-gray-700">Data Portability</span>
+                                                    </label>
+                                                    <p className="text-xs text-theme-muted mt-1 ml-6">
+                                                        Allow users to export their personal data
+                                                    </p>
+                                                </div>
+                                                
+                                                <div>
+                                                    <label className="flex items-center">
+                                                        <input type="checkbox" defaultChecked className="rounded border-gray-300" />
+                                                        <span className="ml-2 text-sm text-gray-700">Data Processing Transparency</span>
+                                                    </label>
+                                                    <p className="text-xs text-theme-muted mt-1 ml-6">
+                                                        Provide clear information about data processing activities
+                                                    </p>
+                                                </div>
+                                                
+                                                <div>
+                                                    <label className="flex items-center">
+                                                        <input type="checkbox" defaultChecked className="rounded border-gray-300" />
+                                                        <span className="ml-2 text-sm text-gray-700">Data Breach Notifications</span>
+                                                    </label>
+                                                    <p className="text-xs text-theme-muted mt-1 ml-6">
+                                                        Automatic notifications for data security incidents
+                                                    </p>
+                                                </div>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </ThemedCard>
 
-                            <div className="bg-white border rounded-lg p-6">
-                                <h3 className="text-lg font-medium text-gray-900 mb-4">Data Retention Periods</h3>
+                            <ThemedCard>
+                                <div className="p-4 border-b border-theme">
+                                    <h3 className="text-lg font-medium text-theme-primary">Data Retention Periods</h3>
+                                </div>
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -179,15 +186,12 @@ export default function Compliance() {
                                         />
                                     </div>
                                 </div>
-                            </div>
-                        </div>
-                    )}
+                            </ThemedCard>
 
-                    {/* Consent Management */}
-                    {activeTab === 'consent' && (
-                        <div className="space-y-6">
-                            <div className="bg-white border rounded-lg p-6">
-                                <h3 className="text-lg font-medium text-gray-900 mb-4">Consent Management</h3>
+                            <ThemedCard>
+                                <div className="p-4 border-b border-theme">
+                                    <h3 className="text-lg font-medium text-theme-primary">Consent Management</h3>
+                                </div>
                                 <div className="space-y-4">
                                     <div>
                                         <label className="flex items-center">
@@ -199,7 +203,7 @@ export default function Compliance() {
                                             />
                                             <span className="ml-2 text-sm font-medium text-gray-700">Enable Consent Management</span>
                                         </label>
-                                        <p className="text-xs text-gray-500 mt-1 ml-6">
+                                        <p className="text-xs text-theme-muted mt-1 ml-6">
                                             Track and manage user consent for data processing
                                         </p>
                                     </div>
@@ -230,7 +234,7 @@ export default function Compliance() {
                                                                         <span className="text-xs bg-red-100 text-red-800 px-2 py-1 rounded">Required</span>
                                                                     )}
                                                                 </div>
-                                                                <p className="text-xs text-gray-500">{category.description}</p>
+                                                                <p className="text-xs text-theme-muted">{category.description}</p>
                                                             </div>
                                                         </div>
                                                     ))}
@@ -261,10 +265,12 @@ export default function Compliance() {
                                         </div>
                                     )}
                                 </div>
-                            </div>
+                            </ThemedCard>
 
-                            <div className="bg-white border rounded-lg p-6">
-                                <h3 className="text-lg font-medium text-gray-900 mb-4">Cookie Banner Configuration</h3>
+                            <ThemedCard>
+                                <div className="p-4 border-b border-theme">
+                                    <h3 className="text-lg font-medium text-theme-primary">Cookie Banner Configuration</h3>
+                                </div>
                                 <div className="space-y-4">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -299,83 +305,90 @@ export default function Compliance() {
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </ThemedCard>
                         </div>
                     )}
 
                     {/* Data Access Controls */}
                     {activeTab === 'access' && (
-                        <div className="bg-white border rounded-lg p-6">
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">Data Access Approvals</h3>
-                            <div className="space-y-4">
-                                <div>
-                                    <label className="flex items-center">
-                                        <input
-                                            type="checkbox"
-                                            checked={data.data_access_approvals}
-                                            onChange={(e) => setData('data_access_approvals', e.target.checked)}
-                                            className="rounded border-gray-300"
-                                        />
-                                        <span className="ml-2 text-sm font-medium text-gray-700">Require Approval for Data Access</span>
-                                    </label>
-                                    <p className="text-xs text-gray-500 mt-1 ml-6">
-                                        Require manager approval for accessing sensitive customer data
-                                    </p>
-                                </div>
-                                
-                                {data.data_access_approvals && (
-                                    <div className="space-y-4 ml-6">
-                                        <div>
-                                            <h4 className="text-sm font-medium text-gray-700 mb-3">Approval Requirements</h4>
-                                            <div className="space-y-3">
-                                                {[
-                                                    'Personal Identification Information (PII)',
-                                                    'Financial Information',
-                                                    'Health Information',
-                                                    'Communication Records',
-                                                    'Location Data',
-                                                    'Behavioral Data'
-                                                ].map((dataType) => (
-                                                    <div key={dataType} className="flex items-center justify-between p-3 border rounded">
-                                                        <span className="text-sm">{dataType}</span>
-                                                        <select className="border border-gray-300 rounded px-2 py-1 text-sm">
-                                                            <option>No Approval Required</option>
-                                                            <option>Manager Approval</option>
-                                                            <option>Admin Approval</option>
-                                                            <option>Dual Approval</option>
-                                                        </select>
-                                                    </div>
-                                                ))}
-                                            </div>
-                                        </div>
-                                        
-                                        <div>
-                                            <h4 className="text-sm font-medium text-gray-700 mb-3">Access Logging</h4>
-                                            <div className="space-y-2">
-                                                <label className="flex items-center">
-                                                    <input type="checkbox" defaultChecked className="rounded border-gray-300" />
-                                                    <span className="ml-2 text-sm text-gray-700">Log all data access attempts</span>
-                                                </label>
-                                                <label className="flex items-center">
-                                                    <input type="checkbox" defaultChecked className="rounded border-gray-300" />
-                                                    <span className="ml-2 text-sm text-gray-700">Record access purpose and justification</span>
-                                                </label>
-                                                <label className="flex items-center">
-                                                    <input type="checkbox" className="rounded border-gray-300" />
-                                                    <span className="ml-2 text-sm text-gray-700">Notify data subjects of access</span>
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                )}
+                        <ThemedCard>
+                            <div className="p-4 border-b border-theme">
+                                <h3 className="text-lg font-medium text-theme-primary">Data Access Approvals</h3>
                             </div>
-                        </div>
+                            <div className="p-6">
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="flex items-center">
+                                            <input
+                                                type="checkbox"
+                                                checked={data.data_access_approvals}
+                                                onChange={(e) => setData('data_access_approvals', e.target.checked)}
+                                                className="rounded border-gray-300"
+                                            />
+                                            <span className="ml-2 text-sm font-medium text-gray-700">Require Approval for Data Access</span>
+                                        </label>
+                                        <p className="text-xs text-theme-muted mt-1 ml-6">
+                                            Require manager approval for accessing sensitive customer data
+                                        </p>
+                                    </div>
+                                    
+                                    {data.data_access_approvals && (
+                                        <div className="space-y-4 ml-6">
+                                            <div>
+                                                <h4 className="text-sm font-medium text-gray-700 mb-3">Approval Requirements</h4>
+                                                <div className="space-y-3">
+                                                    {[
+                                                        'Personal Identification Information (PII)',
+                                                        'Financial Information',
+                                                        'Health Information',
+                                                        'Communication Records',
+                                                        'Location Data',
+                                                        'Behavioral Data'
+                                                    ].map((dataType) => (
+                                                        <div key={dataType} className="flex items-center justify-between p-3 border rounded">
+                                                            <span className="text-sm">{dataType}</span>
+                                                            <select className="border border-gray-300 rounded px-2 py-1 text-sm">
+                                                                <option>No Approval Required</option>
+                                                                <option>Manager Approval</option>
+                                                                <option>Admin Approval</option>
+                                                                <option>Dual Approval</option>
+                                                            </select>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            </div>
+                                            
+                                            <div>
+                                                <h4 className="text-sm font-medium text-gray-700 mb-3">Access Logging</h4>
+                                                <div className="space-y-2">
+                                                    <label className="flex items-center">
+                                                        <input type="checkbox" defaultChecked className="rounded border-gray-300" />
+                                                        <span className="ml-2 text-sm text-gray-700">Log all data access attempts</span>
+                                                    </label>
+                                                    <label className="flex items-center">
+                                                        <input type="checkbox" defaultChecked className="rounded border-gray-300" />
+                                                        <span className="ml-2 text-sm text-gray-700">Record access purpose and justification</span>
+                                                    </label>
+                                                    <label className="flex items-center">
+                                                        <input type="checkbox" className="rounded border-gray-300" />
+                                                        <span className="ml-2 text-sm text-gray-700">Notify data subjects of access</span>
+                                                    </label>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </ThemedCard>
                     )}
 
                     {/* Legal Policies */}
                     {activeTab === 'policies' && (
-                        <div className="bg-white border rounded-lg p-6">
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">Legal Policy Links</h3>
+                        <ThemedCard>
+                            <div className="p-4 border-b border-theme">
+                                <h3 className="text-lg font-medium text-theme-primary">Legal Policy Links</h3>
+                            </div>
+                            <div className="p-6">
                             <div className="space-y-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -432,13 +445,17 @@ export default function Compliance() {
                                     </div>
                                 </div>
                             </div>
-                        </div>
+                            </div>
+                        </ThemedCard>
                     )}
 
                     {/* Legal Disclaimers */}
                     {activeTab === 'disclaimers' && (
-                        <div className="bg-white border rounded-lg p-6">
-                            <h3 className="text-lg font-medium text-gray-900 mb-4">Legal Disclaimers</h3>
+                        <ThemedCard>
+                            <div className="p-4 border-b border-theme">
+                                <h3 className="text-lg font-medium text-theme-primary">Legal Disclaimers</h3>
+                            </div>
+                            <div className="p-6">
                             <div className="space-y-4">
                                 <div className="space-y-3">
                                     <div className="border rounded-lg p-4">
@@ -496,17 +513,18 @@ export default function Compliance() {
                                 
                                 <button type="button" className="text-blue-600 text-sm">+ Add Legal Disclaimer</button>
                             </div>
-                        </div>
+                            </div>
+                        </ThemedCard>
                     )}
 
                     <div className="flex justify-end">
-                        <button
+                        <ThemedButton
                             type="submit"
+                            variant="primary"
                             disabled={processing}
-                            className="bg-blue-600 text-white px-6 py-2 rounded-md hover:bg-blue-700 disabled:opacity-50"
                         >
                             {processing ? 'Saving...' : 'Save Compliance Settings'}
-                        </button>
+                        </ThemedButton>
                     </div>
                 </form>
             </div>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedTable, ThemedTableHeader, ThemedTableBody, ThemedTableRow, ThemedTableCell, ThemedInput, ThemedBadge } from '@/Components/ThemedComponents';
 
 export default function EmailView({ emails = [] }) {
     const [searchTerm, setSearchTerm] = useState('');
@@ -17,13 +18,13 @@ export default function EmailView({ emails = [] }) {
         }
     };
 
-    const getStatusColor = (status) => {
+    const getStatusVariant = (status) => {
         switch (status) {
-            case 'draft': return 'bg-gray-100 text-gray-800';
-            case 'queued': return 'bg-yellow-100 text-yellow-800';
-            case 'sent': return 'bg-green-100 text-green-800';
-            case 'failed': return 'bg-red-100 text-red-800';
-            default: return 'bg-gray-100 text-gray-800';
+            case 'draft': return 'info';
+            case 'queued': return 'warning';
+            case 'sent': return 'success';
+            case 'failed': return 'error';
+            default: return 'info';
         }
     };
 
@@ -32,96 +33,88 @@ export default function EmailView({ emails = [] }) {
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
                     <div>
-                        <h1 className="text-2xl font-bold text-gray-900">Emails</h1>
-                        <p className="text-gray-600">Manage emails</p>
+                        <h1 className="text-2xl font-bold text-theme-primary">Emails</h1>
+                        <p className="text-theme-secondary">Manage emails</p>
                     </div>
-                    <Link
-                        href="/email/new"
-                        className="bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-                    >
-                        Create
+                    <Link href="/email/new">
+                        <ThemedButton variant="primary">Create</ThemedButton>
                     </Link>
                 </div>
                 
-                <div className="bg-white border rounded-lg">
-                    <div className="p-4 border-b">
+                <ThemedCard>
+                    <div className="p-4 border-b border-theme">
                         <div className="flex justify-between items-center">
-                            <h3 className="text-lg font-medium">Email List</h3>
-                            <input
+                            <h3 className="text-lg font-medium text-theme-primary">Email List</h3>
+                            <ThemedInput
                                 type="text"
                                 placeholder="Search emails..."
                                 value={searchTerm}
                                 onChange={(e) => setSearchTerm(e.target.value)}
-                                className="border rounded-md px-3 py-2 w-64"
+                                className="w-64"
                             />
                         </div>
                     </div>
-                    <div className="overflow-x-auto">
-                        <table className="w-full">
-                            <thead className="bg-gray-50">
-                                <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">To</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Subject</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Template</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Sent At</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-                                </tr>
-                            </thead>
-                            <tbody className="divide-y divide-gray-200">
-                                {filteredEmails.map((email) => (
-                                    <tr key={email.id} className="hover:bg-gray-50">
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <div className="font-medium text-gray-900">{email.to_email}</div>
-                                            {email.from_email && (
-                                                <div className="text-sm text-gray-500">From: {email.from_email}</div>
-                                            )}
-                                        </td>
-                                        <td className="px-6 py-4">
-                                            <div className="text-gray-900">{email.subject}</div>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                                            {email.template ? email.template.name : 'N/A'}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap">
-                                            <span className={`px-2 py-1 text-xs rounded-full ${getStatusColor(email.status)}`}>
-                                                {email.status}
-                                            </span>
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-gray-500">
-                                            {email.sent_at ? new Date(email.sent_at).toLocaleString() : 'N/A'}
-                                        </td>
-                                        <td className="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                            <Link
-                                                href={`/email/${email.id}`}
-                                                className="text-blue-600 hover:text-blue-900"
-                                            >
-                                                View
+                    <ThemedTable>
+                        <ThemedTableHeader>
+                            <ThemedTableRow>
+                                <ThemedTableCell header>To</ThemedTableCell>
+                                <ThemedTableCell header>Subject</ThemedTableCell>
+                                <ThemedTableCell header>Template</ThemedTableCell>
+                                <ThemedTableCell header>Status</ThemedTableCell>
+                                <ThemedTableCell header>Sent At</ThemedTableCell>
+                                <ThemedTableCell header>Actions</ThemedTableCell>
+                            </ThemedTableRow>
+                        </ThemedTableHeader>
+                        <ThemedTableBody>
+                            {filteredEmails.map((email) => (
+                                <ThemedTableRow key={email.id}>
+                                    <ThemedTableCell>
+                                        <div className="font-medium text-theme-primary">{email.to_email}</div>
+                                        {email.from_email && (
+                                            <div className="text-sm text-theme-secondary">From: {email.from_email}</div>
+                                        )}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <div className="text-theme-primary">{email.subject}</div>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell className="text-theme-secondary">
+                                        {email.template ? email.template.name : 'N/A'}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <ThemedBadge variant={getStatusVariant(email.status)}>
+                                            {email.status}
+                                        </ThemedBadge>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell className="text-theme-secondary">
+                                        {email.sent_at ? new Date(email.sent_at).toLocaleString() : 'N/A'}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <div className="space-x-2">
+                                            <Link href={`/email/${email.id}`}>
+                                                <ThemedButton variant="ghost" className="text-xs px-2 py-1">View</ThemedButton>
                                             </Link>
-                                            <Link
-                                                href={`/email/${email.id}/edit`}
-                                                className="text-indigo-600 hover:text-indigo-900"
-                                            >
-                                                Edit
+                                            <Link href={`/email/${email.id}/edit`}>
+                                                <ThemedButton variant="ghost" className="text-xs px-2 py-1">Edit</ThemedButton>
                                             </Link>
-                                            <button
+                                            <ThemedButton 
+                                                variant="ghost" 
+                                                className="text-xs px-2 py-1 text-red-600 hover:text-red-800"
                                                 onClick={() => handleDelete(email.id)}
-                                                className="text-red-600 hover:text-red-900"
                                             >
                                                 Delete
-                                            </button>
-                                        </td>
-                                    </tr>
-                                ))}
-                            </tbody>
-                        </table>
-                        {filteredEmails.length === 0 && (
-                            <div className="p-8 text-center text-gray-500">
-                                No emails found.
-                            </div>
-                        )}
-                    </div>
-                </div>
+                                            </ThemedButton>
+                                        </div>
+                                    </ThemedTableCell>
+                                </ThemedTableRow>
+                            ))}
+                        </ThemedTableBody>
+                    </ThemedTable>
+                    {filteredEmails.length === 0 && (
+                        <div className="p-8 text-center text-theme-muted">
+                            No emails found.
+                        </div>
+                    )}
+                </ThemedCard>
             </div>
         </Layout>
     );

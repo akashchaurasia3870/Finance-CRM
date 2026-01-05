@@ -21,11 +21,6 @@ class PayrollService extends BaseService
             $data['created_by'] = Auth::id();
             $data['generated_at'] = now();
             
-            // Set payroll_cycle_id to null if not provided
-            if (!isset($data['payroll_cycle_id'])) {
-                $data['payroll_cycle_id'] = null;
-            }
-            
             // Calculate totals from earnings and deductions arrays
             $totalEarnings = 0;
             $totalDeductions = 0;
