@@ -18,8 +18,7 @@ class Position extends Model
         'position_type',
         'quantity',
         'avg_price',
-        'current_value',
-        'unrealized_pnl',
+        'market_value',
         'last_updated',
         'created_by',
     ];
@@ -27,8 +26,7 @@ class Position extends Model
     protected $casts = [
         'quantity' => 'decimal:6',
         'avg_price' => 'decimal:2',
-        'current_value' => 'decimal:2',
-        'unrealized_pnl' => 'decimal:2',
+        'market_value' => 'decimal:2',
         'last_updated' => 'datetime',
     ];
 
@@ -104,10 +102,9 @@ class Position extends Model
     {
         if ($this->position_type === 'stock') {
             // In real scenario, get current market price
-            $this->current_value = $this->quantity * $this->avg_price;
-            $this->unrealized_pnl = $this->current_value - ($this->quantity * $this->avg_price);
+            $this->market_value = $this->quantity * $this->avg_price;
         } else {
-            $this->current_value = $this->quantity;
+            $this->market_value = $this->quantity;
         }
     }
 }

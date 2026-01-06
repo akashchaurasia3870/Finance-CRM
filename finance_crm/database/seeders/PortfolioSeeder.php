@@ -20,8 +20,8 @@ class PortfolioSeeder extends Seeder
 
         $portfolios = [
             [
-                'portfolio_name' => 'Retirement Portfolio',
-                'portfolio_no' => 'PF202400001',
+                'portfolio_name' => 'Cash Portfolio',
+                'portfolio_no' => 'CAS12026',
                 'client_id' => $clients->first()->id,
                 'total_value' => 350000.00,
                 'cash_balance' => 40000.00,
@@ -30,8 +30,8 @@ class PortfolioSeeder extends Seeder
                 'created_by' => $users->first()->id,
             ],
             [
-                'portfolio_name' => 'Growth Portfolio',
-                'portfolio_no' => 'PF202400002',
+                'portfolio_name' => 'Stock Portfolio',
+                'portfolio_no' => 'STK12026',
                 'client_id' => $clients->skip(1)->first()->id ?? $clients->first()->id,
                 'total_value' => 150000.00,
                 'cash_balance' => 25000.00,
@@ -40,8 +40,8 @@ class PortfolioSeeder extends Seeder
                 'created_by' => $users->first()->id,
             ],
             [
-                'portfolio_name' => 'Conservative Portfolio',
-                'portfolio_no' => 'PF202400003',
+                'portfolio_name' => 'Bond Portfolio',
+                'portfolio_no' => 'BND12026',
                 'client_id' => $clients->skip(2)->first()->id ?? $clients->first()->id,
                 'total_value' => 75000.00,
                 'cash_balance' => 15000.00,

@@ -56,7 +56,7 @@ class Portfolio extends Model
     // Calculate total portfolio value from positions
     public function calculateTotalValue()
     {
-        return $this->securityPositions()->sum('current_value');
+        return $this->securityPositions()->sum('market_value');
     }
 
     // Get cash position

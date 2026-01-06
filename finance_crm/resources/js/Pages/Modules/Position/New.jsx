@@ -3,10 +3,11 @@ import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
 import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
 
-export default function NewPosition({ portfolios = [], products = [] }) {
+export default function NewPosition({ portfolios = [], products = [], positionTypes = {} }) {
     const [data, setData] = useState({
         portfolio_id: '',
         product_id: '',
+        position_type: '',
         quantity: 0,
         avg_price: 0,
     });
@@ -71,15 +72,34 @@ export default function NewPosition({ portfolios = [], products = [] }) {
 
                             <div>
                                 <label className="block text-sm font-medium text-theme-primary mb-2">
-                                    Product *
+                                    Position Type *
+                                </label>
+                                <select
+                                    value={data.position_type}
+                                    onChange={(e) => setData({...data, position_type: e.target.value})}
+                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                    required
+                                >
+                                    <option value="">Select Position Type</option>
+                                    {Object.entries(positionTypes).map(([key, value]) => (
+                                        <option key={key} value={key}>
+                                            {value}
+                                        </option>
+                                    ))}
+                                </select>
+                                {errors.position_type && <p className="text-red-500 text-sm mt-1">{errors.position_type}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-theme-primary mb-2">
+                                    Product
                                 </label>
                                 <select
                                     value={data.product_id}
                                     onChange={(e) => setData({...data, product_id: e.target.value})}
                                     className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
-                                    required
                                 >
-                                    <option value="">Select Product</option>
+                                    <option value="">Select Product (Optional for cash/margin)</option>
                                     {products.map((product) => (
                                         <option key={product.id} value={product.id}>
                                             {product.name} ({product.symbol})

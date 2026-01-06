@@ -53,12 +53,11 @@ class PositionService extends BaseService
                         'product' => $position->product,
                         'quantity' => $position->quantity,
                         'avg_price' => $position->avg_price,
-                        'current_value' => $position->current_value,
-                        'unrealized_pnl' => $position->unrealized_pnl,
+                        'market_value' => $position->market_value,
                     ];
                     break;
             }
-            $summary['total_value'] += $position->current_value;
+            $summary['total_value'] += $position->market_value;
         }
         
         return $summary;

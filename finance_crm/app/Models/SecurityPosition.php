@@ -15,6 +15,7 @@ class SecurityPosition extends Model
     protected $fillable = [
         'portfolio_id',
         'product_id',
+        'position_type',
         'quantity',
         'avg_price',
         'market_value',

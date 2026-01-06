@@ -16,6 +16,7 @@ class SecurityPositionSeeder extends Seeder
             Position::create([
                 'portfolio_id' => rand(1, 20),
                 'product_id' => rand(1, 20),
+                'position_type' => ['stock', 'cash', 'margin'][rand(0, 2)],
                 'quantity' => $quantity,
                 'avg_price' => $avgPrice,
                 'market_value' => $quantity * $avgPrice,

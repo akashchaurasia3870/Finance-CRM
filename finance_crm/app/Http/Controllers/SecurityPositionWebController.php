@@ -60,7 +60,7 @@ class SecurityPositionWebController extends Controller
         ]);
 
         $data = $request->all();
-        $data['current_value'] = $data['quantity'] * ($data['avg_price'] ?? 1);
+        $data['market_value'] = $data['quantity'] * ($data['avg_price'] ?? 1);
         
         $this->positionService->createNewRecord($data);
         return redirect('/position')->with('success', 'Position created successfully');
@@ -101,7 +101,7 @@ class SecurityPositionWebController extends Controller
         ]);
 
         $data = $request->all();
-        $data['current_value'] = $data['quantity'] * ($data['avg_price'] ?? 1);
+        $data['market_value'] = $data['quantity'] * ($data['avg_price'] ?? 1);
         $data['last_updated'] = now();
         
         $this->positionService->updateRecord($id, $data);

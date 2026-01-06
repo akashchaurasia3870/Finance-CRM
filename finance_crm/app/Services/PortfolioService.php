@@ -65,7 +65,7 @@ class PortfolioService extends BaseService
             'position_type' => 'cash',
             'quantity' => 0,
             'avg_price' => 1,
-            'current_value' => 0,
+            'market_value' => 0,
             'created_by' => auth()->id(),
         ]);
     }
