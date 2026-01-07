@@ -135,10 +135,34 @@ export default function TransactionDetail({ transaction }) {
                 {transaction.portfolio && (
                     <ThemedCard>
                         <div className="p-4 border-b border-theme">
-                            <h3 className="text-lg font-medium text-theme-primary">Portfolio Information</h3>
+                            <h3 className="text-lg font-medium text-theme-primary">Client & Account Information</h3>
                         </div>
                         <div className="p-6">
                             <div className="grid grid-cols-2 gap-6">
+                                {transaction.portfolio.account?.client && (
+                                    <>
+                                        <div>
+                                            <label className="block text-sm font-medium text-theme-muted">Client Name</label>
+                                            <p className="mt-1 text-sm text-theme-primary">{transaction.portfolio.account.client.name}</p>
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-theme-muted">Client Email</label>
+                                            <p className="mt-1 text-sm text-theme-primary">{transaction.portfolio.account.client.email}</p>
+                                        </div>
+                                    </>
+                                )}
+                                {transaction.portfolio.account && (
+                                    <>
+                                        <div>
+                                            <label className="block text-sm font-medium text-theme-muted">Account Number</label>
+                                            <p className="mt-1 text-sm text-theme-primary">{transaction.portfolio.account.account_no}</p>
+                                        </div>
+                                        <div>
+                                            <label className="block text-sm font-medium text-theme-muted">Account Type</label>
+                                            <p className="mt-1 text-sm text-theme-primary">{transaction.portfolio.account.account_type}</p>
+                                        </div>
+                                    </>
+                                )}
                                 <div>
                                     <label className="block text-sm font-medium text-theme-muted">Portfolio Name</label>
                                     <p className="mt-1 text-sm text-theme-primary">{transaction.portfolio.portfolio_name}</p>
@@ -147,18 +171,6 @@ export default function TransactionDetail({ transaction }) {
                                     <label className="block text-sm font-medium text-theme-muted">Portfolio Number</label>
                                     <p className="mt-1 text-sm text-theme-primary">{transaction.portfolio.portfolio_no}</p>
                                 </div>
-                                {transaction.portfolio.client && (
-                                    <>
-                                        <div>
-                                            <label className="block text-sm font-medium text-theme-muted">Client Name</label>
-                                            <p className="mt-1 text-sm text-theme-primary">{transaction.portfolio.client.name}</p>
-                                        </div>
-                                        <div>
-                                            <label className="block text-sm font-medium text-theme-muted">Client Email</label>
-                                            <p className="mt-1 text-sm text-theme-primary">{transaction.portfolio.client.email}</p>
-                                        </div>
-                                    </>
-                                )}
                             </div>
                         </div>
                     </ThemedCard>

@@ -16,40 +16,18 @@ class SecurityPositionService extends BaseService
         return $this->repository->findByPortfolio($portfolioId);
     }
 
-    public function getPositionsByProduct($productId)
-    {
-        return $this->repository->findByProduct($productId);
-    }
-
     public function createNewRecord(array $data): object
     {
         $data['created_by'] = auth()->id();
         $data['last_updated'] = now();
+        $data['market_value'] = $data['quantity'] * ($data['avg_price'] ?? 1);
         return parent::createNewRecord($data);
     }
 
-    public function updatePosition($portfolioId, $productId, $quantity, $price)
+    public function updateRecord($id, array $data): bool
     {
-        $position = $this->repository->findByPortfolioAndProduct($portfolioId, $productId);
-        
-        if ($position) {
-            $newQuantity = $position->quantity + $quantity;
-            $newAvgPrice = (($position->avg_price * $position->quantity) + ($price * $quantity)) / $newQuantity;
-            
-            return $this->updateRecord($position->id, [
-                'quantity' => $newQuantity,
-                'avg_price' => $newAvgPrice,
-                'market_value' => $newQuantity * $price,
-                'last_updated' => now(),
-            ]);
-        }
-        
-        return $this->createNewRecord([
-            'portfolio_id' => $portfolioId,
-            'product_id' => $productId,
-            'quantity' => $quantity,
-            'avg_price' => $price,
-            'market_value' => $quantity * $price,
-        ]);
+        $data['last_updated'] = now();
+        $data['market_value'] = $data['quantity'] * ($data['avg_price'] ?? 1);
+        return parent::updateRecord($id, $data);
     }
 }

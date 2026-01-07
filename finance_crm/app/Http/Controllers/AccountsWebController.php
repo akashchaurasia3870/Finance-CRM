@@ -37,13 +37,10 @@ class AccountsWebController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:accounts,email',
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
+            'account_type' => 'required|in:savings,checking,investment,retirement,trading,margin,cash,ira,roth_ira',
             'balance' => 'nullable|numeric|min:0',
             'status' => 'required|in:active,inactive,blocked',
-            'client_id' => 'nullable|exists:clients,id',
+            'client_id' => 'required|exists:clients,id',
         ]);
 
         $this->accountsService->createNewRecord($request->all());
@@ -67,10 +64,7 @@ class AccountsWebController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:accounts,email,' . $id,
-            'phone' => 'nullable|string|max:20',
-            'address' => 'nullable|string',
+            'account_type' => 'required|in:savings,checking,investment,retirement,trading,margin,cash,ira,roth_ira',
             'balance' => 'nullable|numeric|min:0',
             'status' => 'required|in:active,inactive,blocked',
             'client_id' => 'nullable|exists:clients,id',

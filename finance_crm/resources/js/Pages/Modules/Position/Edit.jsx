@@ -1,18 +1,104 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedSelect } from '@/Components/ThemedComponents';
 
-export default function EditPosition({ position, portfolios = [], products = [], positionTypes = {} }) {
+export default function EditPosition({ position, clients = [], positionTypes = {} }) {
     const [data, setData] = useState({
+        client_id: position.portfolio?.account?.client_id || '',
+        account_id: position.portfolio?.account_id || '',
         portfolio_id: position.portfolio_id || '',
-        product_id: position.product_id || '',
         position_type: position.position_type || '',
+        product_id: position.product_id || '',
         quantity: position.quantity || 0,
         avg_price: position.avg_price || 0,
     });
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
+    const [clientAccounts, setClientAccounts] = useState([]);
+    const [accountPortfolios, setAccountPortfolios] = useState([]);
+    const [typeProducts, setTypeProducts] = useState([]);
+    const [loadingAccounts, setLoadingAccounts] = useState(false);
+    const [loadingPortfolios, setLoadingPortfolios] = useState(false);
+    const [loadingProducts, setLoadingProducts] = useState(false);
+
+    // Load initial data
+    useEffect(() => {
+        if (position.portfolio?.account?.client_id) {
+            // Load accounts for the client
+            fetch(`/position/client/${position.portfolio.account.client_id}/accounts`)
+                .then(response => response.json())
+                .then(accounts => setClientAccounts(accounts));
+            
+            // Load portfolios for the account
+            if (position.portfolio?.account_id) {
+                fetch(`/position/account/${position.portfolio.account_id}/portfolios`)
+                    .then(response => response.json())
+                    .then(portfolios => setAccountPortfolios(portfolios));
+            }
+            
+            // Load products for the position type
+            if (position.position_type && position.position_type !== 'cash') {
+                fetch(`/position/type/${position.position_type}/products`)
+                    .then(response => response.json())
+                    .then(products => setTypeProducts(products));
+            }
+        }
+    }, []);
+
+    // Load accounts when client changes
+    useEffect(() => {
+        if (data.client_id) {
+            setLoadingAccounts(true);
+            fetch(`/position/client/${data.client_id}/accounts`)
+                .then(response => response.json())
+                .then(accounts => {
+                    setClientAccounts(accounts);
+                    if (!accounts.find(acc => acc.id == data.account_id)) {
+                        setData(prev => ({ ...prev, account_id: '', portfolio_id: '', product_id: '' }));
+                        setAccountPortfolios([]);
+                        setTypeProducts([]);
+                    }
+                })
+                .finally(() => setLoadingAccounts(false));
+        }
+    }, [data.client_id]);
+
+    // Load portfolios when account changes
+    useEffect(() => {
+        if (data.account_id) {
+            setLoadingPortfolios(true);
+            fetch(`/position/account/${data.account_id}/portfolios`)
+                .then(response => response.json())
+                .then(portfolios => {
+                    setAccountPortfolios(portfolios);
+                    if (!portfolios.find(p => p.id == data.portfolio_id)) {
+                        setData(prev => ({ ...prev, portfolio_id: '', product_id: '' }));
+                        setTypeProducts([]);
+                    }
+                })
+                .finally(() => setLoadingPortfolios(false));
+        }
+    }, [data.account_id]);
+
+    // Load products when position type changes
+    useEffect(() => {
+        if (data.position_type && data.position_type !== 'cash') {
+            setLoadingProducts(true);
+            fetch(`/position/type/${data.position_type}/products`)
+                .then(response => response.json())
+                .then(products => {
+                    setTypeProducts(products);
+                    if (!products.find(p => p.id == data.product_id)) {
+                        setData(prev => ({ ...prev, product_id: '' }));
+                    }
+                })
+                .finally(() => setLoadingProducts(false));
+        } else {
+            setTypeProducts([]);
+            setData(prev => ({ ...prev, product_id: '' }));
+        }
+    }, [data.position_type]);
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -34,85 +120,113 @@ export default function EditPosition({ position, portfolios = [], products = [],
     return (
         <Layout>
             <div className="space-y-6">
-                <div className="flex justify-between items-center">
+                <div className="flex items-center space-x-4">
+                    <Link href="/position">
+                        <ThemedButton variant="ghost">← Back</ThemedButton>
+                    </Link>
                     <div>
-                        <h1 className="text-2xl font-bold text-theme-primary">Edit Position</h1>
+                        <h1 className="text-2xl font-bold text-theme-primary">Edit Security Position</h1>
                         <p className="text-theme-secondary">Update security position information</p>
                     </div>
-                    <Link href="/position">
-                        <ThemedButton variant="secondary">Back</ThemedButton>
-                    </Link>
                 </div>
 
-                <ThemedCard>
-                    <div className="p-4 border-b border-theme">
-                        <h3 className="text-lg font-medium text-theme-primary">Position Information</h3>
-                    </div>
-                    <div className="p-6">
-                        <form onSubmit={handleSubmit} className="space-y-6">
+                <ThemedCard className="p-6">
+                    <form onSubmit={handleSubmit} className="space-y-6">
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                             <div>
-                                <label className="block text-sm font-medium text-theme-primary mb-2">
-                                    Portfolio *
-                                </label>
-                                <select
-                                    value={data.portfolio_id}
-                                    onChange={(e) => setData({...data, portfolio_id: e.target.value})}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Client *</label>
+                                <ThemedSelect
+                                    value={data.client_id}
+                                    onChange={(e) => setData({...data, client_id: e.target.value})}
+                                    className={errors.client_id ? 'border-red-500' : ''}
                                     required
                                 >
-                                    <option value="">Select Portfolio</option>
-                                    {portfolios.map((portfolio) => (
-                                        <option key={portfolio.id} value={portfolio.id}>
-                                            {portfolio.portfolio_name} ({portfolio.portfolio_no})
-                                        </option>
+                                    <option value="">Select Client</option>
+                                    {clients.map((client) => (
+                                        <option key={client.id} value={client.id}>{client.name}</option>
                                     ))}
-                                </select>
-                                {errors.portfolio_id && <p className="text-red-500 text-sm mt-1">{errors.portfolio_id}</p>}
+                                </ThemedSelect>
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-theme-primary mb-2">
-                                    Position Type *
-                                </label>
-                                <select
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Account *</label>
+                                <ThemedSelect
+                                    value={data.account_id}
+                                    onChange={(e) => setData({...data, account_id: e.target.value})}
+                                    disabled={!data.client_id || loadingAccounts}
+                                    required
+                                >
+                                    <option value="">
+                                        {!data.client_id ? 'Select Client First' : 
+                                         loadingAccounts ? 'Loading...' : 'Select Account'}
+                                    </option>
+                                    {clientAccounts.map((account) => (
+                                        <option key={account.id} value={account.id}>
+                                            {account.account_type?.replace('_', ' ')} ({account.account_no})
+                                        </option>
+                                    ))}
+                                </ThemedSelect>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Portfolio *</label>
+                                <ThemedSelect
+                                    value={data.portfolio_id}
+                                    onChange={(e) => setData({...data, portfolio_id: e.target.value})}
+                                    disabled={!data.account_id || loadingPortfolios}
+                                    required
+                                >
+                                    <option value="">
+                                        {!data.account_id ? 'Select Account First' : 
+                                         loadingPortfolios ? 'Loading...' : 'Select Portfolio'}
+                                    </option>
+                                    {accountPortfolios.map((portfolio) => (
+                                        <option key={portfolio.id} value={portfolio.id}>
+                                            {portfolio.portfolio_name?.replace('_', ' ')} ({portfolio.portfolio_no})
+                                        </option>
+                                    ))}
+                                </ThemedSelect>
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Position Type *</label>
+                                <ThemedSelect
                                     value={data.position_type}
                                     onChange={(e) => setData({...data, position_type: e.target.value})}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     required
                                 >
                                     <option value="">Select Position Type</option>
                                     {Object.entries(positionTypes).map(([key, value]) => (
-                                        <option key={key} value={key}>
-                                            {value}
-                                        </option>
+                                        <option key={key} value={key}>{value}</option>
                                     ))}
-                                </select>
-                                {errors.position_type && <p className="text-red-500 text-sm mt-1">{errors.position_type}</p>}
+                                </ThemedSelect>
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-theme-primary mb-2">
-                                    Product
+                                    Product {data.position_type === 'cash' ? '(Not Required)' : '*'}
                                 </label>
-                                <select
+                                <ThemedSelect
                                     value={data.product_id}
                                     onChange={(e) => setData({...data, product_id: e.target.value})}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                    disabled={!data.position_type || data.position_type === 'cash' || loadingProducts}
+                                    required={data.position_type !== 'cash'}
                                 >
-                                    <option value="">Select Product (Optional for cash/margin)</option>
-                                    {products.map((product) => (
+                                    <option value="">
+                                        {!data.position_type ? 'Select Position Type First' :
+                                         data.position_type === 'cash' ? 'Not Required for Cash' :
+                                         loadingProducts ? 'Loading...' : 'Select Product'}
+                                    </option>
+                                    {typeProducts.map((product) => (
                                         <option key={product.id} value={product.id}>
                                             {product.name} ({product.symbol})
                                         </option>
                                     ))}
-                                </select>
-                                {errors.product_id && <p className="text-red-500 text-sm mt-1">{errors.product_id}</p>}
+                                </ThemedSelect>
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-theme-primary mb-2">
-                                    Quantity *
-                                </label>
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Quantity *</label>
                                 <ThemedInput
                                     type="number"
                                     step="0.000001"
@@ -120,13 +234,10 @@ export default function EditPosition({ position, portfolios = [], products = [],
                                     onChange={(e) => setData({...data, quantity: e.target.value})}
                                     required
                                 />
-                                {errors.quantity && <p className="text-red-500 text-sm mt-1">{errors.quantity}</p>}
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-theme-primary mb-2">
-                                    Average Price *
-                                </label>
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Average Price *</label>
                                 <ThemedInput
                                     type="number"
                                     step="0.000001"
@@ -134,35 +245,28 @@ export default function EditPosition({ position, portfolios = [], products = [],
                                     onChange={(e) => setData({...data, avg_price: e.target.value})}
                                     required
                                 />
-                                {errors.avg_price && <p className="text-red-500 text-sm mt-1">{errors.avg_price}</p>}
                             </div>
 
                             <div>
-                                <label className="block text-sm font-medium text-theme-primary mb-2">
-                                    Market Value (Calculated)
-                                </label>
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Market Value</label>
                                 <ThemedInput
                                     type="text"
                                     value={`$${marketValue}`}
-                                    disabled
-                                    className="bg-theme-muted"
+                                    readOnly
+                                    className="bg-gray-100 cursor-not-allowed"
                                 />
                             </div>
+                        </div>
 
-                            <div className="flex justify-end space-x-3">
-                                <Link href="/position">
-                                    <ThemedButton variant="secondary">Cancel</ThemedButton>
-                                </Link>
-                                <ThemedButton
-                                    type="submit"
-                                    variant="primary"
-                                    disabled={processing}
-                                >
-                                    {processing ? 'Updating...' : 'Update'}
-                                </ThemedButton>
-                            </div>
-                        </form>
-                    </div>
+                        <div className="flex justify-end space-x-4">
+                            <Link href="/position">
+                                <ThemedButton variant="ghost">Cancel</ThemedButton>
+                            </Link>
+                            <ThemedButton type="submit" variant="primary" disabled={processing}>
+                                {processing ? 'Updating...' : 'Update Position'}
+                            </ThemedButton>
+                        </div>
+                    </form>
                 </ThemedCard>
             </div>
         </Layout>

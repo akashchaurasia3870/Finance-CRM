@@ -8,12 +8,36 @@ export default function TransactionView({ transactions = [] }) {
 
     const filteredTransactions = transactions.filter(transaction => 
         (transaction.reference && transaction.reference.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (transaction.description && transaction.description.toLowerCase().includes(searchTerm.toLowerCase()))
+        (transaction.notes && transaction.notes.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (transaction.portfolio?.portfolio_name && transaction.portfolio.portfolio_name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (transaction.product?.name && transaction.product.name.toLowerCase().includes(searchTerm.toLowerCase()))
     );
 
     const handleDelete = (id) => {
         if (confirm('Are you sure you want to delete this transaction?')) {
             router.delete(`/transaction/${id}`);
+        }
+    };
+
+    const getTransactionTypeColor = (type) => {
+        switch(type) {
+            case 'buy': return 'success';
+            case 'sell': return 'warning';
+            case 'deposit': return 'info';
+            case 'withdraw': return 'error';
+            case 'dividend': return 'success';
+            case 'margin_use': return 'warning';
+            case 'margin_repay': return 'info';
+            default: return 'default';
+        }
+    };
+
+    const getStatusColor = (status) => {
+        switch(status) {
+            case 'completed': return 'success';
+            case 'pending': return 'warning';
+            case 'failed': return 'error';
+            default: return 'default';
         }
     };
 
@@ -23,7 +47,7 @@ export default function TransactionView({ transactions = [] }) {
                 <div className="flex justify-between items-center">
                     <div>
                         <h1 className="text-2xl font-bold text-theme-primary">Transactions</h1>
-                        <p className="text-theme-secondary">Manage financial transactions</p>
+                        <p className="text-theme-secondary">Manage financial transactions across client portfolios</p>
                     </div>
                     <Link href="/transaction/new">
                         <ThemedButton variant="primary">New Transaction</ThemedButton>
@@ -46,10 +70,12 @@ export default function TransactionView({ transactions = [] }) {
                     <ThemedTable>
                         <ThemedTableHeader>
                             <ThemedTableRow>
-                                <ThemedTableCell header>Reference</ThemedTableCell>
+                                <ThemedTableCell header>Client & Portfolio</ThemedTableCell>
                                 <ThemedTableCell header>Type</ThemedTableCell>
+                                <ThemedTableCell header>Product</ThemedTableCell>
+                                <ThemedTableCell header>Quantity</ThemedTableCell>
+                                <ThemedTableCell header>Price</ThemedTableCell>
                                 <ThemedTableCell header>Amount</ThemedTableCell>
-                                <ThemedTableCell header>Account</ThemedTableCell>
                                 <ThemedTableCell header>Status</ThemedTableCell>
                                 <ThemedTableCell header>Date</ThemedTableCell>
                                 <ThemedTableCell header>Actions</ThemedTableCell>
@@ -59,36 +85,53 @@ export default function TransactionView({ transactions = [] }) {
                             {filteredTransactions.length > 0 ? filteredTransactions.map((transaction) => (
                                 <ThemedTableRow key={transaction.id}>
                                     <ThemedTableCell>
-                                        <div className="font-medium text-theme-primary">{transaction.reference}</div>
-                                        {transaction.description && (
-                                            <div className="text-sm text-theme-muted">{transaction.description.substring(0, 40)}...</div>
+                                        <div className="font-medium text-theme-primary">
+                                            {transaction.portfolio?.account?.client?.name || 'N/A'}
+                                        </div>
+                                        <div className="text-sm text-theme-muted">
+                                            {transaction.portfolio?.portfolio_name} ({transaction.portfolio?.portfolio_no})
+                                        </div>
+                                        <div className="text-xs text-theme-muted">
+                                            Account: {transaction.portfolio?.account?.account_no}
+                                        </div>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <ThemedBadge variant={getTransactionTypeColor(transaction.transaction_type)}>
+                                            {transaction.transaction_type?.replace('_', ' ').toUpperCase()}
+                                        </ThemedBadge>
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        {transaction.product ? (
+                                            <div>
+                                                <div className="font-medium text-theme-primary">{transaction.product.name}</div>
+                                                <div className="text-sm text-theme-muted">({transaction.product.symbol})</div>
+                                            </div>
+                                        ) : (
+                                            <span className="text-theme-muted">Cash/Margin</span>
                                         )}
                                     </ThemedTableCell>
                                     <ThemedTableCell>
-                                        <ThemedBadge variant={
-                                            transaction.type === 'credit' ? 'success' : 'warning'
-                                        }>
-                                            {transaction.type || 'Credit'}
-                                        </ThemedBadge>
-                                    </ThemedTableCell>
-                                    <ThemedTableCell className={`font-semibold ${
-                                        transaction.type === 'credit' ? 'text-green-600' : 'text-red-600'
-                                    }`}>
-                                        {transaction.type === 'credit' ? '+' : '-'}${transaction.amount || '0.00'}
-                                    </ThemedTableCell>
-                                    <ThemedTableCell className="text-theme-primary">
-                                        {transaction.account?.name || 'N/A'}
+                                        {transaction.quantity ? parseFloat(transaction.quantity).toFixed(6) : '-'}
                                     </ThemedTableCell>
                                     <ThemedTableCell>
-                                        <ThemedBadge variant={
-                                            transaction.status === 'completed' ? 'success' :
-                                            transaction.status === 'pending' ? 'warning' : 'error'
-                                        }>
-                                            {transaction.status || 'Completed'}
+                                        {transaction.price ? `$${parseFloat(transaction.price).toFixed(2)}` : '-'}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell className="font-semibold text-theme-primary">
+                                        ${parseFloat(transaction.amount || 0).toFixed(2)}
+                                        {transaction.fees > 0 && (
+                                            <div className="text-xs text-theme-muted">Fees: ${parseFloat(transaction.fees).toFixed(2)}</div>
+                                        )}
+                                    </ThemedTableCell>
+                                    <ThemedTableCell>
+                                        <ThemedBadge variant={getStatusColor(transaction.status)}>
+                                            {transaction.status?.toUpperCase() || 'PENDING'}
                                         </ThemedBadge>
                                     </ThemedTableCell>
                                     <ThemedTableCell className="text-theme-secondary">
-                                        {transaction.created_at ? new Date(transaction.created_at).toLocaleDateString() : 'N/A'}
+                                        {transaction.transaction_date ? new Date(transaction.transaction_date).toLocaleDateString() : 'N/A'}
+                                        {transaction.reference && (
+                                            <div className="text-xs text-theme-muted">Ref: {transaction.reference}</div>
+                                        )}
                                     </ThemedTableCell>
                                     <ThemedTableCell>
                                         <div className="space-x-2">
@@ -109,42 +152,11 @@ export default function TransactionView({ transactions = [] }) {
                                     </ThemedTableCell>
                                 </ThemedTableRow>
                             )) : (
-                                [
-                                    { ref: 'TXN001', type: 'credit', amount: 5000, desc: 'Client payment received' },
-                                    { ref: 'TXN002', type: 'debit', amount: 1200, desc: 'Office rent payment' },
-                                    { ref: 'TXN003', type: 'credit', amount: 3500, desc: 'Investment return' }
-                                ].map((txn, index) => (
-                                    <ThemedTableRow key={index}>
-                                        <ThemedTableCell>
-                                            <div className="font-medium text-theme-primary">{txn.ref}</div>
-                                            <div className="text-sm text-theme-muted">{txn.desc}</div>
-                                        </ThemedTableCell>
-                                        <ThemedTableCell>
-                                            <ThemedBadge variant={txn.type === 'credit' ? 'success' : 'warning'}>
-                                                {txn.type}
-                                            </ThemedBadge>
-                                        </ThemedTableCell>
-                                        <ThemedTableCell className={`font-semibold ${
-                                            txn.type === 'credit' ? 'text-green-600' : 'text-red-600'
-                                        }`}>
-                                            {txn.type === 'credit' ? '+' : '-'}${txn.amount.toLocaleString()}
-                                        </ThemedTableCell>
-                                        <ThemedTableCell className="text-theme-primary">Main Account</ThemedTableCell>
-                                        <ThemedTableCell>
-                                            <ThemedBadge variant="success">Completed</ThemedBadge>
-                                        </ThemedTableCell>
-                                        <ThemedTableCell className="text-theme-secondary">
-                                            {new Date().toLocaleDateString()}
-                                        </ThemedTableCell>
-                                        <ThemedTableCell>
-                                            <div className="space-x-2">
-                                                <ThemedButton variant="ghost" className="text-xs px-2 py-1">View</ThemedButton>
-                                                <ThemedButton variant="ghost" className="text-xs px-2 py-1">Edit</ThemedButton>
-                                                <ThemedButton variant="ghost" className="text-xs px-2 py-1 text-red-600 hover:text-red-800">Delete</ThemedButton>
-                                            </div>
-                                        </ThemedTableCell>
-                                    </ThemedTableRow>
-                                ))
+                                <ThemedTableRow>
+                                    <ThemedTableCell colSpan={9} className="text-center py-8 text-theme-muted">
+                                        No transactions found. <Link href="/transaction/new" className="text-theme-accent hover:underline">Create your first transaction</Link>
+                                    </ThemedTableCell>
+                                </ThemedTableRow>
                             )}
                         </ThemedTableBody>
                     </ThemedTable>

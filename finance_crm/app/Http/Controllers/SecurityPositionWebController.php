@@ -2,33 +2,41 @@
 
 namespace App\Http\Controllers;
 
-use App\Services\PositionService;
+use App\Services\SecurityPositionService;
 use App\Services\PortfolioService;
 use App\Services\ProductService;
+use App\Services\ClientService;
+use App\Services\AccountsService;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
 class SecurityPositionWebController extends Controller
 {
-    protected $positionService;
+    protected $securityPositionService;
     protected $portfolioService;
     protected $productService;
+    protected $clientService;
+    protected $accountsService;
 
     public function __construct(
-        PositionService $positionService,
+        SecurityPositionService $securityPositionService,
         PortfolioService $portfolioService,
-        ProductService $productService
+        ProductService $productService,
+        ClientService $clientService,
+        AccountsService $accountsService
     ) {
-        $this->positionService = $positionService;
+        $this->securityPositionService = $securityPositionService;
         $this->portfolioService = $portfolioService;
         $this->productService = $productService;
+        $this->clientService = $clientService;
+        $this->accountsService = $accountsService;
     }
 
     public function index()
     {
-        $positions = collect($this->positionService->getAllRecords())->map(function ($position) {
-            $positionModel = $this->positionService->getRecordById($position['id']);
-            $positionModel->load(['portfolio.client', 'product', 'creator']);
+        $positions = collect($this->securityPositionService->getAllRecords())->map(function ($position) {
+            $positionModel = $this->securityPositionService->getRecordById($position['id']);
+            $positionModel->load(['portfolio.account.client', 'product', 'creator']);
             return $positionModel->toArray();
         });
         return Inertia::render('Modules/Position/View', ['positions' => $positions]);
@@ -36,11 +44,9 @@ class SecurityPositionWebController extends Controller
 
     public function create()
     {
-        $portfolios = $this->portfolioService->getActivePortfolios();
-        $products = $this->productService->getActiveProducts();
+        $clients = $this->clientService->getAllRecords();
         return Inertia::render('Modules/Position/New', [
-            'portfolios' => $portfolios,
-            'products' => $products,
+            'clients' => $clients,
             'positionTypes' => [
                 'stock' => 'Stock Position',
                 'cash' => 'Cash Position',
@@ -62,26 +68,24 @@ class SecurityPositionWebController extends Controller
         $data = $request->all();
         $data['market_value'] = $data['quantity'] * ($data['avg_price'] ?? 1);
         
-        $this->positionService->createNewRecord($data);
+        $this->securityPositionService->createNewRecord($data);
         return redirect('/position')->with('success', 'Position created successfully');
     }
 
     public function show($id)
     {
-        $position = $this->positionService->getRecordById($id);
-        $position->load(['portfolio.client', 'product', 'creator']);
+        $position = $this->securityPositionService->getRecordById($id);
+        $position->load(['portfolio.account.client', 'product', 'creator']);
         return Inertia::render('Modules/Position/Detail', ['position' => $position]);
     }
 
     public function edit($id)
     {
-        $position = $this->positionService->getRecordById($id);
-        $portfolios = $this->portfolioService->getActivePortfolios();
-        $products = $this->productService->getActiveProducts();
+        $position = $this->securityPositionService->getRecordById($id);
+        $clients = $this->clientService->getAllRecords();
         return Inertia::render('Modules/Position/Edit', [
             'position' => $position,
-            'portfolios' => $portfolios,
-            'products' => $products,
+            'clients' => $clients,
             'positionTypes' => [
                 'stock' => 'Stock Position',
                 'cash' => 'Cash Position',
@@ -104,7 +108,7 @@ class SecurityPositionWebController extends Controller
         $data['market_value'] = $data['quantity'] * ($data['avg_price'] ?? 1);
         $data['last_updated'] = now();
         
-        $this->positionService->updateRecord($id, $data);
+        $this->securityPositionService->updateRecord($id, $data);
         return redirect('/position')->with('success', 'Position updated successfully');
     }
 
@@ -112,5 +116,23 @@ class SecurityPositionWebController extends Controller
     {
         $this->positionService->deleteRecord($id);
         return redirect('/position')->with('success', 'Position deleted successfully');
+    }
+
+    public function getAccountsByClient($clientId)
+    {
+        $accounts = $this->accountsService->getAccountsByClient($clientId);
+        return response()->json($accounts);
+    }
+
+    public function getPortfoliosByAccount($accountId)
+    {
+        $portfolios = $this->portfolioService->getPortfoliosByAccount($accountId);
+        return response()->json($portfolios);
+    }
+
+    public function getProductsByType($positionType)
+    {
+        $products = $this->productService->getProductsByType($positionType);
+        return response()->json($products);
     }
 }

@@ -12,6 +12,7 @@ class Transaction extends Model
 
     protected $fillable = [
         'portfolio_id',
+        'position_id',
         'product_id',
         'transaction_type',
         'quantity',
@@ -38,6 +39,11 @@ class Transaction extends Model
     public function portfolio()
     {
         return $this->belongsTo(Portfolio::class, 'portfolio_id');
+    }
+
+    public function position()
+    {
+        return $this->belongsTo(Position::class, 'position_id');
     }
 
     public function product()
@@ -80,8 +86,7 @@ class Transaction extends Model
             [
                 'quantity' => 0,
                 'avg_price' => 0,
-                'current_value' => 0,
-                'unrealized_pnl' => 0,
+                'market_value' => 0,
                 'created_by' => $this->created_by,
             ]
         );

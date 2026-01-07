@@ -7,9 +7,9 @@ export default function AccountView({ accounts = [] }) {
     const [searchTerm, setSearchTerm] = useState('');
 
     const filteredAccounts = accounts.filter(account => 
-        account.name?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        account.email?.toLowerCase().includes(searchTerm.toLowerCase()) ||
-        account.account_no?.includes(searchTerm)
+        account.account_type?.toLowerCase().includes(searchTerm.toLowerCase()) ||
+        account.account_no?.includes(searchTerm) ||
+        account.client?.name?.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
     const handleDelete = (id) => {
@@ -48,8 +48,7 @@ export default function AccountView({ accounts = [] }) {
                         <ThemedTableHeader>
                             <ThemedTableRow>
                                 <ThemedTableCell header>Account No</ThemedTableCell>
-                                <ThemedTableCell header>Name</ThemedTableCell>
-                                <ThemedTableCell header>Email</ThemedTableCell>
+                                <ThemedTableCell header>Account Type</ThemedTableCell>
                                 <ThemedTableCell header>Balance</ThemedTableCell>
                                 <ThemedTableCell header>Status</ThemedTableCell>
                                 <ThemedTableCell header>Client</ThemedTableCell>
@@ -63,10 +62,9 @@ export default function AccountView({ accounts = [] }) {
                                         <div className="font-medium text-theme-primary">{account.account_no}</div>
                                     </ThemedTableCell>
                                     <ThemedTableCell>
-                                        <div className="font-medium text-theme-primary">{account.name}</div>
-                                    </ThemedTableCell>
-                                    <ThemedTableCell className="text-theme-secondary">
-                                        {account.email}
+                                        <div className="font-medium text-theme-primary capitalize">
+                                            {account.account_type?.replace('_', ' ')}
+                                        </div>
                                     </ThemedTableCell>
                                     <ThemedTableCell className="text-theme-primary font-semibold">
                                         ${account.balance}

@@ -13,7 +13,9 @@ class SecurityPositionRepository extends BaseRepository
 
     public function findByPortfolio($portfolioId)
     {
-        return $this->model->where('portfolio_id', $portfolioId)->get();
+        return $this->model->where('portfolio_id', $portfolioId)
+            ->with('product')
+            ->get();
     }
 
     public function findByProduct($productId)

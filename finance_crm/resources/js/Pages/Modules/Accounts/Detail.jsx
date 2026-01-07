@@ -32,12 +32,10 @@ export default function AccountDetail({ account }) {
                                     <p className="text-theme-primary font-medium">{account.account_no}</p>
                                 </div>
                                 <div>
-                                    <label className="block text-sm font-medium text-theme-secondary mb-1">Name</label>
-                                    <p className="text-theme-primary font-medium">{account.name}</p>
-                                </div>
-                                <div>
-                                    <label className="block text-sm font-medium text-theme-secondary mb-1">Email</label>
-                                    <p className="text-theme-primary">{account.email || 'N/A'}</p>
+                                    <label className="block text-sm font-medium text-theme-secondary mb-1">Account Type</label>
+                                    <p className="text-theme-primary font-medium capitalize">
+                                        {account.account_type?.replace('_', ' ')}
+                                    </p>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-theme-secondary mb-1">Balance</label>
@@ -74,7 +72,9 @@ export default function AccountDetail({ account }) {
                                 </div>
                                 <div className="flex justify-between">
                                     <span className="text-theme-secondary">Account Type</span>
-                                    <span className="text-theme-primary">Standard</span>
+                                    <span className="text-theme-primary capitalize">
+                                        {account.account_type?.replace('_', ' ')}
+                                    </span>
                                 </div>
                             </div>
                         </ThemedCard>

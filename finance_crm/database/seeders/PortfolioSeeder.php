@@ -11,48 +11,31 @@ class PortfolioSeeder extends Seeder
 {
     public function run(): void
     {
-        $clients = Client::all();
+        $accounts = \App\Models\Accounts::all();
         $users = User::all();
 
-        if ($clients->isEmpty() || $users->isEmpty()) {
+        if ($accounts->isEmpty() || $users->isEmpty()) {
             return;
         }
 
-        $portfolios = [
-            [
-                'portfolio_name' => 'Cash Portfolio',
-                'portfolio_no' => 'CAS12026',
-                'client_id' => $clients->first()->id,
-                'total_value' => 350000.00,
-                'cash_balance' => 40000.00,
-                'margin_used' => 10000.00,
-                'status' => 'active',
-                'created_by' => $users->first()->id,
-            ],
-            [
-                'portfolio_name' => 'Stock Portfolio',
-                'portfolio_no' => 'STK12026',
-                'client_id' => $clients->skip(1)->first()->id ?? $clients->first()->id,
-                'total_value' => 150000.00,
-                'cash_balance' => 25000.00,
-                'margin_used' => 5000.00,
-                'status' => 'active',
-                'created_by' => $users->first()->id,
-            ],
-            [
-                'portfolio_name' => 'Bond Portfolio',
-                'portfolio_no' => 'BND12026',
-                'client_id' => $clients->skip(2)->first()->id ?? $clients->first()->id,
-                'total_value' => 75000.00,
-                'cash_balance' => 15000.00,
-                'margin_used' => 0.00,
-                'status' => 'active',
-                'created_by' => $users->first()->id,
-            ],
+        $portfolioTypes = [
+            'cash_portfolio',
+            'stock_portfolio', 
+            'bond_portfolio',
+            'mutual_fund_portfolio',
+            'etf_portfolio'
         ];
 
-        foreach ($portfolios as $portfolio) {
-            Portfolio::create($portfolio);
+        foreach ($portfolioTypes as $index => $type) {
+            $account = $accounts->skip($index % $accounts->count())->first();
+            Portfolio::create([
+                'portfolio_name' => $type,
+                'portfolio_no' => Portfolio::PORTFOLIO_TYPES[$type]['number'],
+                'account_id' => $account->id,
+                'client_id' => $account->client_id,
+                'status' => 'active',
+                'created_by' => $users->first()->id,
+            ]);
         }
     }
 }

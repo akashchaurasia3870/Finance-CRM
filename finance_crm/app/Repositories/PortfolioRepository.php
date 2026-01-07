@@ -25,6 +25,13 @@ class PortfolioRepository extends BaseRepository
             ->get();
     }
 
+    public function findByAccount($accountId)
+    {
+        return $this->model->where('account_id', $accountId)
+            ->with(['securityPositions.product'])
+            ->get();
+    }
+
     public function findByPortfolioNo($portfolioNo)
     {
         return $this->model->where('portfolio_no', $portfolioNo)

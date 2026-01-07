@@ -12,10 +12,7 @@ class Accounts extends Model
 
     protected $fillable = [
         'account_no',
-        'name',
-        'email',
-        'phone',
-        'address',
+        'account_type',
         'balance',
         'status',
         'client_id',
@@ -25,6 +22,38 @@ class Accounts extends Model
     protected $casts = [
         'balance' => 'decimal:2',
     ];
+
+    const ACCOUNT_TYPES = [
+        'savings' => 'Savings Account',
+        'checking' => 'Checking Account', 
+        'investment' => 'Investment Account',
+        'retirement' => 'Retirement Account',
+        'trading' => 'Trading Account',
+        'margin' => 'Margin Account',
+        'cash' => 'Cash Account',
+        'ira' => 'IRA Account',
+        'roth_ira' => 'Roth IRA Account'
+    ];
+
+    protected static function boot()
+    {
+        parent::boot();
+        
+        static::creating(function ($account) {
+            if (empty($account->account_no)) {
+                $account->account_no = self::generateAccountNumber();
+            }
+        });
+    }
+
+    public static function generateAccountNumber()
+    {
+        do {
+            $accountNo = str_pad(rand(100000000, 999999999), 9, '0', STR_PAD_LEFT);
+        } while (self::where('account_no', $accountNo)->exists());
+        
+        return $accountNo;
+    }
 
     public function client()
     {

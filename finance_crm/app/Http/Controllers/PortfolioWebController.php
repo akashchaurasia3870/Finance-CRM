@@ -33,16 +33,17 @@ class PortfolioWebController extends Controller
 
     public function create()
     {
-        $accounts = $this->accountsService->getAllRecords();
-        return Inertia::render('Modules/Portfolio/New', ['accounts' => $accounts]);
+        $clients = $this->clientService->getAllRecords();
+        return Inertia::render('Modules/Portfolio/New', ['clients' => $clients]);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'portfolio_name' => 'required|string|max:255',
+            'portfolio_name' => 'required|in:cash_portfolio,stock_portfolio,bond_portfolio,mutual_fund_portfolio,etf_portfolio,retirement_portfolio,margin_portfolio,options_portfolio,forex_portfolio,crypto_portfolio',
+            'client_id' => 'required|exists:clients,id',
             'account_id' => 'required|exists:accounts,id',
-            'status' => 'required|in:active,inactive,closed',
+            'status' => 'required|in:active,inactive',
         ]);
 
         $this->portfolioService->createNewRecord($request->all());
@@ -58,19 +59,20 @@ class PortfolioWebController extends Controller
     public function edit($id)
     {
         $portfolio = $this->portfolioService->getRecordById($id);
-        $accounts = $this->accountsService->getAllRecords();
+        $clients = $this->clientService->getAllRecords();
         return Inertia::render('Modules/Portfolio/Edit', [
             'portfolio' => $portfolio,
-            'accounts' => $accounts
+            'clients' => $clients
         ]);
     }
 
     public function update(Request $request, $id)
     {
         $request->validate([
-            'portfolio_name' => 'required|string|max:255',
-            'account_id' => 'required|exists:accounts,id',
-            'status' => 'required|in:active,inactive,closed',
+            'portfolio_name' => 'required|in:cash_portfolio,stock_portfolio,bond_portfolio,mutual_fund_portfolio,etf_portfolio,retirement_portfolio,margin_portfolio,options_portfolio,forex_portfolio,crypto_portfolio',
+            'client_id' => 'nullable|exists:clients,id',
+            'account_id' => 'nullable|exists:accounts,id',
+            'status' => 'required|in:active,inactive',
         ]);
 
         $this->portfolioService->updateRecord($id, $request->all());
@@ -81,5 +83,11 @@ class PortfolioWebController extends Controller
     {
         $this->portfolioService->deleteRecord($id);
         return redirect('/portfolio')->with('success', 'Portfolio deleted successfully');
+    }
+
+    public function getAccountsByClient($clientId)
+    {
+        $accounts = $this->accountsService->getAccountsByClient($clientId);
+        return response()->json($accounts);
     }
 }

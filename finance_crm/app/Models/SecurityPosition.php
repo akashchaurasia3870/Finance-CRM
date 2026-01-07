@@ -26,7 +26,7 @@ class SecurityPosition extends Model
     protected $casts = [
         'quantity' => 'decimal:6',
         'avg_price' => 'decimal:6',
-        'market_value' => 'decimal:6',
+        'market_value' => 'decimal:2',
         'last_updated' => 'datetime',
     ];
 

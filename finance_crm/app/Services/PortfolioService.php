@@ -23,6 +23,11 @@ class PortfolioService extends BaseService
         return $this->repository->findByClient($clientId);
     }
 
+    public function getPortfoliosByAccount($accountId)
+    {
+        return $this->repository->findByAccount($accountId);
+    }
+
     public function findById($id)
     {
         return $this->getRecordById($id);

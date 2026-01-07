@@ -360,6 +360,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/portfolio', [PortfolioWebController::class, 'index'])->name('portfolio.view');
     Route::get('/portfolio/new', [PortfolioWebController::class, 'create'])->name('portfolio.new');
     Route::post('/portfolio', [PortfolioWebController::class, 'store']);
+    Route::get('/portfolio/client/{clientId}/accounts', [PortfolioWebController::class, 'getAccountsByClient']);
     Route::get('/portfolio/{id}', [PortfolioWebController::class, 'show'])->name('portfolio.detail');
     Route::get('/portfolio/{id}/edit', [PortfolioWebController::class, 'edit'])->name('portfolio.edit');
     Route::put('/portfolio/{id}', [PortfolioWebController::class, 'update']);
@@ -377,6 +378,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/position', [SecurityPositionWebController::class, 'index'])->name('position.view');
     Route::get('/position/new', [SecurityPositionWebController::class, 'create'])->name('position.new');
     Route::post('/position', [SecurityPositionWebController::class, 'store']);
+    Route::get('/position/client/{clientId}/accounts', [SecurityPositionWebController::class, 'getAccountsByClient']);
+    Route::get('/position/account/{accountId}/portfolios', [SecurityPositionWebController::class, 'getPortfoliosByAccount']);
+    Route::get('/position/type/{positionType}/products', [SecurityPositionWebController::class, 'getProductsByType']);
     Route::get('/position/{id}', [SecurityPositionWebController::class, 'show'])->name('position.detail');
     Route::get('/position/{id}/edit', [SecurityPositionWebController::class, 'edit'])->name('position.edit');
     Route::put('/position/{id}', [SecurityPositionWebController::class, 'update']);
@@ -495,6 +499,9 @@ Route::middleware('auth')->group(function () {
     Route::get('/transaction', [TransactionWebController::class, 'index'])->name('transaction.view');
     Route::get('/transaction/new', [TransactionWebController::class, 'create'])->name('transaction.new');
     Route::post('/transaction', [TransactionWebController::class, 'store']);
+    Route::get('/transaction/client/{clientId}/accounts', [TransactionWebController::class, 'getAccountsByClient']);
+    Route::get('/transaction/account/{accountId}/portfolios', [TransactionWebController::class, 'getPortfoliosByAccount']);
+    Route::get('/transaction/portfolio/{portfolioId}/positions', [TransactionWebController::class, 'getPositionsByPortfolio']);
     Route::get('/transaction/{id}', [TransactionWebController::class, 'show'])->name('transaction.detail');
     Route::get('/transaction/{id}/edit', [TransactionWebController::class, 'edit'])->name('transaction.edit');
     Route::put('/transaction/{id}', [TransactionWebController::class, 'update']);
