@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Services\SettingsService;
 use App\Services\UserService;
 use App\Services\RoleService;
+use App\Models\SiteLog;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 
@@ -176,11 +177,99 @@ class SettingsWebController extends Controller
     }
 
     // Audit & Activity
-    public function auditSettings()
+    public function auditSettings(Request $request)
     {
+        $query = SiteLog::with('user')->orderBy('created_at', 'desc');
+
+        // Apply filters
+        if ($request->filled('search')) {
+            $query->search($request->search);
+        }
+
+        if ($request->filled('ip_address')) {
+            $query->byIpAddress($request->ip_address);
+        }
+
+        if ($request->filled('method')) {
+            $query->byMethod($request->method);
+        }
+
+        if ($request->filled('user_id')) {
+            $query->byUserId($request->user_id);
+        }
+
+        if ($request->filled('date_from') || $request->filled('date_to')) {
+            $query->byDateRange($request->date_from, $request->date_to);
+        }
+
+        $siteLogs = $query->paginate(50);
+
         return Inertia::render('Modules/Settings/Audit', [
-            'logs' => $this->settingsService->getAuditLogs(),
+            'siteLogs' => $siteLogs->items(),
+            'filters' => $request->only(['search', 'ip_address', 'method', 'user_id', 'date_from', 'date_to']),
         ]);
+    }
+
+    public function exportAuditLogs(Request $request)
+    {
+        $query = SiteLog::with('user')->orderBy('created_at', 'desc');
+
+        // Apply same filters as audit settings
+        if ($request->filled('search')) {
+            $query->search($request->search);
+        }
+        if ($request->filled('ip_address')) {
+            $query->byIpAddress($request->ip_address);
+        }
+        if ($request->filled('method')) {
+            $query->byMethod($request->method);
+        }
+        if ($request->filled('user_id')) {
+            $query->byUserId($request->user_id);
+        }
+        if ($request->filled('date_from') || $request->filled('date_to')) {
+            $query->byDateRange($request->date_from, $request->date_to);
+        }
+
+        $logs = $query->limit(10000)->get(); // Limit for performance
+
+        $filename = 'site_logs_' . date('Y-m-d_H-i-s') . '.csv';
+        
+        $headers = [
+            'Content-Type' => 'text/csv',
+            'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+        ];
+
+        $callback = function() use ($logs) {
+            $file = fopen('php://output', 'w');
+            
+            // CSV headers
+            fputcsv($file, [
+                'ID', 'IP Address', 'User ID', 'User Name', 'Method', 'URL', 
+                'Browser', 'Platform', 'Device', 'User Agent', 'Created At'
+            ]);
+
+            // CSV data
+            foreach ($logs as $log) {
+                fputcsv($file, [
+                    $log->id,
+                    $log->ip_address,
+                    $log->user_id,
+                    $log->user ? $log->user->name : 'Guest',
+                    $log->method,
+                    $log->url,
+                    $log->browser,
+                    $log->platform,
+                    $log->device,
+                    $log->user_agent,
+                    $log->created_at->format('Y-m-d H:i:s'),
+                ]);
+            }
+
+            fclose($file);
+        };
+
+        return response()->stream($callback, 200, $headers);
     }
 
     // Localization

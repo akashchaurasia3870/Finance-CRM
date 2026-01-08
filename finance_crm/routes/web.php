@@ -606,6 +606,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/settings/integrations', [SettingsWebController::class, 'integrationSettings'])->name('settings.integrations');
     Route::get('/settings/data-management', [SettingsWebController::class, 'dataManagement'])->name('settings.data-management');
     Route::get('/settings/audit', [SettingsWebController::class, 'auditSettings'])->name('settings.audit');
+    Route::get('/settings/audit/export', [SettingsWebController::class, 'exportAuditLogs'])->name('settings.audit.export');
     Route::get('/settings/localization', [SettingsWebController::class, 'localizationSettings'])->name('settings.localization');
     Route::get('/settings/branding', [SettingsWebController::class, 'brandingSettings'])->name('settings.branding');
     Route::put('/settings/branding', [SettingsWebController::class, 'updateBrandingSettings']);

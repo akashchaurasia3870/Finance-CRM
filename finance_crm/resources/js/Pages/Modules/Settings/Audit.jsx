@@ -1,10 +1,19 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Layout from '@/Layouts/Layout';
-import { useForm, Link } from '@inertiajs/react';
+import { useForm, Link, router } from '@inertiajs/react';
 import { ThemedCard, ThemedButton, ThemedTable, ThemedTableHeader, ThemedTableBody, ThemedTableRow, ThemedTableCell, ThemedInput, ThemedBadge } from '@/Components/ThemedComponents';
 
-export default function Audit() {
-    const [activeTab, setActiveTab] = useState('settings');
+export default function Audit({ siteLogs = [], filters = {} }) {
+    const [activeTab, setActiveTab] = useState('logs');
+    const [showModal, setShowModal] = useState(false);
+    const [selectedLog, setSelectedLog] = useState(null);
+    const [searchTerm, setSearchTerm] = useState(filters.search || '');
+    const [ipFilter, setIpFilter] = useState(filters.ip_address || '');
+    const [methodFilter, setMethodFilter] = useState(filters.method || '');
+    const [userFilter, setUserFilter] = useState(filters.user_id || '');
+    const [dateFrom, setDateFrom] = useState(filters.date_from || '');
+    const [dateTo, setDateTo] = useState(filters.date_to || '');
+    
     const { data, setData, put, get, processing } = useForm({
         activity_logging_enabled: true,
         log_retention_days: 90,
@@ -14,43 +23,59 @@ export default function Audit() {
         export_format: 'csv'
     });
 
-    const auditLogs = [
-        {
-            id: 1,
-            user: 'John Doe',
-            action: 'Updated Client',
-            resource: 'Client #1234',
-            timestamp: '2024-01-15 14:30:25',
-            ip_address: '192.168.1.100',
-            details: 'Changed phone number'
-        },
-        {
-            id: 2,
-            user: 'Jane Smith',
-            action: 'Created Lead',
-            resource: 'Lead #5678',
-            timestamp: '2024-01-15 14:25:10',
-            ip_address: '192.168.1.101',
-            details: 'New lead from website form'
-        },
-        {
-            id: 3,
-            user: 'System',
-            action: 'Login Failed',
-            resource: 'User Authentication',
-            timestamp: '2024-01-15 14:20:05',
-            ip_address: '192.168.1.102',
-            details: 'Invalid password attempt'
-        }
-    ];
-
     const handleSubmit = (e) => {
         e.preventDefault();
         put('/api/settings/audit');
     };
 
     const handleExport = () => {
-        get('/api/settings/audit-logs/export');
+        const params = new URLSearchParams({
+            search: searchTerm,
+            ip_address: ipFilter,
+            method: methodFilter,
+            user_id: userFilter,
+            date_from: dateFrom,
+            date_to: dateTo
+        });
+        window.location.href = `/settings/audit/export?${params.toString()}`;
+    };
+
+    const handleFilter = () => {
+        router.get('/settings/audit', {
+            search: searchTerm,
+            ip_address: ipFilter,
+            method: methodFilter,
+            user_id: userFilter,
+            date_from: dateFrom,
+            date_to: dateTo
+        }, { preserveState: true });
+    };
+
+    const clearFilters = () => {
+        setSearchTerm('');
+        setIpFilter('');
+        setMethodFilter('');
+        setUserFilter('');
+        setDateFrom('');
+        setDateTo('');
+        router.get('/settings/audit', {}, { preserveState: true });
+    };
+
+    const viewHeaders = (log) => {
+        setSelectedLog(log);
+        setShowModal(true);
+    };
+
+    const parseHeaders = (headers) => {
+        try {
+            return typeof headers === 'string' ? JSON.parse(headers) : headers;
+        } catch (e) {
+            return headers;
+        }
+    };
+
+    const formatDate = (dateString) => {
+        return new Date(dateString).toLocaleString();
     };
 
     return (
@@ -87,7 +112,7 @@ export default function Audit() {
                                     : 'border-transparent text-theme-muted hover:text-theme-secondary hover:border-theme-muted'
                             }`}
                         >
-                            Activity Logs
+                            Site Logs
                         </button>
                         <button
                             onClick={() => setActiveTab('reports')}
@@ -205,70 +230,142 @@ export default function Audit() {
                     </ThemedCard>
                 )}
 
-                {/* Activity Logs */}
+                {/* Site Logs */}
                 {activeTab === 'logs' && (
-                    <ThemedCard>
-                        <div className="p-4 border-b border-theme">
-                            <div className="flex items-center justify-between">
-                                <h3 className="text-lg font-medium text-theme-primary">System Change History</h3>
-                                <div className="flex space-x-2">
+                    <div className="space-y-4">
+                        {/* Filters */}
+                        <ThemedCard>
+                            <div className="p-4">
+                                <h3 className="text-lg font-medium text-theme-primary mb-4">Filters</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-6 gap-4">
                                     <ThemedInput
                                         type="text"
-                                        placeholder="Search logs..."
-                                        className="w-64"
+                                        placeholder="Search URL..."
+                                        value={searchTerm}
+                                        onChange={(e) => setSearchTerm(e.target.value)}
                                     />
-                                    <ThemedButton
-                                        onClick={handleExport}
-                                        variant="success"
+                                    <ThemedInput
+                                        type="text"
+                                        placeholder="IP Address"
+                                        value={ipFilter}
+                                        onChange={(e) => setIpFilter(e.target.value)}
+                                    />
+                                    <select
+                                        value={methodFilter}
+                                        onChange={(e) => setMethodFilter(e.target.value)}
+                                        className="border border-gray-300 rounded-md px-3 py-2"
                                     >
-                                        Export Logs
+                                        <option value="">All Methods</option>
+                                        <option value="GET">GET</option>
+                                        <option value="POST">POST</option>
+                                        <option value="PUT">PUT</option>
+                                        <option value="DELETE">DELETE</option>
+                                    </select>
+                                    <ThemedInput
+                                        type="text"
+                                        placeholder="User ID"
+                                        value={userFilter}
+                                        onChange={(e) => setUserFilter(e.target.value)}
+                                    />
+                                    <ThemedInput
+                                        type="date"
+                                        placeholder="From Date"
+                                        value={dateFrom}
+                                        onChange={(e) => setDateFrom(e.target.value)}
+                                    />
+                                    <ThemedInput
+                                        type="date"
+                                        placeholder="To Date"
+                                        value={dateTo}
+                                        onChange={(e) => setDateTo(e.target.value)}
+                                    />
+                                </div>
+                                <div className="flex space-x-2 mt-4">
+                                    <ThemedButton onClick={handleFilter} variant="primary">
+                                        Apply Filters
+                                    </ThemedButton>
+                                    <ThemedButton onClick={clearFilters} variant="secondary">
+                                        Clear
+                                    </ThemedButton>
+                                    <ThemedButton onClick={handleExport} variant="success">
+                                        Export
                                     </ThemedButton>
                                 </div>
                             </div>
-                        </div>
-                        <ThemedTable>
-                            <ThemedTableHeader>
-                                <ThemedTableRow>
-                                    <ThemedTableCell header>User</ThemedTableCell>
-                                    <ThemedTableCell header>Action</ThemedTableCell>
-                                    <ThemedTableCell header>Resource</ThemedTableCell>
-                                    <ThemedTableCell header>Timestamp</ThemedTableCell>
-                                    <ThemedTableCell header>IP Address</ThemedTableCell>
-                                    <ThemedTableCell header>Details</ThemedTableCell>
-                                </ThemedTableRow>
-                            </ThemedTableHeader>
-                            <ThemedTableBody>
-                                {auditLogs.map((log) => (
-                                    <ThemedTableRow key={log.id}>
-                                        <ThemedTableCell>
-                                            <div className="font-medium text-theme-primary">{log.user}</div>
-                                        </ThemedTableCell>
-                                        <ThemedTableCell>
-                                            <ThemedBadge variant={
-                                                log.action.includes('Failed') ? 'error' :
-                                                log.action.includes('Created') ? 'success' :
-                                                'info'
-                                            }>
-                                                {log.action}
-                                            </ThemedBadge>
-                                        </ThemedTableCell>
-                                        <ThemedTableCell className="text-theme-primary">
-                                            {log.resource}
-                                        </ThemedTableCell>
-                                        <ThemedTableCell className="text-theme-secondary">
-                                            {log.timestamp}
-                                        </ThemedTableCell>
-                                        <ThemedTableCell className="text-theme-secondary">
-                                            {log.ip_address}
-                                        </ThemedTableCell>
-                                        <ThemedTableCell className="text-theme-secondary">
-                                            {log.details}
-                                        </ThemedTableCell>
+                        </ThemedCard>
+
+                        {/* Logs Table */}
+                        <ThemedCard>
+                            <div className="p-4 border-b border-theme">
+                                <h3 className="text-lg font-medium text-theme-primary">Site Access Logs ({siteLogs.length})</h3>
+                            </div>
+                            <ThemedTable>
+                                <ThemedTableHeader>
+                                    <ThemedTableRow>
+                                        <ThemedTableCell header>IP Address</ThemedTableCell>
+                                        <ThemedTableCell header>Method</ThemedTableCell>
+                                        <ThemedTableCell header>URL</ThemedTableCell>
+                                        <ThemedTableCell header>User ID</ThemedTableCell>
+                                        <ThemedTableCell header>Browser</ThemedTableCell>
+                                        <ThemedTableCell header>Platform</ThemedTableCell>
+                                        <ThemedTableCell header>Timestamp</ThemedTableCell>
+                                        <ThemedTableCell header>Actions</ThemedTableCell>
                                     </ThemedTableRow>
-                                ))}
-                            </ThemedTableBody>
-                        </ThemedTable>
-                    </ThemedCard>
+                                </ThemedTableHeader>
+                                <ThemedTableBody>
+                                    {siteLogs.length > 0 ? siteLogs.map((log) => (
+                                        <ThemedTableRow key={log.id}>
+                                            <ThemedTableCell className="text-theme-secondary">
+                                                {log.ip_address}
+                                            </ThemedTableCell>
+                                            <ThemedTableCell>
+                                                <ThemedBadge variant={
+                                                    log.method === 'GET' ? 'info' :
+                                                    log.method === 'POST' ? 'success' :
+                                                    log.method === 'PUT' ? 'warning' :
+                                                    log.method === 'DELETE' ? 'error' : 'secondary'
+                                                }>
+                                                    {log.method}
+                                                </ThemedBadge>
+                                            </ThemedTableCell>
+                                            <ThemedTableCell className="text-theme-primary max-w-xs">
+                                                <div className="truncate" title={log.url}>
+                                                    {log.url}
+                                                </div>
+                                            </ThemedTableCell>
+                                            <ThemedTableCell className="text-theme-secondary">
+                                                {log.user_id || 'Guest'}
+                                            </ThemedTableCell>
+                                            <ThemedTableCell className="text-theme-secondary">
+                                                {log.browser || 'Unknown'}
+                                            </ThemedTableCell>
+                                            <ThemedTableCell className="text-theme-secondary">
+                                                {log.platform || 'Unknown'}
+                                            </ThemedTableCell>
+                                            <ThemedTableCell className="text-theme-secondary">
+                                                {formatDate(log.created_at)}
+                                            </ThemedTableCell>
+                                            <ThemedTableCell>
+                                                <ThemedButton
+                                                    onClick={() => viewHeaders(log)}
+                                                    variant="secondary"
+                                                    size="sm"
+                                                >
+                                                    Details
+                                                </ThemedButton>
+                                            </ThemedTableCell>
+                                        </ThemedTableRow>
+                                    )) : (
+                                        <ThemedTableRow>
+                                            <ThemedTableCell colSpan={8} className="text-center text-theme-muted py-8">
+                                                No logs found
+                                            </ThemedTableCell>
+                                        </ThemedTableRow>
+                                    )}
+                                </ThemedTableBody>
+                            </ThemedTable>
+                        </ThemedCard>
+                    </div>
                 )}
 
                 {/* Reports */}
@@ -335,6 +432,120 @@ export default function Audit() {
                     </div>
                 )}
             </div>
+
+            {/* Headers Modal */}
+            {showModal && selectedLog && (
+                <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                    <div className="bg-white rounded-lg max-w-4xl w-full mx-4 max-h-[90vh] overflow-hidden">
+                        <div className="p-4 border-b border-gray-200 flex justify-between items-center">
+                            <h3 className="text-lg font-medium text-gray-900">Log Details</h3>
+                            <button
+                                onClick={() => setShowModal(false)}
+                                className="text-gray-400 hover:text-gray-600"
+                            >
+                                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </div>
+                        <div className="p-6 overflow-y-auto max-h-[calc(90vh-120px)]">
+                            <div className="space-y-6">
+                                {/* Basic Info */}
+                                <div>
+                                    <h4 className="text-md font-medium text-gray-900 mb-3">Request Information</h4>
+                                    <div className="grid grid-cols-2 gap-4 text-sm">
+                                        <div>
+                                            <span className="font-medium text-gray-700">IP Address:</span>
+                                            <span className="ml-2 text-gray-600">{selectedLog.ip_address}</span>
+                                        </div>
+                                        <div>
+                                            <span className="font-medium text-gray-700">Method:</span>
+                                            <span className="ml-2 text-gray-600">{selectedLog.method}</span>
+                                        </div>
+                                        <div className="col-span-2">
+                                            <span className="font-medium text-gray-700">URL:</span>
+                                            <span className="ml-2 text-gray-600 break-all">{selectedLog.url}</span>
+                                        </div>
+                                        <div>
+                                            <span className="font-medium text-gray-700">User ID:</span>
+                                            <span className="ml-2 text-gray-600">{selectedLog.user_id || 'Guest'}</span>
+                                        </div>
+                                        <div>
+                                            <span className="font-medium text-gray-700">Timestamp:</span>
+                                            <span className="ml-2 text-gray-600">{formatDate(selectedLog.created_at)}</span>
+                                        </div>
+                                        <div>
+                                            <span className="font-medium text-gray-700">Browser:</span>
+                                            <span className="ml-2 text-gray-600">{selectedLog.browser || 'Unknown'}</span>
+                                        </div>
+                                        <div>
+                                            <span className="font-medium text-gray-700">Platform:</span>
+                                            <span className="ml-2 text-gray-600">{selectedLog.platform || 'Unknown'}</span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                {/* User Agent */}
+                                {selectedLog.user_agent && (
+                                    <div>
+                                        <h4 className="text-md font-medium text-gray-900 mb-3">User Agent</h4>
+                                        <div className="bg-gray-50 p-3 rounded text-sm text-gray-600 break-all">
+                                            {selectedLog.user_agent}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Device Info */}
+                                {selectedLog.device && (
+                                    <div>
+                                        <h4 className="text-md font-medium text-gray-900 mb-3">Device Information</h4>
+                                        <div className="bg-gray-50 p-3 rounded text-sm text-gray-600">
+                                            {selectedLog.device}
+                                        </div>
+                                    </div>
+                                )}
+
+                                {/* Headers */}
+                                {selectedLog.headers && (
+                                    <div>
+                                        <h4 className="text-md font-medium text-gray-900 mb-3">Request Headers</h4>
+                                        <div className="bg-gray-50 p-4 rounded">
+                                            {(() => {
+                                                const headers = parseHeaders(selectedLog.headers);
+                                                if (typeof headers === 'object' && headers !== null) {
+                                                    return (
+                                                        <div className="space-y-2">
+                                                            {Object.entries(headers).map(([key, value]) => (
+                                                                <div key={key} className="text-sm">
+                                                                    <span className="font-medium text-gray-700">{key}:</span>
+                                                                    <span className="ml-2 text-gray-600 break-all">
+                                                                        {Array.isArray(value) ? value.join(', ') : String(value)}
+                                                                    </span>
+                                                                </div>
+                                                            ))}
+                                                        </div>
+                                                    );
+                                                } else {
+                                                    return (
+                                                        <pre className="text-sm text-gray-600 whitespace-pre-wrap break-all">
+                                                            {String(headers)}
+                                                        </pre>
+                                                    );
+                                                }
+                                            })()}
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                        <div className="p-4 border-t border-gray-200 flex justify-end">
+                            <ThemedButton onClick={() => setShowModal(false)} variant="secondary">
+                                Close
+                            </ThemedButton>
+                        </div>
+                    </div>
+                </div>
+            )}
         </Layout>
     );
 }
