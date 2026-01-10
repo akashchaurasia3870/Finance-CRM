@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedTextarea } from '@/Components/ThemedComponents';
 
 export default function NewClient() {
     const [data, setData] = useState({
@@ -115,10 +115,9 @@ export default function NewClient() {
                                 <label className="block text-sm font-medium text-theme-primary mb-2">
                                     Address
                                 </label>
-                                <textarea
+                                <ThemedTextarea
                                     value={data.address}
                                     onChange={(e) => setData({...data, address: e.target.value})}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     rows="3"
                                 />
                                 {errors.address && <p className="text-red-500 text-sm mt-1">{errors.address}</p>}

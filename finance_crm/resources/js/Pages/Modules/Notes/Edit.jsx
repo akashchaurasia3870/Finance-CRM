@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedTextarea } from '@/Components/ThemedComponents';
 
 export default function EditNote({ note, clients = [] }) {
     const [data, setData] = useState({
@@ -83,7 +83,7 @@ export default function EditNote({ note, clients = [] }) {
                                     <select
                                         value={data.category}
                                         onChange={(e) => setData({...data, category: e.target.value})}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     >
                                         <option value="">Select Category</option>
                                         <option value="personal">Personal</option>
@@ -102,7 +102,7 @@ export default function EditNote({ note, clients = [] }) {
                                     <select
                                         value={data.client_id}
                                         onChange={(e) => setData({...data, client_id: e.target.value})}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     >
                                         <option value="">Select Client (Optional)</option>
                                         {clients.map((client) => (
@@ -117,10 +117,9 @@ export default function EditNote({ note, clients = [] }) {
                                 <label className="block text-sm font-medium text-theme-primary mb-2">
                                     Content *
                                 </label>
-                                <textarea
+                                <ThemedTextarea
                                     value={data.content}
                                     onChange={(e) => setData({...data, content: e.target.value})}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     rows="6"
                                     required
                                 />

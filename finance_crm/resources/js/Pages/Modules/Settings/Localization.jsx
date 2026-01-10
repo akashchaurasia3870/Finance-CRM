@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { useForm, Link } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedSelect } from '@/Components/ThemedComponents';
 
 export default function Localization() {
     const { data, setData, put, processing } = useForm({
@@ -91,17 +91,16 @@ export default function Localization() {
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Default Language
                                 </label>
-                                <select
+                                <ThemedSelect
                                     value={data.default_language}
                                     onChange={(e) => setData('default_language', e.target.value)}
-                                    className="w-full border border-gray-300 rounded-md px-3 py-2"
                                 >
                                     {languages.map((lang) => (
                                         <option key={lang.code} value={lang.code}>
                                             {lang.flag} {lang.name}
                                         </option>
                                     ))}
-                                </select>
+                                </ThemedSelect>
                             </div>
                             <div>
                                 <label className="flex items-center">
@@ -149,44 +148,41 @@ export default function Localization() {
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Default Currency
                                 </label>
-                                <select
+                                <ThemedSelect
                                     value={data.currency}
                                     onChange={(e) => handleCurrencyChange(e.target.value)}
-                                    className="w-full border border-gray-300 rounded-md px-3 py-2"
                                 >
                                     {currencies.map((currency) => (
                                         <option key={currency.code} value={currency.code}>
                                             {currency.symbol} {currency.name} ({currency.code})
                                         </option>
                                     ))}
-                                </select>
+                                </ThemedSelect>
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Currency Symbol Position
                                 </label>
-                                <select
+                                <ThemedSelect
                                     value={data.currency_position}
                                     onChange={(e) => setData('currency_position', e.target.value)}
-                                    className="w-full border border-gray-300 rounded-md px-3 py-2"
                                 >
                                     <option value="before">Before amount ({data.currency_symbol}1,234.56)</option>
                                     <option value="after">After amount (1,234.56{data.currency_symbol})</option>
-                                </select>
+                                </ThemedSelect>
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Number Format
                                 </label>
-                                <select
+                                <ThemedSelect
                                     value={data.number_format}
                                     onChange={(e) => setData('number_format', e.target.value)}
-                                    className="w-full border border-gray-300 rounded-md px-3 py-2"
                                 >
                                     <option value="US">US Format (1,234.56)</option>
                                     <option value="EU">European Format (1.234,56)</option>
                                     <option value="IN">Indian Format (1,23,456.78)</option>
-                                </select>
+                                </ThemedSelect>
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -213,46 +209,43 @@ export default function Localization() {
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Date Format
                                 </label>
-                                <select
+                                <ThemedSelect
                                     value={data.date_format}
                                     onChange={(e) => setData('date_format', e.target.value)}
-                                    className="w-full border border-gray-300 rounded-md px-3 py-2"
                                 >
                                     <option value="MM/DD/YYYY">MM/DD/YYYY (01/15/2024)</option>
                                     <option value="DD/MM/YYYY">DD/MM/YYYY (15/01/2024)</option>
                                     <option value="YYYY-MM-DD">YYYY-MM-DD (2024-01-15)</option>
                                     <option value="DD-MM-YYYY">DD-MM-YYYY (15-01-2024)</option>
                                     <option value="MMM DD, YYYY">MMM DD, YYYY (Jan 15, 2024)</option>
-                                </select>
+                                </ThemedSelect>
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Time Format
                                 </label>
-                                <select
+                                <ThemedSelect
                                     value={data.time_format}
                                     onChange={(e) => setData('time_format', e.target.value)}
-                                    className="w-full border border-gray-300 rounded-md px-3 py-2"
                                 >
                                     <option value="12">12-hour (2:30 PM)</option>
                                     <option value="24">24-hour (14:30)</option>
-                                </select>
+                                </ThemedSelect>
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Timezone
                                 </label>
-                                <select
+                                <ThemedSelect
                                     value={data.timezone}
                                     onChange={(e) => setData('timezone', e.target.value)}
-                                    className="w-full border border-gray-300 rounded-md px-3 py-2"
                                 >
                                     {timezones.map((tz) => (
                                         <option key={tz} value={tz}>
                                             {tz.replace('_', ' ')}
                                         </option>
                                     ))}
-                                </select>
+                                </ThemedSelect>
                             </div>
                         </div>
                         <div className="mt-4 p-3 bg-theme-tertiary rounded-md">
@@ -283,19 +276,19 @@ export default function Localization() {
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     First Day of Week
                                 </label>
-                                <select className="w-full border border-gray-300 rounded-md px-3 py-2">
+                                <ThemedSelect>
                                     <option value="0">Sunday</option>
                                     <option value="1">Monday</option>
-                                </select>
+                                </ThemedSelect>
                             </div>
                             <div>
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Measurement System
                                 </label>
-                                <select className="w-full border border-gray-300 rounded-md px-3 py-2">
+                                <ThemedSelect>
                                     <option value="imperial">Imperial (feet, pounds)</option>
                                     <option value="metric">Metric (meters, kilograms)</option>
-                                </select>
+                                </ThemedSelect>
                             </div>
                         </div>
                         </div>

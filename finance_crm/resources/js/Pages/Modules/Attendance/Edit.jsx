@@ -21,22 +21,7 @@ export default function EditAttendance({ attendance, users = [] }) {
         e.preventDefault();
         setProcessing(true);
         
-        const submitData = {
-            ...data,
-            is_active: data.is_active ? 1 : 0
-        };
-        
-        const formData = new FormData();
-        formData.append('_method', 'PUT');
-        
-        Object.keys(submitData).forEach(key => {
-            if (submitData[key] !== null && submitData[key] !== '') {
-                formData.append(key, submitData[key]);
-            }
-        });
-        
-        router.post(`/attendance/${attendance.id}`, formData, {
-            forceFormData: true,
+        router.put(`/attendance/${attendance.id}`, data, {
             onSuccess: () => {
                 router.visit('/attendance');
             },
@@ -79,7 +64,9 @@ export default function EditAttendance({ attendance, users = [] }) {
                                     <select
                                         value={data.user_id}
                                         onChange={(e) => setData({...data, user_id: e.target.value})}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                        className="w-full border border-gray-300 rounded-md px-3 py-2 
+                                                   bg-white text-gray-900 focus:outline-none 
+                                                   focus:ring-2 focus:ring-blue-500"
                                         required
                                     >
                                         <option value="">Select User</option>
@@ -149,7 +136,9 @@ export default function EditAttendance({ attendance, users = [] }) {
                                     <select
                                         value={data.status}
                                         onChange={(e) => setData({...data, status: e.target.value})}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                        className="w-full border border-gray-300 rounded-md px-3 py-2 
+                                                   bg-white text-gray-900 focus:outline-none 
+                                                   focus:ring-2 focus:ring-blue-500"
                                         required
                                     >
                                         <option value="present">Present</option>
@@ -167,7 +156,9 @@ export default function EditAttendance({ attendance, users = [] }) {
                                     <select
                                         value={data.source}
                                         onChange={(e) => setData({...data, source: e.target.value})}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                        className="w-full border border-gray-300 rounded-md px-3 py-2 
+                                                   bg-white text-gray-900 focus:outline-none 
+                                                   focus:ring-2 focus:ring-blue-500"
                                     >
                                         <option value="system">System</option>
                                         <option value="manual">Manual</option>

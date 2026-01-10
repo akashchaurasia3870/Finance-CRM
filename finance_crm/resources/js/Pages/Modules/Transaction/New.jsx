@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Head, useForm } from '@inertiajs/react';
 import Layout from '@/Layouts/Layout';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedTextarea } from '@/Components/ThemedComponents';
 import axios from 'axios';
 
 export default function New({ auth, clients = [], transactionTypes = {} }) {
@@ -136,7 +136,7 @@ export default function New({ auth, clients = [], transactionTypes = {} }) {
                                 <select
                                     value={data.client_id}
                                     onChange={(e) => setData('client_id', e.target.value)}
-                                    className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent ${errors.client_id ? 'border-red-500' : ''}`}
+                                    className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent ${errors.client_id ? 'border-red-500' : ''}`}
                                 >
                                     <option value="">Choose a client first</option>
                                     {clients.map((client) => (
@@ -157,7 +157,7 @@ export default function New({ auth, clients = [], transactionTypes = {} }) {
                                     value={data.account_id}
                                     onChange={(e) => setData('account_id', e.target.value)}
                                     disabled={!data.client_id || loading.accounts}
-                                    className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent disabled:opacity-50 ${errors.account_id ? 'border-red-500' : ''}`}
+                                    className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent disabled:opacity-50 ${errors.account_id ? 'border-red-500' : ''}`}
                                 >
                                     <option value="">
                                         {loading.accounts ? 'Loading accounts...' : 
@@ -181,7 +181,7 @@ export default function New({ auth, clients = [], transactionTypes = {} }) {
                                     value={data.portfolio_id}
                                     onChange={(e) => setData('portfolio_id', e.target.value)}
                                     disabled={!data.account_id || loading.portfolios}
-                                    className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent disabled:opacity-50 ${errors.portfolio_id ? 'border-red-500' : ''}`}
+                                    className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent disabled:opacity-50 ${errors.portfolio_id ? 'border-red-500' : ''}`}
                                 >
                                     <option value="">
                                         {loading.portfolios ? 'Loading portfolios...' : 
@@ -204,7 +204,7 @@ export default function New({ auth, clients = [], transactionTypes = {} }) {
                                 <select
                                     value={data.transaction_type}
                                     onChange={(e) => setData('transaction_type', e.target.value)}
-                                    className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent ${errors.transaction_type ? 'border-red-500' : ''}`}
+                                    className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent ${errors.transaction_type ? 'border-red-500' : ''}`}
                                 >
                                     {Object.entries(transactionTypes).map(([key, label]) => (
                                         <option key={key} value={key}>{label}</option>
@@ -223,7 +223,7 @@ export default function New({ auth, clients = [], transactionTypes = {} }) {
                                         value={data.position_id}
                                         onChange={(e) => setData('position_id', e.target.value)}
                                         disabled={!data.portfolio_id || loading.positions}
-                                        className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent disabled:opacity-50`}
+                                        className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent disabled:opacity-50`}
                                     >
                                         <option value="">
                                             {loading.positions ? 'Loading positions...' : 
@@ -248,7 +248,7 @@ export default function New({ auth, clients = [], transactionTypes = {} }) {
                                         value={data.product_id}
                                         onChange={(e) => setData('product_id', e.target.value)}
                                         disabled={!data.portfolio_id}
-                                        className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent disabled:opacity-50 ${errors.product_id ? 'border-red-500' : ''}`}
+                                        className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent disabled:opacity-50 ${errors.product_id ? 'border-red-500' : ''}`}
                                     >
                                         <option value="">
                                             {!data.portfolio_id ? 'Select portfolio first' : 'Choose a product'}
@@ -349,11 +349,11 @@ export default function New({ auth, clients = [], transactionTypes = {} }) {
 
                                 <div className="mt-4">
                                     <label className="block text-sm font-medium text-theme-primary mb-2">Notes</label>
-                                    <textarea
+                                    <ThemedTextarea
                                         rows="3"
                                         value={data.notes}
                                         onChange={(e) => setData('notes', e.target.value)}
-                                        className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent ${errors.notes ? 'border-red-500' : ''}`}
+                                        className={errors.notes ? 'border-red-500' : ''}
                                     />
                                     {errors.notes && <p className="text-red-500 text-sm mt-1">{errors.notes}</p>}
                                 </div>

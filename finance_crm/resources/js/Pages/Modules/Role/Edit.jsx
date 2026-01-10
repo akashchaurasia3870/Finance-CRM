@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedTextarea } from '@/Components/ThemedComponents';
 
 export default function EditRole({ role }) {
     const [data, setData] = useState({
@@ -85,10 +85,9 @@ export default function EditRole({ role }) {
                                 <label className="block text-sm font-medium text-theme-primary mb-2">
                                     Description
                                 </label>
-                                <textarea
+                                <ThemedTextarea
                                     value={data.description}
                                     onChange={(e) => setData({...data, description: e.target.value})}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     rows="3"
                                 />
                                 {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
@@ -98,7 +97,7 @@ export default function EditRole({ role }) {
                                 <label className="block text-sm font-medium text-theme-primary mb-2">
                                     Permissions
                                 </label>
-                                <div className="border border-theme rounded-md p-4 max-h-60 overflow-y-auto bg-theme-surface">
+                                <div className="border border-theme rounded-md p-4 max-h-60 overflow-y-auto bg-theme-primary">
                                     <div className="flex items-center mb-3 pb-2 border-b border-theme">
                                         <input
                                             type="checkbox"

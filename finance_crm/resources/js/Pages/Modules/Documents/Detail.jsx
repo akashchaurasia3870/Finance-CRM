@@ -122,7 +122,7 @@ export default function DocumentDetail({ document }) {
                         <h3 className="text-lg font-medium text-theme-primary">File Information</h3>
                     </div>
                     <div className="p-6">
-                        <div className="bg-theme-surface p-4 rounded-md">
+                        <div className="bg-theme-primary p-4 rounded-md">
                             <div className="flex items-center justify-between">
                                 <div>
                                     <p className="font-medium text-theme-primary">{document.name}</p>

@@ -1,0 +1,234 @@
+/* Dashboard Specific Styles */
+
+.dashboard-container {
+    @apply min-h-screen bg-gray-50;
+}
+
+.dashboard-header {
+    @apply bg-white shadow-sm border-b border-gray-200 px-6 py-4;
+}
+
+.dashboard-content {
+    @apply p-6 space-y-6;
+}
+
+/* Stat Card Animations */
+.stat-card {
+    @apply transition-all duration-300 ease-in-out;
+}
+
+.stat-card:hover {
+    @apply transform -translate-y-1 shadow-lg;
+}
+
+/* Chart Container */
+.chart-container {
+    @apply bg-white rounded-lg shadow-sm p-6;
+}
+
+.chart-title {
+    @apply text-lg font-semibold text-gray-800 mb-4;
+}
+
+/* Filter Panel */
+.filter-panel {
+    @apply bg-white rounded-lg shadow-sm p-4 border border-gray-200;
+}
+
+.filter-select {
+    @apply px-3 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent;
+}
+
+/* Dashboard Grid */
+.dashboard-grid {
+    @apply grid gap-6;
+}
+
+.dashboard-grid-1 {
+    @apply grid-cols-1;
+}
+
+.dashboard-grid-2 {
+    @apply md:grid-cols-2;
+}
+
+.dashboard-grid-3 {
+    @apply lg:grid-cols-3;
+}
+
+.dashboard-grid-4 {
+    @apply lg:grid-cols-4;
+}
+
+/* Module Cards */
+.module-card {
+    @apply bg-gradient-to-r rounded-lg p-6 text-white hover:shadow-lg transition-shadow cursor-pointer;
+}
+
+.module-card-blue {
+    @apply from-blue-500 to-blue-600;
+}
+
+.module-card-green {
+    @apply from-green-500 to-green-600;
+}
+
+.module-card-purple {
+    @apply from-purple-500 to-purple-600;
+}
+
+.module-card-red {
+    @apply from-red-500 to-red-600;
+}
+
+.module-card-yellow {
+    @apply from-yellow-500 to-yellow-600;
+}
+
+/* Activity Feed */
+.activity-item {
+    @apply flex items-center space-x-3 p-3 bg-gray-50 rounded-lg;
+}
+
+.activity-dot {
+    @apply w-2 h-2 rounded-full;
+}
+
+.activity-dot-green {
+    @apply bg-green-500;
+}
+
+.activity-dot-blue {
+    @apply bg-blue-500;
+}
+
+.activity-dot-yellow {
+    @apply bg-yellow-500;
+}
+
+.activity-dot-red {
+    @apply bg-red-500;
+}
+
+/* Progress Bars */
+.progress-bar {
+    @apply w-full bg-gray-200 rounded-full h-2;
+}
+
+.progress-fill {
+    @apply h-2 rounded-full transition-all duration-500 ease-out;
+}
+
+.progress-fill-blue {
+    @apply bg-blue-500;
+}
+
+.progress-fill-green {
+    @apply bg-green-500;
+}
+
+.progress-fill-purple {
+    @apply bg-purple-500;
+}
+
+.progress-fill-yellow {
+    @apply bg-yellow-500;
+}
+
+/* Tab Navigation */
+.tab-nav {
+    @apply flex space-x-8 px-6 border-b border-gray-200;
+}
+
+.tab-button {
+    @apply py-4 px-1 border-b-2 font-medium text-sm transition-colors;
+}
+
+.tab-button-active {
+    @apply border-blue-500 text-blue-600;
+}
+
+.tab-button-inactive {
+    @apply border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300;
+}
+
+/* Quick Action Cards */
+.quick-action {
+    @apply flex items-center p-4 border border-gray-200 rounded-lg hover:bg-gray-50 transition-colors cursor-pointer;
+}
+
+.quick-action-icon {
+    @apply text-2xl mr-3;
+}
+
+/* Meeting Cards */
+.meeting-card {
+    @apply flex items-center space-x-4 p-4 rounded-lg border-l-4;
+}
+
+.meeting-card-blue {
+    @apply bg-blue-50 border-blue-500;
+}
+
+.meeting-card-green {
+    @apply bg-green-50 border-green-500;
+}
+
+.meeting-card-yellow {
+    @apply bg-yellow-50 border-yellow-500;
+}
+
+.meeting-card-red {
+    @apply bg-red-50 border-red-500;
+}
+
+/* Loading States */
+.loading-spinner {
+    @apply animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600;
+}
+
+.loading-skeleton {
+    @apply animate-pulse bg-gray-300 rounded;
+}
+
+/* Responsive Utilities */
+@media (max-width: 768px) {
+    .dashboard-content {
+        @apply p-4 space-y-4;
+    }
+    
+    .dashboard-grid {
+        @apply gap-4;
+    }
+    
+    .module-card {
+        @apply p-4;
+    }
+}
+
+/* Dark Mode Support */
+@media (prefers-color-scheme: dark) {
+    .dashboard-container {
+        @apply bg-gray-900;
+    }
+    
+    .dashboard-header {
+        @apply bg-gray-800 border-gray-700;
+    }
+    
+    .chart-container {
+        @apply bg-gray-800;
+    }
+    
+    .filter-panel {
+        @apply bg-gray-800 border-gray-700;
+    }
+    
+    .activity-item {
+        @apply bg-gray-700;
+    }
+    
+    .quick-action {
+        @apply border-gray-700 hover:bg-gray-700;
+    }
+}

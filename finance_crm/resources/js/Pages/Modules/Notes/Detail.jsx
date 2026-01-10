@@ -94,7 +94,7 @@ export default function NoteDetail({ note }) {
                             </div>
                             <div className="col-span-2">
                                 <label className="block text-sm font-medium text-theme-muted">Content</label>
-                                <div className="mt-1 p-4 bg-theme-surface rounded-md">
+                                <div className="mt-1 p-4 bg-theme-primary rounded-md">
                                     <p className="text-sm text-theme-primary whitespace-pre-wrap">{note.content}</p>
                                 </div>
                             </div>

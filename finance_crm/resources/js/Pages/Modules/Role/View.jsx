@@ -68,7 +68,7 @@ export default function RoleView({ roles = [] }) {
                                         {role.users_count || 0}
                                     </ThemedTableCell>
                                     <ThemedTableCell className="text-theme-primary">
-                                        {role.permissions_count || 0} permissions
+                                        {role.permissions ? role.permissions.length : 0} permissions
                                     </ThemedTableCell>
                                     <ThemedTableCell>
                                         <ThemedBadge variant={role.is_active ? 'success' : 'error'}>

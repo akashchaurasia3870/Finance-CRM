@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '@/Layouts/Layout';
 import { useForm, Link } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput, ThemedSelect } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedSelect, ThemedTextarea } from '@/Components/ThemedComponents';
 
 export default function LeadsEdit({ lead, users = [] }) {
     const { data, setData, put, processing, errors } = useForm({
@@ -128,11 +128,10 @@ export default function LeadsEdit({ lead, users = [] }) {
 
                         <div>
                             <label className="block text-sm font-medium text-theme-primary mb-2">Notes</label>
-                            <textarea
+                            <ThemedTextarea
                                 rows={4}
                                 value={data.notes}
                                 onChange={(e) => setData('notes', e.target.value)}
-                                className="w-full px-3 py-2 border border-theme rounded-md bg-theme-primary text-theme-primary placeholder-theme-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                                 placeholder="Additional notes about this lead..."
                             />
                         </div>

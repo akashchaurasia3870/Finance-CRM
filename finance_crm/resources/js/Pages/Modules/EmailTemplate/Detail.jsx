@@ -81,14 +81,14 @@ export default function EmailTemplateDetail({ template }) {
                         
                         <div>
                             <label className="block text-sm font-medium text-theme-muted">Subject</label>
-                            <div className="mt-1 p-3 bg-theme-surface rounded-md">
+                            <div className="mt-1 p-3 bg-theme-primary rounded-md">
                                 <p className="text-sm text-theme-primary">{template.subject}</p>
                             </div>
                         </div>
 
                         <div>
                             <label className="block text-sm font-medium text-theme-muted">Body</label>
-                            <div className="mt-1 p-3 bg-theme-surface rounded-md max-h-96 overflow-y-auto break-words">
+                            <div className="mt-1 p-3 bg-theme-primary rounded-md max-h-96 overflow-y-auto break-words">
                                 <pre className="text-sm text-theme-primary whitespace-pre-wrap font-mono">{template.body}</pre>
                             </div>
                         </div>

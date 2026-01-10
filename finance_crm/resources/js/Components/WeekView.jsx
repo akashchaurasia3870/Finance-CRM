@@ -1,4 +1,5 @@
 import React from 'react';
+import { ThemedCard } from '@/Components/ThemedComponents';
 
 export default function WeekView({ currentDate, calendars, getEventsForDate, getTypeColor, onDateClick }) {
     const getWeekDays = () => {
@@ -17,7 +18,7 @@ export default function WeekView({ currentDate, calendars, getEventsForDate, get
     const days = getWeekDays();
 
     return (
-        <div className="bg-theme-primary shadow-lg rounded-lg overflow-hidden">
+        <ThemedCard className="shadow-lg overflow-hidden">
             {/* Header */}
             <div className="grid grid-cols-7 bg-gray-800 text-white">
                 {days.map((day, index) => {
@@ -61,6 +62,6 @@ export default function WeekView({ currentDate, calendars, getEventsForDate, get
                     );
                 })}
             </div>
-        </div>
+        </ThemedCard>
     );
 }

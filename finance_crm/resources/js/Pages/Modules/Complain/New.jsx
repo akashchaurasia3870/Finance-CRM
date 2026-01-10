@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedTextarea } from '@/Components/ThemedComponents';
 
 export default function NewComplain({ clients = [], users = [] }) {
     const [data, setData] = useState({
@@ -70,11 +70,10 @@ export default function NewComplain({ clients = [], users = [] }) {
                                 <label className="block text-sm font-medium text-theme-primary mb-2">
                                     Description *
                                 </label>
-                                <textarea
+                                <ThemedTextarea
                                     value={data.description}
                                     onChange={(e) => setData({...data, description: e.target.value})}
                                     rows={4}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     required
                                 />
                                 {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
@@ -126,7 +125,7 @@ export default function NewComplain({ clients = [], users = [] }) {
                                 <select
                                     value={data.client_id}
                                     onChange={(e) => setData({...data, client_id: e.target.value})}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                 >
                                     <option value="">Select Client</option>
                                     {clients.map((client) => (
@@ -146,7 +145,7 @@ export default function NewComplain({ clients = [], users = [] }) {
                                     <select
                                         value={data.priority}
                                         onChange={(e) => setData({...data, priority: e.target.value})}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     >
                                         <option value="low">Low</option>
                                         <option value="medium">Medium</option>
@@ -162,7 +161,7 @@ export default function NewComplain({ clients = [], users = [] }) {
                                     <select
                                         value={data.status}
                                         onChange={(e) => setData({...data, status: e.target.value})}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     >
                                         <option value="open">Open</option>
                                         <option value="in_progress">In Progress</option>
@@ -180,7 +179,7 @@ export default function NewComplain({ clients = [], users = [] }) {
                                 <select
                                     value={data.assigned_to}
                                     onChange={(e) => setData({...data, assigned_to: e.target.value})}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                 >
                                     <option value="">Select User</option>
                                     {users.map((user) => (

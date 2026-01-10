@@ -109,7 +109,7 @@ export default function RoleDetail({ role }) {
                         <div className="p-6">
                             <div className="space-y-2">
                                 {role.users.map((user) => (
-                                    <div key={user.id} className="flex items-center justify-between p-3 bg-theme-surface rounded-md">
+                                    <div key={user.id} className="flex items-center justify-between p-3 bg-theme-primary rounded-md">
                                         <div>
                                             <p className="font-medium text-theme-primary">{user.name}</p>
                                             <p className="text-sm text-theme-secondary">{user.email}</p>

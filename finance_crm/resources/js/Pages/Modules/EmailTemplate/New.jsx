@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedTextarea } from '@/Components/ThemedComponents';
 
 export default function NewEmailTemplate() {
     const [data, setData] = useState({
@@ -105,11 +105,10 @@ export default function NewEmailTemplate() {
                                 <label className="block text-sm font-medium text-theme-primary mb-2">
                                     Body *
                                 </label>
-                                <textarea
+                                <ThemedTextarea
                                     value={data.body}
                                     onChange={(e) => setData({...data, body: e.target.value})}
                                     rows={10}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     placeholder="HTML content supported"
                                     required
                                 />

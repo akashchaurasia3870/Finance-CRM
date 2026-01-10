@@ -67,7 +67,7 @@ export default function NewAddress({ users = [] }) {
                                     <select
                                         value={data.user_id}
                                         onChange={(e) => setData({...data, user_id: e.target.value})}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     >
                                         <option value="">Select User (Optional)</option>
                                         {users.map((user) => (
@@ -86,7 +86,7 @@ export default function NewAddress({ users = [] }) {
                                     <select
                                         value={data.type}
                                         onChange={(e) => setData({...data, type: e.target.value})}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                         required
                                     >
                                         {addressTypes.map((type) => (
@@ -124,7 +124,7 @@ export default function NewAddress({ users = [] }) {
                                 {errors.address_line_2 && <p className="text-red-500 text-sm mt-1">{errors.address_line_2}</p>}
                             </div>
 
-                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-2">
                                 <div>
                                     <label className="block text-sm font-medium text-theme-primary mb-2">
                                         City *

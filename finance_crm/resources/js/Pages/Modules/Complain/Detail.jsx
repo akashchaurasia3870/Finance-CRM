@@ -108,7 +108,7 @@ export default function ComplainDetail({ complain }) {
                         
                         <div>
                             <label className="block text-sm font-medium text-theme-muted">Description</label>
-                            <div className="mt-1 p-3 bg-theme-surface rounded-md">
+                            <div className="mt-1 p-3 bg-theme-primary rounded-md">
                                 <p className="text-sm text-theme-primary whitespace-pre-wrap">{complain.description}</p>
                             </div>
                         </div>
@@ -116,7 +116,7 @@ export default function ComplainDetail({ complain }) {
                         {complain.resolution_notes && (
                             <div>
                                 <label className="block text-sm font-medium text-theme-muted">Resolution Notes</label>
-                                <div className="mt-1 p-3 bg-theme-surface rounded-md">
+                                <div className="mt-1 p-3 bg-theme-primary rounded-md">
                                     <p className="text-sm text-theme-primary whitespace-pre-wrap">{complain.resolution_notes}</p>
                                 </div>
                             </div>

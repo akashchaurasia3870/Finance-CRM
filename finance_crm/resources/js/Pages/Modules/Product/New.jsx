@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedTextarea } from '@/Components/ThemedComponents';
 
 export default function NewProduct() {
     const [data, setData] = useState({
@@ -82,7 +82,7 @@ export default function NewProduct() {
                                 <select
                                     value={data.product_type}
                                     onChange={(e) => setData({...data, product_type: e.target.value})}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     required
                                 >
                                     <option value="stock">Stock</option>
@@ -117,7 +117,7 @@ export default function NewProduct() {
                                 <select
                                     value={data.risk_level}
                                     onChange={(e) => setData({...data, risk_level: e.target.value})}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     required
                                 >
                                     <option value="low">Low</option>
@@ -132,11 +132,10 @@ export default function NewProduct() {
                                 <label className="block text-sm font-medium text-theme-primary mb-2">
                                     Description
                                 </label>
-                                <textarea
+                                <ThemedTextarea
                                     value={data.description}
                                     onChange={(e) => setData({...data, description: e.target.value})}
                                     rows="4"
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                 />
                                 {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
                             </div>

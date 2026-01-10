@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedTextarea } from '@/Components/ThemedComponents';
 
 export default function EditEmail({ email, templates = [] }) {
     const [data, setData] = useState({
@@ -73,7 +73,7 @@ export default function EditEmail({ email, templates = [] }) {
                                 <select
                                     value={data.email_template_id}
                                     onChange={(e) => handleTemplateChange(e.target.value)}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                 >
                                     <option value="">Select Template (Optional)</option>
                                     {templates.map((template) => (
@@ -159,7 +159,7 @@ export default function EditEmail({ email, templates = [] }) {
                                 <select
                                     value={data.status}
                                     onChange={(e) => setData({...data, status: e.target.value})}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                 >
                                     <option value="draft">Draft</option>
                                     <option value="queued">Queued</option>
@@ -188,11 +188,10 @@ export default function EditEmail({ email, templates = [] }) {
                                 <label className="block text-sm font-medium text-theme-primary mb-2">
                                     Body *
                                 </label>
-                                <textarea
+                                <ThemedTextarea
                                     value={data.body}
                                     onChange={(e) => setData({...data, body: e.target.value})}
                                     rows={10}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     placeholder="HTML content supported"
                                     required
                                 />

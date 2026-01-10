@@ -1,8 +1,29 @@
 import React from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link } from '@inertiajs/react';
+import { ThemedCard, ThemedButton, ThemedBadge } from '@/Components/ThemedComponents';
 
 export default function CalendarReports({ calendars = [], stats }) {
+    const getTypeVariant = (type) => {
+        switch (type) {
+            case 'meeting': return 'warning';
+            case 'event': return 'info';
+            case 'reminder': return 'warning';
+            case 'task': return 'success';
+            case 'note': return 'info';
+            default: return 'info';
+        }
+    };
+
+    const getStatusVariant = (status) => {
+        switch (status) {
+            case 'scheduled': return 'info';
+            case 'completed': return 'success';
+            case 'cancelled': return 'error';
+            default: return 'info';
+        }
+    };
+
     const getTypeColor = (type) => {
         switch (type) {
             case 'meeting': return 'bg-purple-100 text-purple-800 border-purple-200';
@@ -39,11 +60,8 @@ export default function CalendarReports({ calendars = [], stats }) {
                         <h1 className="text-2xl font-bold text-theme-primary">Calendar Reports</h1>
                         <p className="text-gray-600">Analytics and insights for calendar events</p>
                     </div>
-                    <Link
-                        href="/calendar"
-                        className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
-                    >
-                        Back to Calendar
+                    <Link href="/calendar">
+                        <ThemedButton variant="secondary">Back to Calendar</ThemedButton>
                     </Link>
                 </div>
 

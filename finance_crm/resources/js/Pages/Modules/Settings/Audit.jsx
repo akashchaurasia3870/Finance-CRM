@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '@/Layouts/Layout';
 import { useForm, Link, router } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedTable, ThemedTableHeader, ThemedTableBody, ThemedTableRow, ThemedTableCell, ThemedInput, ThemedBadge } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedTable, ThemedTableHeader, ThemedTableBody, ThemedTableRow, ThemedTableCell, ThemedInput, ThemedBadge, ThemedSelect } from '@/Components/ThemedComponents';
 
 export default function Audit({ siteLogs = [], filters = {} }) {
     const [activeTab, setActiveTab] = useState('logs');
@@ -152,11 +152,10 @@ export default function Audit({ siteLogs = [], filters = {} }) {
                                 <label className="block text-sm font-medium text-gray-700 mb-2">
                                     Log Retention Duration (Days)
                                 </label>
-                                <input
+                                <ThemedInput
                                     type="number"
                                     value={data.log_retention_days}
                                     onChange={(e) => setData('log_retention_days', e.target.value)}
-                                    className="w-full border border-gray-300 rounded-md px-3 py-2"
                                     min="7"
                                     max="365"
                                 />
@@ -250,17 +249,16 @@ export default function Audit({ siteLogs = [], filters = {} }) {
                                         value={ipFilter}
                                         onChange={(e) => setIpFilter(e.target.value)}
                                     />
-                                    <select
+                                    <ThemedSelect
                                         value={methodFilter}
                                         onChange={(e) => setMethodFilter(e.target.value)}
-                                        className="border border-gray-300 rounded-md px-3 py-2"
                                     >
                                         <option value="">All Methods</option>
                                         <option value="GET">GET</option>
                                         <option value="POST">POST</option>
                                         <option value="PUT">PUT</option>
                                         <option value="DELETE">DELETE</option>
-                                    </select>
+                                    </ThemedSelect>
                                     <ThemedInput
                                         type="text"
                                         placeholder="User ID"
@@ -407,20 +405,20 @@ export default function Audit({ siteLogs = [], filters = {} }) {
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Report Type
                                     </label>
-                                    <select className="w-full border border-gray-300 rounded-md px-3 py-2">
+                                    <ThemedSelect>
                                         <option>User Activity Report</option>
                                         <option>Security Events Report</option>
                                         <option>System Changes Report</option>
                                         <option>Login History Report</option>
-                                    </select>
+                                    </ThemedSelect>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Date Range
                                     </label>
                                     <div className="grid grid-cols-2 gap-2">
-                                        <input type="date" className="border border-gray-300 rounded-md px-3 py-2" />
-                                        <input type="date" className="border border-gray-300 rounded-md px-3 py-2" />
+                                        <ThemedInput type="date" />
+                                        <ThemedInput type="date" />
                                     </div>
                                 </div>
                                 <ThemedButton variant="primary" className="w-full">

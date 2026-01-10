@@ -336,7 +336,7 @@ export default function PayrollDetail({ payroll }) {
 
                             <div>
                                 <h4 className="font-medium text-theme-primary mb-3">Net Salary</h4>
-                                <div className="bg-theme-surface p-4 rounded-lg">
+                                <div className="bg-theme-primary p-4 rounded-lg">
                                     <div className="text-center">
                                         <div className="text-2xl font-bold text-green-600">
                                             {formatCurrency(payroll.net_salary)}

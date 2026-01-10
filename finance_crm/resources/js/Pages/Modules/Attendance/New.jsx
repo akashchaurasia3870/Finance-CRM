@@ -6,11 +6,13 @@ import { ThemedCard, ThemedButton, ThemedInput, ThemedSelect } from '@/Component
 export default function AttendanceNew({ users = [] }) {
     const { data, setData, post, processing, errors } = useForm({
         user_id: '',
-        date: new Date().toISOString().split('T')[0],
-        check_in: '',
-        check_out: '',
+        attendance_date: new Date().toISOString().split('T')[0],
+        check_in_time: '',
+        check_out_time: '',
+        work_hours: '',
         status: 'present',
-        notes: '',
+        source: 'manual',
+        is_active: true,
     });
 
     const handleSubmit = (e) => {
@@ -54,34 +56,47 @@ export default function AttendanceNew({ users = [] }) {
                                 <label className="block text-sm font-medium text-theme-primary mb-2">Date *</label>
                                 <ThemedInput
                                     type="date"
-                                    value={data.date}
-                                    onChange={(e) => setData('date', e.target.value)}
-                                    className={errors.date ? 'border-red-500' : ''}
+                                    value={data.attendance_date}
+                                    onChange={(e) => setData('attendance_date', e.target.value)}
+                                    className={errors.attendance_date ? 'border-red-500' : ''}
                                     required
                                 />
-                                {errors.date && <p className="text-red-500 text-sm mt-1">{errors.date}</p>}
+                                {errors.attendance_date && <p className="text-red-500 text-sm mt-1">{errors.attendance_date}</p>}
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-theme-primary mb-2">Check In Time</label>
                                 <ThemedInput
                                     type="time"
-                                    value={data.check_in}
-                                    onChange={(e) => setData('check_in', e.target.value)}
-                                    className={errors.check_in ? 'border-red-500' : ''}
+                                    value={data.check_in_time}
+                                    onChange={(e) => setData('check_in_time', e.target.value)}
+                                    className={errors.check_in_time ? 'border-red-500' : ''}
                                 />
-                                {errors.check_in && <p className="text-red-500 text-sm mt-1">{errors.check_in}</p>}
+                                {errors.check_in_time && <p className="text-red-500 text-sm mt-1">{errors.check_in_time}</p>}
                             </div>
 
                             <div>
                                 <label className="block text-sm font-medium text-theme-primary mb-2">Check Out Time</label>
                                 <ThemedInput
                                     type="time"
-                                    value={data.check_out}
-                                    onChange={(e) => setData('check_out', e.target.value)}
-                                    className={errors.check_out ? 'border-red-500' : ''}
+                                    value={data.check_out_time}
+                                    onChange={(e) => setData('check_out_time', e.target.value)}
+                                    className={errors.check_out_time ? 'border-red-500' : ''}
                                 />
-                                {errors.check_out && <p className="text-red-500 text-sm mt-1">{errors.check_out}</p>}
+                                {errors.check_out_time && <p className="text-red-500 text-sm mt-1">{errors.check_out_time}</p>}
+                            </div>
+
+                            <div>
+                                <label className="block text-sm font-medium text-theme-primary mb-2">Work Hours</label>
+                                <ThemedInput
+                                    type="number"
+                                    step="0.01"
+                                    min="0"
+                                    max="24"
+                                    value={data.work_hours}
+                                    onChange={(e) => setData('work_hours', e.target.value)}
+                                    placeholder="Hours worked"
+                                />
                             </div>
 
                             <div>
@@ -91,20 +106,10 @@ export default function AttendanceNew({ users = [] }) {
                                     onChange={(e) => setData('status', e.target.value)}
                                 >
                                     <option value="present">Present</option>
-                                    <option value="late">Late</option>
                                     <option value="absent">Absent</option>
                                     <option value="half_day">Half Day</option>
+                                    <option value="leave">Leave</option>
                                 </ThemedSelect>
-                            </div>
-
-                            <div>
-                                <label className="block text-sm font-medium text-theme-primary mb-2">Notes</label>
-                                <ThemedInput
-                                    type="text"
-                                    value={data.notes}
-                                    onChange={(e) => setData('notes', e.target.value)}
-                                    placeholder="Optional notes"
-                                />
                             </div>
                         </div>
 

@@ -4,11 +4,13 @@ import { Link } from '@inertiajs/react';
 import MonthView from '@/Components/MonthView';
 import WeekView from '@/Components/WeekView';
 import DayView from '@/Components/DayView';
+import YearView from '@/Components/YearView';
 import EventModal from '@/Components/EventModal';
+import { ThemedButton } from '@/Components/ThemedComponents';
 
 export default function CalendarView({ calendars = [] }) {
     const [currentDate, setCurrentDate] = useState(new Date());
-    const [viewMode, setViewMode] = useState('month');
+    const [viewMode, setViewMode] = useState('year');
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedDate, setSelectedDate] = useState(null);
 
@@ -31,7 +33,9 @@ export default function CalendarView({ calendars = [] }) {
 
     const navigateDate = (direction) => {
         const newDate = new Date(currentDate);
-        if (viewMode === 'month') {
+        if (viewMode === 'year') {
+            newDate.setFullYear(currentDate.getFullYear() + direction);
+        } else if (viewMode === 'month') {
             newDate.setMonth(currentDate.getMonth() + direction);
         } else if (viewMode === 'week') {
             newDate.setDate(currentDate.getDate() + (direction * 7));
@@ -53,7 +57,9 @@ export default function CalendarView({ calendars = [] }) {
     };
 
     const getDateTitle = () => {
-        if (viewMode === 'month') {
+        if (viewMode === 'year') {
+            return currentDate.getFullYear().toString();
+        } else if (viewMode === 'month') {
             return currentDate.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
         } else if (viewMode === 'week') {
             const startOfWeek = new Date(currentDate);
@@ -74,11 +80,8 @@ export default function CalendarView({ calendars = [] }) {
                         <h1 className="text-2xl font-bold text-theme-primary">Calendar View</h1>
                         <p className="text-gray-600">Interactive calendar interface</p>
                     </div>
-                    <Link
-                        href="/calendar"
-                        className="bg-gray-600 text-white px-4 py-2 rounded-md hover:bg-gray-700"
-                    >
-                        Back to List
+                    <Link href="/calendar">
+                        <ThemedButton variant="secondary">Back to List</ThemedButton>
                     </Link>
                 </div>
 
@@ -86,52 +89,66 @@ export default function CalendarView({ calendars = [] }) {
                 <div className="bg-theme-primary rounded-lg shadow p-4">
                     <div className="flex justify-between items-center">
                         <div className="flex items-center space-x-4">
-                            <button
+                            <ThemedButton
+                                variant="ghost"
                                 onClick={() => navigateDate(-1)}
                                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
                                 </svg>
-                            </button>
+                            </ThemedButton>
                             <h2 className="text-xl font-semibold text-theme-primary">
                                 {getDateTitle()}
                             </h2>
-                            <button
+                            <ThemedButton
+                                variant="ghost"
                                 onClick={() => navigateDate(1)}
                                 className="p-2 hover:bg-gray-100 rounded-full transition-colors"
                             >
                                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                                 </svg>
-                            </button>
-                            <button
+                            </ThemedButton>
+                            <ThemedButton
+                                variant="primary"
                                 onClick={() => setCurrentDate(new Date())}
-                                className="px-4 py-2 bg-blue-600 text-white rounded-md text-sm hover:bg-blue-700 transition-colors"
+                                className="px-4 py-2 text-sm"
                             >
                                 Today
-                            </button>
+                            </ThemedButton>
                         </div>
                         
                         <div className="flex space-x-1 bg-gray-100 rounded-lg p-1">
-                            {['day', 'week', 'month'].map(mode => (
-                                <button
+                            {['year', 'month', 'week', 'day'].map(mode => (
+                                <ThemedButton
                                     key={mode}
+                                    variant={viewMode === mode ? 'primary' : 'ghost'}
                                     onClick={() => setViewMode(mode)}
-                                    className={`px-4 py-2 rounded-md text-sm font-medium transition-colors ${
-                                        viewMode === mode 
-                                            ? 'bg-theme-primary text-theme-primary shadow-sm' 
-                                            : 'text-gray-600 hover:text-theme-primary'
-                                    }`}
+                                    className="px-4 py-2 text-sm font-medium transition-colors"
                                 >
                                     {mode.charAt(0).toUpperCase() + mode.slice(1)}
-                                </button>
+                                </ThemedButton>
                             ))}
                         </div>
                     </div>
                 </div>
 
                 {/* Calendar Content */}
+                {viewMode === 'year' && (
+                    <YearView 
+                        currentDate={currentDate}
+                        calendars={calendars}
+                        getEventsForDate={getEventsForDate}
+                        getTypeColor={getTypeColor}
+                        onDateClick={handleDateClick}
+                        onMonthClick={(month) => {
+                            const newDate = new Date(currentDate.getFullYear(), month, 1);
+                            setCurrentDate(newDate);
+                            setViewMode('month');
+                        }}
+                    />
+                )}
                 {viewMode === 'month' && (
                     <MonthView 
                         currentDate={currentDate}

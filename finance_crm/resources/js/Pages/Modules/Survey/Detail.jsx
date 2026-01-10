@@ -130,7 +130,7 @@ export default function SurveyDetail({ survey }) {
                         {survey.questions && survey.questions.length > 0 ? (
                             <div className="space-y-4">
                                 {survey.questions.map((question, index) => (
-                                    <div key={question.id} className="border border-theme rounded-lg p-4 bg-theme-surface">
+                                    <div key={question.id} className="border border-theme rounded-lg p-4 bg-theme-primary">
                                         <div className="flex justify-between items-start mb-2">
                                             <h4 className="font-medium text-theme-primary">
                                                 Question {index + 1}

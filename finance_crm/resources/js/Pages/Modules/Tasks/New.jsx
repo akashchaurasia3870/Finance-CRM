@@ -1,7 +1,7 @@
 import React from 'react';
 import Layout from '@/Layouts/Layout';
 import { useForm, Link } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput, ThemedSelect } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedSelect, ThemedTextarea } from '@/Components/ThemedComponents';
 
 export default function TasksNew({ users = [], clients = [] }) {
     const { data, setData, post, processing, errors } = useForm({
@@ -122,11 +122,10 @@ export default function TasksNew({ users = [], clients = [] }) {
 
                         <div>
                             <label className="block text-sm font-medium text-theme-primary mb-2">Description</label>
-                            <textarea
+                            <ThemedTextarea
                                 rows={4}
                                 value={data.description}
                                 onChange={(e) => setData('description', e.target.value)}
-                                className="w-full px-3 py-2 border border-theme rounded-md bg-theme-primary text-theme-primary placeholder-theme-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                                 placeholder="Task description..."
                             />
                         </div>

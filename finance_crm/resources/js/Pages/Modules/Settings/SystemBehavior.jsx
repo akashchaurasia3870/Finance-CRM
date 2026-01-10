@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { useForm, Link } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedSelect } from '@/Components/ThemedComponents';
 
 export default function SystemBehavior() {
     const [activeTab, setActiveTab] = useState('landing');
@@ -79,17 +79,16 @@ export default function SystemBehavior() {
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Default Page After Login
                                     </label>
-                                    <select
+                                    <ThemedSelect
                                         value={data.default_landing_page}
                                         onChange={(e) => setData('default_landing_page', e.target.value)}
-                                        className="w-full border border-gray-300 rounded-md px-3 py-2"
                                     >
                                         {landingPages.map((page) => (
                                             <option key={page.value} value={page.value}>
                                                 {page.label}
                                             </option>
                                         ))}
-                                    </select>
+                                    </ThemedSelect>
                                     <p className="text-xs text-theme-muted mt-1">
                                         Users will be redirected to this page after successful login
                                     </p>
@@ -100,14 +99,14 @@ export default function SystemBehavior() {
                                         {['Admin', 'Manager', 'Sales Rep', 'Viewer'].map((role) => (
                                             <div key={role} className="flex items-center justify-between p-3 border rounded">
                                                 <span className="text-sm font-medium">{role}</span>
-                                                <select className="border border-gray-300 rounded-md px-3 py-2">
+                                                <ThemedSelect>
                                                     <option value="">Use Default</option>
                                                     {landingPages.map((page) => (
                                                         <option key={page.value} value={page.value}>
                                                             {page.label}
                                                         </option>
                                                     ))}
-                                                </select>
+                                                </ThemedSelect>
                                             </div>
                                         ))}
                                     </div>
@@ -129,16 +128,15 @@ export default function SystemBehavior() {
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Default Record Owner
                                     </label>
-                                    <select
+                                    <ThemedSelect
                                         value={data.record_ownership}
                                         onChange={(e) => setData('record_ownership', e.target.value)}
-                                        className="w-full border border-gray-300 rounded-md px-3 py-2"
                                     >
                                         <option value="creator">Record Creator</option>
                                         <option value="assigned">Assigned User</option>
                                         <option value="manager">User's Manager</option>
                                         <option value="admin">System Admin</option>
-                                    </select>
+                                    </ThemedSelect>
                                 </div>
                                 <div>
                                     <h4 className="text-sm font-medium text-gray-700 mb-3">Ownership Transfer Rules</h4>
@@ -235,24 +233,24 @@ export default function SystemBehavior() {
                                                         <button type="button" className="text-red-600 text-sm">Remove</button>
                                                     </div>
                                                     <div className="grid grid-cols-3 gap-2 text-sm">
-                                                        <select className="border border-gray-300 rounded px-2 py-1">
+                                                        <ThemedSelect className="text-sm">
                                                             <option>Source</option>
                                                             <option>Industry</option>
                                                             <option>Location</option>
-                                                        </select>
-                                                        <select className="border border-gray-300 rounded px-2 py-1">
+                                                        </ThemedSelect>
+                                                        <ThemedSelect className="text-sm">
                                                             <option>equals</option>
                                                             <option>contains</option>
                                                             <option>starts with</option>
-                                                        </select>
-                                                        <input type="text" placeholder="Value" className="border border-gray-300 rounded px-2 py-1" />
+                                                        </ThemedSelect>
+                                                        <ThemedInput type="text" placeholder="Value" className="text-sm" />
                                                     </div>
                                                     <div className="mt-2">
-                                                        <select className="w-full border border-gray-300 rounded px-2 py-1 text-sm">
+                                                        <ThemedSelect className="text-sm">
                                                             <option>Assign to: John Doe</option>
                                                             <option>Assign to: Jane Smith</option>
                                                             <option>Assign to: Sales Team</option>
-                                                        </select>
+                                                        </ThemedSelect>
                                                     </div>
                                                 </div>
                                                 <button type="button" className="text-blue-600 text-sm">+ Add Assignment Rule</button>
@@ -414,18 +412,18 @@ export default function SystemBehavior() {
                                                         <button type="button" className="text-red-600 text-sm">Remove</button>
                                                     </div>
                                                     <div className="grid grid-cols-4 gap-2 text-sm">
-                                                        <select className="border border-gray-300 rounded px-2 py-1">
+                                                        <ThemedSelect className="text-sm">
                                                             <option>Phone</option>
                                                             <option>Email</option>
                                                             <option>Company</option>
-                                                        </select>
-                                                        <select className="border border-gray-300 rounded px-2 py-1">
+                                                        </ThemedSelect>
+                                                        <ThemedSelect className="text-sm">
                                                             <option>min length</option>
                                                             <option>max length</option>
                                                             <option>regex</option>
-                                                        </select>
-                                                        <input type="text" placeholder="10" className="border border-gray-300 rounded px-2 py-1" />
-                                                        <input type="text" placeholder="Error message" className="border border-gray-300 rounded px-2 py-1" />
+                                                        </ThemedSelect>
+                                                        <ThemedInput type="text" placeholder="10" className="text-sm" />
+                                                        <ThemedInput type="text" placeholder="Error message" className="text-sm" />
                                                     </div>
                                                 </div>
                                                 <button type="button" className="text-blue-600 text-sm">+ Add Validation Rule</button>

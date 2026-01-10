@@ -115,7 +115,7 @@ export default function EmailDetail({ email }) {
                         
                         <div>
                             <label className="block text-sm font-medium text-theme-muted">Subject</label>
-                            <div className="mt-1 p-3 bg-theme-surface rounded-md break-words">
+                            <div className="mt-1 p-3 bg-theme-primary rounded-md break-words">
                                 <p className="text-sm text-theme-primary">{email.subject}</p>
                             </div>
                         </div>
@@ -123,7 +123,7 @@ export default function EmailDetail({ email }) {
                         {email.failure_reason && (
                             <div>
                                 <label className="block text-sm font-medium text-theme-muted">Failure Reason</label>
-                                <div className="mt-1 p-3 bg-theme-surface rounded-md break-words">
+                                <div className="mt-1 p-3 bg-theme-primary rounded-md break-words">
                                     <p className="text-sm text-red-600">{email.failure_reason}</p>
                                 </div>
                             </div>
@@ -131,7 +131,7 @@ export default function EmailDetail({ email }) {
 
                         <div>
                             <label className="block text-sm font-medium text-theme-muted">Body</label>
-                            <div className="mt-1 p-3 bg-theme-surface rounded-md max-h-96 overflow-y-auto break-words">
+                            <div className="mt-1 p-3 bg-theme-primary rounded-md max-h-96 overflow-y-auto break-words">
                                 <pre className="text-sm text-theme-primary whitespace-pre-wrap font-mono">{email.body}</pre>
                             </div>
                         </div>

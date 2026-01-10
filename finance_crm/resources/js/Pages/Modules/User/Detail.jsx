@@ -103,7 +103,7 @@ export default function UserDetail({ user }) {
                         <div className="p-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                                 {user.roles.map((role) => (
-                                    <div key={role.id} className="flex items-center justify-between p-3 bg-theme-surface rounded-md">
+                                    <div key={role.id} className="flex items-center justify-between p-3 bg-theme-primary rounded-md">
                                         <div>
                                             <p className="font-medium text-theme-primary">{role.name}</p>
                                             <p className="text-sm text-theme-secondary">{role.description}</p>
@@ -126,7 +126,7 @@ export default function UserDetail({ user }) {
                         <div className="p-6">
                             <div className="space-y-4">
                                 {user.addresses.map((address) => (
-                                    <div key={address.id} className="p-4 bg-theme-surface rounded-md">
+                                    <div key={address.id} className="p-4 bg-theme-primary rounded-md">
                                         <div className="flex justify-between items-start mb-2">
                                             <ThemedBadge variant="info">
                                                 {address.type}

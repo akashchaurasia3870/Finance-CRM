@@ -3,12 +3,12 @@ import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
 import { ThemedCard, ThemedButton, ThemedTable, ThemedTableHeader, ThemedTableBody, ThemedTableRow, ThemedTableCell, ThemedInput, ThemedBadge } from '@/Components/ThemedComponents';
 
-export default function AttendanceView({ attendances = [] }) {
+export default function AttendanceView({ attendance = [] }) {
     const [searchTerm, setSearchTerm] = useState('');
 
-    const filteredAttendances = attendances.filter(attendance => 
-        (attendance.user?.name && attendance.user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
-        (attendance.date && attendance.date.includes(searchTerm))
+    const filteredAttendances = attendance.filter(record => 
+        (record.user?.name && record.user.name.toLowerCase().includes(searchTerm.toLowerCase())) ||
+        (record.attendance_date && record.attendance_date.includes(searchTerm))
     );
 
     const handleDelete = (id) => {
@@ -56,43 +56,44 @@ export default function AttendanceView({ attendances = [] }) {
                             </ThemedTableRow>
                         </ThemedTableHeader>
                         <ThemedTableBody>
-                            {filteredAttendances.length > 0 ? filteredAttendances.map((attendance) => (
-                                <ThemedTableRow key={attendance.id}>
+                            {filteredAttendances.length > 0 ? filteredAttendances.map((record) => (
+                                <ThemedTableRow key={record.id}>
                                     <ThemedTableCell>
-                                        <div className="font-medium text-theme-primary">{attendance.user?.name || 'N/A'}</div>
+                                        <div className="font-medium text-theme-primary">{record.user?.name || 'N/A'}</div>
                                     </ThemedTableCell>
                                     <ThemedTableCell className="text-theme-primary">
-                                        {attendance.date ? new Date(attendance.date).toLocaleDateString() : 'N/A'}
+                                        {record.attendance_date ? new Date(record.attendance_date).toLocaleDateString() : 'N/A'}
                                     </ThemedTableCell>
                                     <ThemedTableCell className="text-theme-primary">
-                                        {attendance.check_in || 'N/A'}
+                                        {record.check_in_time || 'N/A'}
                                     </ThemedTableCell>
                                     <ThemedTableCell className="text-theme-primary">
-                                        {attendance.check_out || 'Pending'}
+                                        {record.check_out_time || 'Pending'}
                                     </ThemedTableCell>
                                     <ThemedTableCell className="text-theme-primary">
-                                        {attendance.total_hours || '0'}h
+                                        {record.work_hours || '0'}h
                                     </ThemedTableCell>
                                     <ThemedTableCell>
                                         <ThemedBadge variant={
-                                            attendance.status === 'present' ? 'success' :
-                                            attendance.status === 'late' ? 'warning' : 'error'
+                                            record.status === 'present' ? 'success' :
+                                            record.status === 'half_day' ? 'warning' : 
+                                            record.status === 'leave' ? 'info' : 'error'
                                         }>
-                                            {attendance.status || 'Present'}
+                                            {record.status || 'Present'}
                                         </ThemedBadge>
                                     </ThemedTableCell>
                                     <ThemedTableCell>
                                         <div className="space-x-2">
-                                            <Link href={`/attendance/${attendance.id}`}>
+                                            <Link href={`/attendance/${record.id}`}>
                                                 <ThemedButton variant="ghost" className="text-xs px-2 py-1">View</ThemedButton>
                                             </Link>
-                                            <Link href={`/attendance/${attendance.id}/edit`}>
+                                            <Link href={`/attendance/${record.id}/edit`}>
                                                 <ThemedButton variant="ghost" className="text-xs px-2 py-1">Edit</ThemedButton>
                                             </Link>
                                             <ThemedButton 
                                                 variant="ghost" 
                                                 className="text-xs px-2 py-1 text-red-600 hover:text-red-800"
-                                                onClick={() => handleDelete(attendance.id)}
+                                                onClick={() => handleDelete(record.id)}
                                             >
                                                 Delete
                                             </ThemedButton>

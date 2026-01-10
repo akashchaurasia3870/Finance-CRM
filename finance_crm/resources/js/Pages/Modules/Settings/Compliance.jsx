@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { useForm, Link } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedTextarea } from '@/Components/ThemedComponents';
 
 export default function Compliance() {
     const [activeTab, setActiveTab] = useState('gdpr');
@@ -149,40 +149,36 @@ export default function Compliance() {
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Customer Data (Days)
                                         </label>
-                                        <input
+                                        <ThemedInput
                                             type="number"
-                                            defaultValue={2555} // 7 years
-                                            className="w-full border border-gray-300 rounded-md px-3 py-2"
+                                            defaultValue={2555}
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Marketing Data (Days)
                                         </label>
-                                        <input
+                                        <ThemedInput
                                             type="number"
-                                            defaultValue={1095} // 3 years
-                                            className="w-full border border-gray-300 rounded-md px-3 py-2"
+                                            defaultValue={1095}
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Transaction Data (Days)
                                         </label>
-                                        <input
+                                        <ThemedInput
                                             type="number"
-                                            defaultValue={3650} // 10 years
-                                            className="w-full border border-gray-300 rounded-md px-3 py-2"
+                                            defaultValue={3650}
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Log Data (Days)
                                         </label>
-                                        <input
+                                        <ThemedInput
                                             type="number"
-                                            defaultValue={365} // 1 year
-                                            className="w-full border border-gray-300 rounded-md px-3 py-2"
+                                            defaultValue={365}
                                         />
                                     </div>
                                 </div>
@@ -276,10 +272,9 @@ export default function Compliance() {
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Banner Message
                                         </label>
-                                        <textarea
+                                        <ThemedTextarea
                                             rows={3}
                                             defaultValue="We use cookies to enhance your experience and analyze site usage. By continuing to browse, you consent to our use of cookies."
-                                            className="w-full border border-gray-300 rounded-md px-3 py-2"
                                         />
                                     </div>
                                     <div className="grid grid-cols-2 gap-4">
@@ -287,20 +282,18 @@ export default function Compliance() {
                                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                                 Accept Button Text
                                             </label>
-                                            <input
+                                            <ThemedInput
                                                 type="text"
                                                 defaultValue="Accept All"
-                                                className="w-full border border-gray-300 rounded-md px-3 py-2"
                                             />
                                         </div>
                                         <div>
                                             <label className="block text-sm font-medium text-gray-700 mb-2">
                                                 Reject Button Text
                                             </label>
-                                            <input
+                                            <ThemedInput
                                                 type="text"
                                                 defaultValue="Reject All"
-                                                className="w-full border border-gray-300 rounded-md px-3 py-2"
                                             />
                                         </div>
                                     </div>
@@ -394,36 +387,33 @@ export default function Compliance() {
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Privacy Policy URL
                                     </label>
-                                    <input
+                                    <ThemedInput
                                         type="url"
                                         value={data.privacy_policy_url}
                                         onChange={(e) => setData('privacy_policy_url', e.target.value)}
                                         placeholder="https://yourcompany.com/privacy-policy"
-                                        className="w-full border border-gray-300 rounded-md px-3 py-2"
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Terms of Service URL
                                     </label>
-                                    <input
+                                    <ThemedInput
                                         type="url"
                                         value={data.terms_of_service_url}
                                         onChange={(e) => setData('terms_of_service_url', e.target.value)}
                                         placeholder="https://yourcompany.com/terms-of-service"
-                                        className="w-full border border-gray-300 rounded-md px-3 py-2"
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Cookie Policy URL
                                     </label>
-                                    <input
+                                    <ThemedInput
                                         type="url"
                                         value={data.cookie_policy_url}
                                         onChange={(e) => setData('cookie_policy_url', e.target.value)}
                                         placeholder="https://yourcompany.com/cookie-policy"
-                                        className="w-full border border-gray-300 rounded-md px-3 py-2"
                                     />
                                 </div>
                                 
@@ -463,10 +453,9 @@ export default function Compliance() {
                                             <span className="text-sm font-medium">Financial Advice Disclaimer</span>
                                             <button type="button" className="text-red-600 text-sm">Remove</button>
                                         </div>
-                                        <textarea
+                                        <ThemedTextarea
                                             rows={3}
                                             defaultValue="The information provided is for educational purposes only and should not be considered as financial advice. Please consult with a qualified financial advisor before making investment decisions."
-                                            className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
                                         />
                                         <div className="mt-2 flex items-center space-x-4">
                                             <label className="flex items-center">
@@ -489,10 +478,9 @@ export default function Compliance() {
                                             <span className="text-sm font-medium">Data Accuracy Disclaimer</span>
                                             <button type="button" className="text-red-600 text-sm">Remove</button>
                                         </div>
-                                        <textarea
+                                        <ThemedTextarea
                                             rows={3}
                                             defaultValue="While we strive to maintain accurate and up-to-date information, we cannot guarantee the completeness or accuracy of all data presented. Users should verify information independently."
-                                            className="w-full border border-gray-300 rounded-md px-3 py-2 text-sm"
                                         />
                                         <div className="mt-2 flex items-center space-x-4">
                                             <label className="flex items-center">

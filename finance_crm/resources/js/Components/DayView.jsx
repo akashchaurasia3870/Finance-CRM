@@ -1,11 +1,12 @@
 import React from 'react';
+import { ThemedCard } from '@/Components/ThemedComponents';
 
 export default function DayView({ currentDate, calendars, getEventsForDate, getTypeColor, onDateClick }) {
     const events = getEventsForDate(currentDate);
     const isToday = currentDate.toDateString() === new Date().toDateString();
 
     return (
-        <div className="bg-theme-primary shadow-lg rounded-lg overflow-hidden">
+        <ThemedCard className="shadow-lg overflow-hidden">
             {/* Header */}
             <div className={`py-4 px-6 text-center ${isToday ? 'bg-blue-600 text-white' : 'bg-gray-800 text-white'}`}>
                 <div className="text-sm font-medium">
@@ -64,6 +65,6 @@ export default function DayView({ currentDate, calendars, getEventsForDate, getT
                     </div>
                 )}
             </div>
-        </div>
+        </ThemedCard>
     );
 }

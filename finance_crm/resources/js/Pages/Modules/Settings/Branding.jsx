@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import Layout from '@/Layouts/Layout';
 import { useForm, Link, usePage } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedTextarea, ThemedSelect } from '@/Components/ThemedComponents';
 
 export default function Branding() {
     const [activeTab, setActiveTab] = useState('themes');
@@ -665,10 +665,9 @@ export default function Branding() {
                                     <label className="block text-sm font-medium mb-2">
                                         Font Family
                                     </label>
-                                    <select
+                                    <ThemedSelect
                                         value={data.font_family}
                                         onChange={(e) => setData('font_family', e.target.value)}
-                                        className="w-full border border-gray-300 rounded-md px-3 py-2"
                                         style={{ backgroundColor: data.background_color, color: data.text_color }}
                                     >
                                         {fontFamilies.map((font) => (
@@ -676,16 +675,15 @@ export default function Branding() {
                                                 {font}
                                             </option>
                                         ))}
-                                    </select>
+                                    </ThemedSelect>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium mb-2">
                                         Font Size
                                     </label>
-                                    <select
+                                    <ThemedSelect
                                         value={data.font_size}
                                         onChange={(e) => setData('font_size', e.target.value)}
-                                        className="w-full border border-gray-300 rounded-md px-3 py-2"
                                         style={{ backgroundColor: data.background_color, color: data.text_color }}
                                     >
                                         <option value="default">Default</option>
@@ -693,16 +691,15 @@ export default function Branding() {
                                         <option value="medium">Medium</option>
                                         <option value="large">Large</option>
                                         <option value="extra-large">Extra Large</option>
-                                    </select>
+                                    </ThemedSelect>
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium mb-2">
                                         Font Weight
                                     </label>
-                                    <select
+                                    <ThemedSelect
                                         value={data.font_weight}
                                         onChange={(e) => setData('font_weight', e.target.value)}
-                                        className="w-full border border-gray-300 rounded-md px-3 py-2"
                                         style={{ backgroundColor: data.background_color, color: data.text_color }}
                                     >
                                         <option value="default">Default</option>
@@ -711,7 +708,7 @@ export default function Branding() {
                                         <option value="medium">Medium</option>
                                         <option value="semibold">Semi Bold</option>
                                         <option value="bold">Bold</option>
-                                    </select>
+                                    </ThemedSelect>
                                 </div>
                             </div>
                             <div className="mt-6">
@@ -746,23 +743,21 @@ export default function Branding() {
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Company Name
                                         </label>
-                                        <input
+                                        <ThemedInput
                                             type="text"
                                             value={data.company_name}
                                             onChange={(e) => setData('company_name', e.target.value)}
-                                            className="w-full border border-gray-300 rounded-md px-3 py-2"
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Logo URL
                                         </label>
-                                        <input
+                                        <ThemedInput
                                             type="url"
                                             value={data.logo_url}
                                             onChange={(e) => setData('logo_url', e.target.value)}
                                             placeholder="https://example.com/logo.png"
-                                            className="w-full border border-gray-300 rounded-md px-3 py-2"
                                         />
                                         <p className="text-xs text-theme-muted mt-1">Recommended size: 200x60 pixels</p>
                                     </div>
@@ -770,12 +765,11 @@ export default function Branding() {
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Favicon URL
                                         </label>
-                                        <input
+                                        <ThemedInput
                                             type="url"
                                             value={data.favicon_url}
                                             onChange={(e) => setData('favicon_url', e.target.value)}
                                             placeholder="https://example.com/favicon.ico"
-                                            className="w-full border border-gray-300 rounded-md px-3 py-2"
                                         />
                                         <p className="text-xs text-theme-muted mt-1">Recommended size: 32x32 pixels (.ico format)</p>
                                     </div>
@@ -788,12 +782,11 @@ export default function Branding() {
                                     <label className="block text-sm font-medium text-gray-700 mb-2">
                                         Login Background Image URL
                                     </label>
-                                    <input
+                                    <ThemedInput
                                         type="url"
                                         value={data.login_background}
                                         onChange={(e) => setData('login_background', e.target.value)}
                                         placeholder="https://example.com/background.jpg"
-                                        className="w-full border border-gray-300 rounded-md px-3 py-2"
                                     />
                                     <p className="text-xs text-theme-muted mt-1">Recommended size: 1920x1080 pixels</p>
                                 </div>
@@ -829,23 +822,21 @@ export default function Branding() {
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Banner Background Image URL
                                         </label>
-                                        <input
+                                        <ThemedInput
                                             type="url"
                                             value={data.banner_background}
                                             onChange={(e) => setData('banner_background', e.target.value)}
                                             placeholder="https://example.com/banner.jpg"
-                                            className="w-full border border-gray-300 rounded-md px-3 py-2"
                                         />
                                     </div>
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-2">
                                             Banner Quote/Message
                                         </label>
-                                        <textarea
+                                        <ThemedTextarea
                                             rows={2}
                                             value={data.banner_quote}
                                             onChange={(e) => setData('banner_quote', e.target.value)}
-                                            className="w-full border border-gray-300 rounded-md px-3 py-2"
                                         />
                                     </div>
                                 </div>

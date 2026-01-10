@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedTextarea, ThemedSelect } from '@/Components/ThemedComponents';
 
 export default function CalendarEdit({ calendar, users = [] }) {
     const [formData, setFormData] = useState({
@@ -85,18 +85,17 @@ export default function CalendarEdit({ calendar, users = [] }) {
                                     <label className="block text-sm font-medium text-theme-primary mb-2">
                                         Type
                                     </label>
-                                    <select
+                                    <ThemedSelect
                                         name="type"
                                         value={formData.type}
                                         onChange={handleChange}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary"
                                     >
                                         <option value="event">Event</option>
                                         <option value="meeting">Meeting</option>
                                         <option value="reminder">Reminder</option>
                                         <option value="task">Task</option>
                                         <option value="note">Note</option>
-                                    </select>
+                                    </ThemedSelect>
                                     {errors.type && <p className="text-red-500 text-sm mt-1">{errors.type}</p>}
                                 </div>
 
@@ -160,16 +159,15 @@ export default function CalendarEdit({ calendar, users = [] }) {
                                     <label className="block text-sm font-medium text-theme-primary mb-2">
                                         Status
                                     </label>
-                                    <select
+                                    <ThemedSelect
                                         name="status"
                                         value={formData.status}
                                         onChange={handleChange}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary"
                                     >
                                         <option value="scheduled">Scheduled</option>
                                         <option value="completed">Completed</option>
                                         <option value="cancelled">Cancelled</option>
-                                    </select>
+                                    </ThemedSelect>
                                     {errors.status && <p className="text-red-500 text-sm mt-1">{errors.status}</p>}
                                 </div>
 
@@ -191,12 +189,11 @@ export default function CalendarEdit({ calendar, users = [] }) {
                                 <label className="block text-sm font-medium text-theme-primary mb-2">
                                     Description
                                 </label>
-                                <textarea
+                                <ThemedTextarea
                                     name="description"
                                     value={formData.description}
                                     onChange={handleChange}
                                     rows={4}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary"
                                     placeholder="Event description and details..."
                                 />
                                 {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}

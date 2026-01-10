@@ -5,15 +5,15 @@ import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedCompon
 
 export default function EmailSettings({ settings = {} }) {
     const [formData, setFormData] = useState({
-        smtp_host: settings.smtp_host || '',
-        smtp_port: settings.smtp_port || 587,
-        smtp_username: settings.smtp_username || '',
-        smtp_password: settings.smtp_password || '',
-        smtp_encryption: settings.smtp_encryption || 'tls',
-        from_email: settings.from_email || '',
-        from_name: settings.from_name || '',
-        reply_to_email: settings.reply_to_email || '',
-        email_tracking: settings.email_tracking || false
+        smtp_host: settings?.smtp_host || '',
+        smtp_port: settings?.smtp_port || 587,
+        smtp_username: settings?.smtp_username || '',
+        smtp_password: settings?.smtp_password || '',
+        smtp_encryption: settings?.smtp_encryption || 'tls',
+        from_email: settings?.from_email || '',
+        from_name: settings?.from_name || '',
+        reply_to_email: settings?.reply_to_email || '',
+        email_tracking: settings?.email_tracking || false
     });
 
     const [processing, setProcessing] = useState(false);
@@ -107,7 +107,7 @@ export default function EmailSettings({ settings = {} }) {
                                 <select
                                     value={formData.smtp_encryption}
                                     onChange={(e) => setFormData({...formData, smtp_encryption: e.target.value})}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary"
+                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary"
                                 >
                                     <option value="tls">TLS</option>
                                     <option value="ssl">SSL</option>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedBadge } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedBadge, ThemedTextarea } from '@/Components/ThemedComponents';
 
 export default function MeetingsDetail({ meeting }) {
     const [noteText, setNoteText] = useState('');
@@ -140,12 +140,11 @@ export default function MeetingsDetail({ meeting }) {
                             </div>
                             <div className="p-6">
                                 {showNoteForm && (
-                                    <form onSubmit={handleAddNote} className="mb-4 p-4 bg-theme-surface rounded border border-theme">
-                                        <textarea
+                                    <form onSubmit={handleAddNote} className="mb-4 p-4 bg-theme-primary rounded border border-theme">
+                                        <ThemedTextarea
                                             value={noteText}
                                             onChange={(e) => setNoteText(e.target.value)}
                                             placeholder="Add your meeting note..."
-                                            className="w-full border border-theme rounded px-3 py-2 mb-2 bg-theme-surface text-theme-primary"
                                             rows={3}
                                             required
                                         />
@@ -168,7 +167,7 @@ export default function MeetingsDetail({ meeting }) {
                                 {meeting.notes && meeting.notes.length > 0 ? (
                                     <div className="space-y-4">
                                         {meeting.notes.map((note) => (
-                                            <div key={note.id} className="border-l-4 border-blue-500 pl-4 bg-theme-surface p-3 rounded">
+                                            <div key={note.id} className="border-l-4 border-blue-500 pl-4 bg-theme-primary p-3 rounded">
                                                 <div className="flex justify-between items-start mb-2">
                                                     <span className="text-sm text-theme-muted">
                                                         By {note.creator ? note.creator.name : 'Unknown'}
@@ -199,7 +198,7 @@ export default function MeetingsDetail({ meeting }) {
                                 <div className="p-6">
                                     <div className="space-y-3">
                                         {meeting.participants.map((participant) => (
-                                            <div key={participant.id} className="flex justify-between items-center p-3 bg-theme-surface rounded">
+                                            <div key={participant.id} className="flex justify-between items-center p-3 bg-theme-primary rounded">
                                                 <div>
                                                     <p className="text-theme-primary">
                                                         {participant.user ? participant.user.name : participant.external_email}

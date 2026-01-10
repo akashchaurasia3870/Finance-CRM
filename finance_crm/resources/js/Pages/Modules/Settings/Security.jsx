@@ -5,11 +5,11 @@ import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedCompon
 
 export default function SecuritySettings({ settings = {} }) {
     const [formData, setFormData] = useState({
-        two_factor_enabled: settings.two_factor_enabled || false,
-        login_attempt_limit: settings.login_attempt_limit || 5,
-        session_timeout: settings.session_timeout || 120,
-        force_password_change: settings.force_password_change || false,
-        password_policy: settings.password_policy || {
+        two_factor_enabled: settings?.two_factor_enabled || false,
+        login_attempt_limit: settings?.login_attempt_limit || 5,
+        session_timeout: settings?.session_timeout || 120,
+        force_password_change: settings?.force_password_change || false,
+        password_policy: settings?.password_policy || {
             min_length: 8,
             require_uppercase: true,
             require_lowercase: true,

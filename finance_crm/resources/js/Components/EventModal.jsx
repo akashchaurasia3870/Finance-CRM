@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { router } from '@inertiajs/react';
+import { ThemedTextarea, ThemedInput, ThemedSelect, ThemedButton } from '@/Components/ThemedComponents';
 
 export default function EventModal({ isOpen, onClose, selectedDate }) {
     const [formData, setFormData] = useState({
@@ -71,12 +72,11 @@ export default function EventModal({ isOpen, onClose, selectedDate }) {
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Title *
                             </label>
-                            <input
+                            <ThemedInput
                                 type="text"
                                 name="title"
                                 value={formData.title}
                                 onChange={handleChange}
-                                className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 required
                             />
                             {errors.title && <p className="text-red-500 text-sm mt-1">{errors.title}</p>}
@@ -86,18 +86,17 @@ export default function EventModal({ isOpen, onClose, selectedDate }) {
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Type
                             </label>
-                            <select
+                            <ThemedSelect
                                 name="type"
                                 value={formData.type}
                                 onChange={handleChange}
-                                className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                             >
                                 <option value="event">Event</option>
                                 <option value="meeting">Meeting</option>
                                 <option value="reminder">Reminder</option>
                                 <option value="task">Task</option>
                                 <option value="note">Note</option>
-                            </select>
+                            </ThemedSelect>
                         </div>
 
                         <div className="grid grid-cols-2 gap-3">
@@ -105,12 +104,11 @@ export default function EventModal({ isOpen, onClose, selectedDate }) {
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
                                     Start Time *
                                 </label>
-                                <input
+                                <ThemedInput
                                     type="datetime-local"
                                     name="start_datetime"
                                     value={formData.start_datetime}
                                     onChange={handleChange}
-                                    className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
                                 />
                             </div>
@@ -118,12 +116,11 @@ export default function EventModal({ isOpen, onClose, selectedDate }) {
                                 <label className="block text-sm font-medium text-gray-700 mb-1">
                                     End Time *
                                 </label>
-                                <input
+                                <ThemedInput
                                     type="datetime-local"
                                     name="end_datetime"
                                     value={formData.end_datetime}
                                     onChange={handleChange}
-                                    className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                     required
                                 />
                             </div>
@@ -146,12 +143,11 @@ export default function EventModal({ isOpen, onClose, selectedDate }) {
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Location
                             </label>
-                            <input
+                            <ThemedInput
                                 type="text"
                                 name="location"
                                 value={formData.location}
                                 onChange={handleChange}
-                                className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="Event location"
                             />
                         </div>
@@ -160,12 +156,11 @@ export default function EventModal({ isOpen, onClose, selectedDate }) {
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Meeting Link
                             </label>
-                            <input
+                            <ThemedInput
                                 type="url"
                                 name="meeting_link"
                                 value={formData.meeting_link}
                                 onChange={handleChange}
-                                className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="https://meet.example.com/..."
                             />
                         </div>
@@ -174,30 +169,29 @@ export default function EventModal({ isOpen, onClose, selectedDate }) {
                             <label className="block text-sm font-medium text-gray-700 mb-1">
                                 Description
                             </label>
-                            <textarea
+                            <ThemedTextarea
                                 name="description"
                                 value={formData.description}
                                 onChange={handleChange}
                                 rows={3}
-                                className="w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
                                 placeholder="Event description..."
                             />
                         </div>
 
                         <div className="flex justify-end space-x-3 pt-4">
-                            <button
+                            <ThemedButton
                                 type="button"
+                                variant="secondary"
                                 onClick={onClose}
-                                className="px-4 py-2 border border-gray-300 rounded-md text-gray-700 hover:bg-theme-tertiary"
                             >
                                 Cancel
-                            </button>
-                            <button
+                            </ThemedButton>
+                            <ThemedButton
                                 type="submit"
-                                className="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+                                variant="primary"
                             >
                                 Create Event
-                            </button>
+                            </ThemedButton>
                         </div>
                     </form>
                 </div>

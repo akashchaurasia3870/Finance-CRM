@@ -60,21 +60,19 @@ export default function RoleManagement({ roles = [], permissions = {} }) {
                             <div className="grid grid-cols-2 gap-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">Role Name</label>
-                                    <input
+                                    <ThemedInput
                                         type="text"
                                         value={formData.name}
                                         onChange={(e) => setFormData({...formData, name: e.target.value})}
-                                        className="mt-1 block w-full border rounded-md px-3 py-2"
                                         required
                                     />
                                 </div>
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700">Description</label>
-                                    <input
+                                    <ThemedInput
                                         type="text"
                                         value={formData.description}
                                         onChange={(e) => setFormData({...formData, description: e.target.value})}
-                                        className="mt-1 block w-full border rounded-md px-3 py-2"
                                     />
                                 </div>
                             </div>

@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedTextarea } from '@/Components/ThemedComponents';
 
 export default function NewCampaign({ clients = [] }) {
     const [data, setData] = useState({
@@ -68,11 +68,10 @@ export default function NewCampaign({ clients = [] }) {
                                 <label className="block text-sm font-medium text-theme-primary mb-2">
                                     Description
                                 </label>
-                                <textarea
+                                <ThemedTextarea
                                     value={data.description}
                                     onChange={(e) => setData({...data, description: e.target.value})}
                                     rows={4}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     placeholder="Campaign description and objectives"
                                 />
                                 {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}
@@ -86,7 +85,7 @@ export default function NewCampaign({ clients = [] }) {
                                     <select
                                         value={data.type}
                                         onChange={(e) => setData({...data, type: e.target.value})}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     >
                                         <option value="email">Email</option>
                                         <option value="sms">SMS</option>
@@ -103,7 +102,7 @@ export default function NewCampaign({ clients = [] }) {
                                     <select
                                         value={data.status}
                                         onChange={(e) => setData({...data, status: e.target.value})}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     >
                                         <option value="draft">Draft</option>
                                         <option value="scheduled">Scheduled</option>
@@ -161,7 +160,7 @@ export default function NewCampaign({ clients = [] }) {
                                 <label className="block text-sm font-medium text-theme-primary mb-2">
                                     Select Clients (Optional)
                                 </label>
-                                <div className="border border-theme rounded-md p-4 max-h-48 overflow-y-auto bg-theme-surface">
+                                <div className="border border-theme rounded-md p-4 max-h-48 overflow-y-auto bg-theme-primary">
                                     {clients.length > 0 ? (
                                         <div className="space-y-2">
                                             <div className="flex items-center border-b border-theme pb-2 mb-2">

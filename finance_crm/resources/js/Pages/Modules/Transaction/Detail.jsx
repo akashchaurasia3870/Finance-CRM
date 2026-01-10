@@ -315,7 +315,7 @@ export default function TransactionDetail({ transaction }) {
                         {transaction.notes && (
                             <div className="mt-6">
                                 <label className="block text-sm font-medium text-theme-muted">Notes</label>
-                                <p className="mt-1 text-sm text-theme-primary bg-theme-surface p-3 rounded border">{transaction.notes}</p>
+                                <p className="mt-1 text-sm text-theme-primary bg-theme-primary p-3 rounded border">{transaction.notes}</p>
                             </div>
                         )}
                     </div>

@@ -122,7 +122,7 @@ export default function CampaignDetail({ campaign }) {
                         {campaign.description && (
                             <div>
                                 <label className="block text-sm font-medium text-theme-muted">Description</label>
-                                <div className="mt-1 p-3 bg-theme-surface rounded-md">
+                                <div className="mt-1 p-3 bg-theme-primary rounded-md">
                                     <p className="text-sm text-theme-primary whitespace-pre-wrap">{campaign.description}</p>
                                 </div>
                             </div>
@@ -138,7 +138,7 @@ export default function CampaignDetail({ campaign }) {
                         <div className="p-6">
                             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-3">
                                 {campaign.clients.map((client) => (
-                                    <div key={client.id} className="flex items-center justify-between p-3 bg-theme-surface rounded-md">
+                                    <div key={client.id} className="flex items-center justify-between p-3 bg-theme-primary rounded-md">
                                         <div>
                                             <p className="font-medium text-theme-primary">{client.name}</p>
                                             <p className="text-sm text-theme-secondary">{client.email}</p>

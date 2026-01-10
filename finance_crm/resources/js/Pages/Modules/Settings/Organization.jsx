@@ -5,11 +5,11 @@ import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedCompon
 
 export default function OrganizationSettings({ settings = {} }) {
     const [formData, setFormData] = useState({
-        company_name: settings.company_name || '',
-        timezone: settings.timezone || 'UTC',
-        fiscal_year_start: settings.fiscal_year_start || `${new Date().getFullYear()}-04-01`,
-        business_hours: settings.business_hours || {},
-        working_days: settings.working_days || [1,2,3,4,5]
+        company_name: settings?.company_name || '',
+        timezone: settings?.timezone || 'UTC',
+        fiscal_year_start: settings?.fiscal_year_start || `${new Date().getFullYear()}-04-01`,
+        business_hours: settings?.business_hours || {},
+        working_days: settings?.working_days || [1,2,3,4,5]
     });
 
     const [processing, setProcessing] = useState(false);
@@ -65,7 +65,7 @@ export default function OrganizationSettings({ settings = {} }) {
                                 <select
                                     value={formData.timezone}
                                     onChange={(e) => setFormData({...formData, timezone: e.target.value})}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary"
+                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary"
                                 >
                                     <option value="UTC">UTC</option>
                                     <option value="America/New_York">Eastern Time</option>

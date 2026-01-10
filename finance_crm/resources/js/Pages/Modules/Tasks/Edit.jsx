@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput, ThemedSelect } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedSelect, ThemedTextarea } from '@/Components/ThemedComponents';
 
 export default function EditTask({ task, users = [] }) {
     const [data, setData] = useState({
@@ -180,10 +180,9 @@ export default function EditTask({ task, users = [] }) {
                             <label className="block text-sm font-medium text-theme-secondary mb-2">
                                 Description
                             </label>
-                            <textarea
+                            <ThemedTextarea
                                 value={data.description}
                                 onChange={(e) => setData({...data, description: e.target.value})}
-                                className="w-full px-3 py-2 border border-theme rounded-md bg-theme-primary text-theme-primary placeholder-theme-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent"
                                 rows="4"
                             />
                             {errors.description && <p className="text-red-500 text-sm mt-1">{errors.description}</p>}

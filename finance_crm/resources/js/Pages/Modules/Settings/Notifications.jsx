@@ -5,10 +5,10 @@ import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedCompon
 
 export default function NotificationSettings({ settings = {} }) {
     const [formData, setFormData] = useState({
-        email_notifications: settings.email_notifications || true,
-        sms_notifications: settings.sms_notifications || false,
-        push_notifications: settings.push_notifications || true,
-        notification_triggers: settings.notification_triggers || {
+        email_notifications: settings?.email_notifications || true,
+        sms_notifications: settings?.sms_notifications || false,
+        push_notifications: settings?.push_notifications || true,
+        notification_triggers: settings?.notification_triggers || {
             lead_created: true,
             lead_updated: true,
             task_assigned: true,

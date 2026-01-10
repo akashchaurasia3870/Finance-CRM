@@ -94,7 +94,17 @@ export const ThemedTableCell = ({ children, className = '', header = false, ...p
 export const ThemedInput = ({ className = '', ...props }) => {
     return (
         <input 
-            className={`w-[50%] px-3 py-2 border border-theme rounded-md bg-theme-primary text-theme-primary placeholder-theme-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${className}`}
+            className={`w-[100%] px-3 py-2 border border-theme rounded-md bg-theme-primary text-theme-primary placeholder-theme-muted focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent ${className}`}
+            {...props}
+        />
+    );
+};
+
+// Theme-aware Textarea component
+export const ThemedTextarea = ({ className = '', ...props }) => {
+    return (
+        <textarea 
+            className={`w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent ${className}`}
             {...props}
         />
     );

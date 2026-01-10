@@ -111,7 +111,7 @@ export default function DataManagement() {
                                     <select
                                         value={data.export_format}
                                         onChange={(e) => setData('export_format', e.target.value)}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary"
+                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary"
                                     >
                                         <option value="csv">CSV</option>
                                         <option value="xlsx">Excel (XLSX)</option>
@@ -223,7 +223,7 @@ export default function DataManagement() {
                                     <select
                                         value={data.backup_frequency}
                                         onChange={(e) => setData('backup_frequency', e.target.value)}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary"
+                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary"
                                     >
                                         <option value="hourly">Hourly</option>
                                         <option value="daily">Daily</option>

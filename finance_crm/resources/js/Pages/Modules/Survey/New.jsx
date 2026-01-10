@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedTextarea } from '@/Components/ThemedComponents';
 
 export default function SurveyNew() {
     const [formData, setFormData] = useState({
@@ -149,7 +149,7 @@ export default function SurveyNew() {
                                     <select
                                         value={formData.status}
                                         onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value }))}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary"
+                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary"
                                     >
                                         <option value="draft">Draft</option>
                                         <option value="active">Active</option>
@@ -185,11 +185,10 @@ export default function SurveyNew() {
                                 <label className="block text-sm font-medium text-theme-primary mb-2">
                                     Description
                                 </label>
-                                <textarea
+                                <ThemedTextarea
                                     value={formData.description}
                                     onChange={(e) => setFormData(prev => ({ ...prev, description: e.target.value }))}
                                     rows={3}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary"
                                 />
                             </div>
                         </div>
@@ -210,7 +209,7 @@ export default function SurveyNew() {
                         </div>
                         <div className="p-6">
                             {formData.questions.map((question, qIndex) => (
-                                <div key={qIndex} className="border border-theme rounded-lg p-4 mb-4 bg-theme-surface">
+                                <div key={qIndex} className="border border-theme rounded-lg p-4 mb-4 bg-theme-primary">
                                     <div className="flex justify-between items-start mb-3">
                                         <h4 className="font-medium text-theme-primary">Question {qIndex + 1}</h4>
                                         <ThemedButton
@@ -243,7 +242,7 @@ export default function SurveyNew() {
                                             <select
                                                 value={question.type}
                                                 onChange={(e) => updateQuestion(qIndex, 'type', e.target.value)}
-                                                className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary"
+                                                className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary"
                                             >
                                                 {questionTypes.map(type => (
                                                     <option key={type.value} value={type.value}>

@@ -113,7 +113,7 @@ export default function AddressDetail({ address }) {
                         <h3 className="text-lg font-medium text-theme-primary">Full Address</h3>
                     </div>
                     <div className="p-6">
-                        <div className="bg-theme-surface p-4 rounded-md">
+                        <div className="bg-theme-primary p-4 rounded-md">
                             <p className="text-theme-primary">
                                 {address.address_line_1}
                                 {address.address_line_2 && <><br />{address.address_line_2}</>}

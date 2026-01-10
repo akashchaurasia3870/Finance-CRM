@@ -57,6 +57,8 @@ use App\Http\Controllers\UserWebController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\SettingsWebController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DashboardWebController;
 use Illuminate\Foundation\Application;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -73,6 +75,21 @@ Route::get('/', function () {
 Route::get('/dashboard', function () {
     return Inertia::render('Dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
+
+// Dashboard Module Routes
+Route::middleware('auth')->group(function () {
+    Route::get('/dashboard/index', [DashboardWebController::class, 'index'])->name('dashboard.index');
+    Route::get('/dashboard/users', [DashboardWebController::class, 'userDashboard'])->name('dashboard.users');
+    Route::get('/dashboard/calendar', [DashboardWebController::class, 'calendarDashboard'])->name('dashboard.calendar');
+    Route::get('/dashboard/meetings', [DashboardWebController::class, 'meetingsDashboard'])->name('dashboard.meetings');
+    Route::get('/dashboard/reports', [DashboardWebController::class, 'reports'])->name('dashboard.reports');
+    
+    // Dashboard API Routes
+    Route::prefix('api/dashboard')->group(function () {
+        Route::get('/', [DashboardController::class, 'index']);
+        Route::get('/{module}', [DashboardController::class, 'getModuleStats']);
+    });
+});
 
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
@@ -137,6 +154,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/attendance/{id}', [AttendanceWebController::class, 'show'])->name('attendance.detail');
     Route::get('/attendance/{id}/edit', [AttendanceWebController::class, 'edit'])->name('attendance.edit');
     Route::put('/attendance/{id}', [AttendanceWebController::class, 'update']);
+    Route::post('/attendance/{id}', [AttendanceWebController::class, 'update']); // Support for form method spoofing
     Route::delete('/attendance/{id}', [AttendanceWebController::class, 'destroy']);
     
     Route::prefix('api/attendance')->group(function () {

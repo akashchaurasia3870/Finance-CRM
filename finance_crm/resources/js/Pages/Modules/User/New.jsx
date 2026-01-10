@@ -15,6 +15,18 @@ export default function NewUser({ roles = [] }) {
     const [errors, setErrors] = useState({});
     const [processing, setProcessing] = useState(false);
 
+    const handleRoleChange = (roleId) => {
+        const newRoles = data.roles.includes(roleId)
+            ? data.roles.filter(r => r !== roleId)
+            : [...data.roles, roleId];
+        setData({...data, roles: newRoles});
+    };
+
+    const handleSelectAllRoles = (checked) => {
+        const allRoleIds = roles.map(role => role.id);
+        setData({...data, roles: checked ? allRoleIds : []});
+    };
+
     const handleSubmit = (e) => {
         e.preventDefault();
         setProcessing(true);
@@ -104,29 +116,38 @@ export default function NewUser({ roles = [] }) {
                                 <label className="block text-sm font-medium text-theme-primary mb-2">
                                     Roles
                                 </label>
-                                <div className="border border-theme rounded-md p-4 max-h-40 overflow-y-auto bg-theme-surface">
+                                <div className="border border-theme rounded-md p-4 max-h-60 overflow-y-auto bg-theme-primary">
                                     {roles.length > 0 ? (
-                                        <div className="space-y-2">
-                                            {roles.map((role) => (
-                                                <div key={role.id} className="flex items-center">
-                                                    <input
-                                                        type="checkbox"
-                                                        id={`role-${role.id}`}
-                                                        checked={data.roles.includes(role.id)}
-                                                        onChange={(e) => {
-                                                            const newRoles = e.target.checked
-                                                                ? [...data.roles, role.id]
-                                                                : data.roles.filter(r => r !== role.id);
-                                                            setData({...data, roles: newRoles});
-                                                        }}
-                                                        className="mr-2"
-                                                    />
-                                                    <label htmlFor={`role-${role.id}`} className="text-sm text-theme-primary">
-                                                        {role.name}
-                                                    </label>
-                                                </div>
-                                            ))}
-                                        </div>
+                                        <>
+                                            <div className="flex items-center mb-3 pb-2 border-b border-theme">
+                                                <input
+                                                    type="checkbox"
+                                                    id="select-all-roles"
+                                                    checked={data.roles.length === roles.length && roles.length > 0}
+                                                    onChange={(e) => handleSelectAllRoles(e.target.checked)}
+                                                    className="mr-2"
+                                                />
+                                                <label htmlFor="select-all-roles" className="text-sm font-medium text-theme-primary">
+                                                    Select All Roles
+                                                </label>
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-2">
+                                                {roles.map((role) => (
+                                                    <div key={role.id} className="flex items-center">
+                                                        <input
+                                                            type="checkbox"
+                                                            id={`role-${role.id}`}
+                                                            checked={data.roles.includes(role.id)}
+                                                            onChange={() => handleRoleChange(role.id)}
+                                                            className="mr-2"
+                                                        />
+                                                        <label htmlFor={`role-${role.id}`} className="text-sm text-theme-primary">
+                                                            {role.name}
+                                                        </label>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        </>
                                     ) : (
                                         <p className="text-theme-muted text-sm">No roles available</p>
                                     )}

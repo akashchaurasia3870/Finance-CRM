@@ -135,7 +135,7 @@ export default function PayrollNew({ users = [] }) {
                                     <select
                                         value={formData.user_id}
                                         onChange={(e) => setFormData(prev => ({ ...prev, user_id: e.target.value }))}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary"
+                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary"
                                         required
                                     >
                                         <option value="">Select Employee</option>
@@ -240,7 +240,7 @@ export default function PayrollNew({ users = [] }) {
                                     <select
                                         value={earning.type}
                                         onChange={(e) => updateEarning(index, 'type', e.target.value)}
-                                        className="flex-1 border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary"
+                                        className="flex-1 border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary"
                                     >
                                         <option value="">Select Type</option>
                                         <option value="basic">Basic Salary</option>
@@ -293,7 +293,7 @@ export default function PayrollNew({ users = [] }) {
                                     <select
                                         value={deduction.type}
                                         onChange={(e) => updateDeduction(index, 'type', e.target.value)}
-                                        className="flex-1 border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary"
+                                        className="flex-1 border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary"
                                     >
                                         <option value="">Select Type</option>
                                         <option value="tax">Income Tax</option>

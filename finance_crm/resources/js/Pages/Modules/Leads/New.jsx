@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import Layout from '@/Layouts/Layout';
 import { Link, router } from '@inertiajs/react';
-import { ThemedCard, ThemedButton, ThemedInput } from '@/Components/ThemedComponents';
+import { ThemedCard, ThemedButton, ThemedInput, ThemedTextarea } from '@/Components/ThemedComponents';
 
 export default function NewLead({ users = [] }) {
     const [data, setData] = useState({
@@ -104,7 +104,7 @@ export default function NewLead({ users = [] }) {
                                     <select
                                         value={data.assigned_to}
                                         onChange={(e) => setData({...data, assigned_to: e.target.value})}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     >
                                         <option value="">Select User</option>
                                         {users.map((user) => (
@@ -146,7 +146,7 @@ export default function NewLead({ users = [] }) {
                                     <select
                                         value={data.status}
                                         onChange={(e) => setData({...data, status: e.target.value})}
-                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
+                                        className="w-full border border-theme rounded-md px-3 py-2 bg-theme-primary text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     >
                                         <option value="new">New</option>
                                         <option value="contacted">Contacted</option>
@@ -201,10 +201,9 @@ export default function NewLead({ users = [] }) {
                                 <label className="block text-sm font-medium text-theme-primary mb-2">
                                     Notes
                                 </label>
-                                <textarea
+                                <ThemedTextarea
                                     value={data.notes}
                                     onChange={(e) => setData({...data, notes: e.target.value})}
-                                    className="w-full border border-theme rounded-md px-3 py-2 bg-theme-surface text-theme-primary focus:outline-none focus:ring-2 focus:ring-theme-accent"
                                     rows="3"
                                 />
                                 {errors.notes && <p className="text-red-500 text-sm mt-1">{errors.notes}</p>}
